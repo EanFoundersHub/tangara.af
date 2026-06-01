@@ -1,0 +1,2284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tángara · Alistamiento para la Inversión</title>
+<meta name="description" content="Tángara Investment Readiness: ruta de alistamiento, conexión e inversión para soluciones climáticas de base tecnológica." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+<style>
+:root{
+  --font:'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --bg:#0A0010;
+  --bg-2:#13001b;
+  --ink:#160020;
+  --rose:#FAD1F4;
+  --cream:#FDECEA;
+  --mag:#EE46DD;
+  --mag-2:#F27BE3;
+  --mag-3:#B12FA4;
+  --plum:#62165A;
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(238,70,221,.32);
+  --card:rgba(255,255,255,.045);
+  --card-2:rgba(255,255,255,.08);
+  --r:32px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:#fff;font-family:var(--font);text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  overflow-x:clip;
+  background:
+    radial-gradient(900px 600px at 8% -2%,rgba(238,70,221,.18),transparent 60%),
+    radial-gradient(700px 500px at 95% 5%,rgba(98,22,90,.45),transparent 60%),
+    radial-gradient(1100px 800px at 50% 110%,rgba(177,47,164,.18),transparent 60%),
+    linear-gradient(180deg,#0A0010 0%,#13001b 50%,#070009 100%);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:linear-gradient(to bottom,#000,transparent 92%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at var(--mx,55%) var(--my,35%),rgba(238,70,221,.10),transparent 28rem);
+  transition:background .25s ease;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* Scroll progress */
+.progress{position:fixed;left:0;top:0;height:3px;width:0;z-index:9000;background:linear-gradient(90deg,#F27BE3,#EE46DD,#fff);box-shadow:0 0 28px rgba(238,70,221,.7)}
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav{
+  position:fixed;z-index:5000;top:14px;
+  left:clamp(14px,2.6vw,44px);right:clamp(14px,2.6vw,44px);
+  height:64px;border-radius:999px;
+  background:rgba(10,0,16,.62);
+  border:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:8px 8px 8px 20px;
+  transition:.35s var(--ease);
+}
+.nav.scrolled{height:56px;background:rgba(10,0,16,.86);top:8px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;opacity:0;transform:translateY(-6px);transition:opacity .35s var(--ease),transform .35s var(--ease);pointer-events:none}
+.nav.scrolled .brand{opacity:1;transform:translateY(0);pointer-events:auto}
+.brand svg{width:30px;height:30px;flex:0 0 30px;filter:drop-shadow(0 0 18px rgba(238,70,221,.55))}
+.brand span{font-size:20px;font-weight:700;letter-spacing:-.04em}
+.navlinks{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:5px;border-radius:999px}
+.navlinks a{font-size:11.5px;line-height:1;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);padding:9px 11px;border-radius:999px;transition:.2s var(--ease)}
+.navlinks a:hover{color:#fff}
+.navlinks a.active{background:rgba(238,70,221,.18);color:#fff}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:999px;padding:12px 20px;font-size:13px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,#B12FA4 0%,#EE46DD 100%);
+  box-shadow:0 12px 30px -8px rgba(238,70,221,.55),inset 0 1px 0 rgba(255,255,255,.25);
+  transition:.25s var(--ease);
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 18px 38px -8px rgba(238,70,221,.7)}
+.menu-btn{display:none;width:40px;height:40px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:rgba(255,255,255,.06);color:#fff;font-size:18px}
+
+/* Side scroll dots */
+.side-dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:4000;display:grid;gap:9px}
+.side-dots a{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.18);transition:.25s}
+.side-dots a:hover{background:rgba(255,255,255,.5)}
+.side-dots a.active{background:var(--mag);box-shadow:0 0 18px rgba(238,70,221,.85);transform:scale(1.4)}
+
+/* ── LAYOUT ──────────────────────────────────────────── */
+main{position:relative;overflow-x:clip}
+section{position:relative;scroll-margin-top:90px}
+.wrap{width:min(1340px,100%);margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+.section{padding:clamp(28px,3vw,56px) 0}
+
+/* Type system */
+h1,h2,h3,h4,p{margin:0}
+h1,h2{font-weight:800;letter-spacing:-.045em;line-height:.88;text-wrap:balance}
+h3{font-weight:700;letter-spacing:-.03em;line-height:1.04;font-size:clamp(22px,2.1vw,32px)}
+h4{font-weight:700;letter-spacing:-.02em;font-size:clamp(16px,1.4vw,20px)}
+.hero-heading{
+  font-weight:800;letter-spacing:-.055em;line-height:.84;text-transform:none;
+  background:linear-gradient(180deg,#FDECEA 0%,#F27BE3 55%,#B12FA4 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.muted-heading{
+  background:linear-gradient(180deg,#fff 0%,#d9c5e2 70%,#8B2380 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:#F6A6EB;font-weight:500;
+  padding:7px 13px 7px 11px;border-radius:999px;
+  background:rgba(238,70,221,.10);border:1px solid rgba(238,70,221,.30);
+  margin-bottom:24px;
+}
+.kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:#F27BE3;box-shadow:0 0 10px #F27BE3}
+.lead{font-size:clamp(17px,1.4vw,22px);line-height:1.42;color:rgba(255,255,255,.78);font-weight:400;text-wrap:pretty}
+.copy{font-size:clamp(15px,1.05vw,18px);line-height:1.55;color:rgba(255,255,255,.72);font-weight:400;text-wrap:pretty}
+.eyebrow-num{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:rgba(255,255,255,.40);font-weight:500}
+
+.section-head{max-width:980px;margin-bottom:48px}
+.section-head.center{text-align:center;margin-left:auto;margin-right:auto}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  border-radius:999px;padding:14px 22px;font-size:14px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  transition:.3s var(--ease);
+  white-space:nowrap;
+}
+.btn-primary{
+  color:#fff;position:relative;
+  background:linear-gradient(123deg,#18011F 7%,#B12FA4 37%,#7621B0 72%,#EE46DD 100%);
+  box-shadow:0 4px 4px rgba(181,1,167,.25),inset 4px 4px 12px #7721B1;
+  outline:2px solid #fff;outline-offset:-3px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(238,70,221,.45),inset 4px 4px 12px #7721B1}
+
+/* Pill button with leading text + trailing arrow circle (Halo-style) */
+.btn-pill{
+  display:inline-flex;align-items:center;gap:14px;
+  padding:8px 8px 8px 28px;border-radius:999px;
+  font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;position:relative;white-space:nowrap;
+  background:linear-gradient(123deg,#18011F 7%,#B12FA4 37%,#7621B0 72%,#EE46DD 100%);
+  box-shadow:0 4px 4px rgba(181,1,167,.25),inset 4px 4px 12px #7721B1;
+  outline:2px solid #fff;outline-offset:-3px;
+  transition:.3s var(--ease);
+}
+.btn-pill:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(238,70,221,.5),inset 4px 4px 12px #7721B1}
+.btn-pill .arrow-circle{
+  width:42px;height:42px;border-radius:50%;
+  background:#fff;display:grid;place-items:center;
+  color:#160020;flex:0 0 42px;
+  transition:transform .3s var(--ease);
+}
+.btn-pill:hover .arrow-circle{transform:translateX(2px) rotate(-12deg)}
+.btn-pill .arrow-circle svg{width:18px;height:18px;stroke-width:2.2;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.btn-ghost{
+  color:#D7E2EA;border:2px solid rgba(215,226,234,.85);background:transparent;
+}
+.btn-ghost:hover{background:rgba(215,226,234,.10)}
+.btn-arrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:#F27BE3;
+  padding:8px 0;border-bottom:1px solid rgba(242,123,227,.35);
+  transition:.25s var(--ease);
+}
+.btn-arrow:hover{color:#fff;border-color:#fff;gap:14px}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(48px) scale(.985);filter:blur(8px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1),filter .6s ease}
+.reveal.visible{opacity:1;transform:none;filter:none}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}.d5{transition-delay:.3s}
+
+/* ── HERO ────────────────────────────────────────────── */
+.hero{
+  min-height:100svh;max-height:1100px;
+  padding-top:clamp(78px,7vw,108px);
+  padding-bottom:clamp(24px,2.5vw,48px);
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;isolation:isolate;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:#0A0010 url('assets/hero-bg-cocora.png') center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);
+}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(80% 60% at 50% 30%,transparent 0%,rgba(10,0,16,.55) 100%),
+    linear-gradient(180deg,rgba(10,0,16,.55) 0%,rgba(10,0,16,.30) 50%,rgba(10,0,16,.85) 100%);
+}
+.hero .wrap{max-width:min(56%,800px);margin-left:0;margin-right:auto;padding-right:0}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;z-index:2}
+.hero-top .kicker{margin-bottom:0}
+.hero-meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.hero-headline{
+  position:relative;z-index:2;margin-top:clamp(14px,1.8vw,24px);
+  overflow:hidden;
+}
+.hero-headline h1{
+  font-size:clamp(32px,4.6vw,68px);
+  line-height:.98;letter-spacing:-.035em;
+  text-transform:none;font-weight:800;
+  max-width:12ch;
+}
+.hero-headline .l1{display:block}
+.hero-headline .l2{display:block;font-style:italic;font-weight:600;font-size:.78em;line-height:1.05;margin-top:.15em;letter-spacing:-.025em;max-width:18ch}
+.hero-bottom{
+  display:flex;flex-direction:column;align-items:flex-start;gap:clamp(12px,1.6vw,22px);
+  margin-top:clamp(14px,2vw,28px);position:relative;z-index:2;
+}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start;align-items:center;margin-top:8px}
+.hero-lead{font-size:clamp(16px,1.35vw,22px);line-height:1.4;color:#D7E2EA;font-weight:400;max-width:560px;text-wrap:pretty}
+
+/* Hero visual: magnetic Tangara logo on the right */
+.hero-visual{
+  position:absolute;right:clamp(20px,4vw,56px);top:50%;transform:translateY(-50%);
+  z-index:1;pointer-events:none;
+  width:min(40vw,480px);aspect-ratio:5/4;
+  display:grid;place-items:center;
+  opacity:1;animation:bird-in 1.2s .35s cubic-bezier(.16,1,.3,1) backwards;
+}
+.hero-visual::before{
+  content:"";position:absolute;inset:-8% -10%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(10,0,16,.55) 0%,rgba(10,0,16,.30) 50%,transparent 75%);
+  z-index:-1;
+}
+@keyframes bird-in{from{opacity:0;transform:translateY(-50%) translateX(20px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
+.hero-visual .magnet{
+  width:100%;height:100%;position:relative;
+  pointer-events:auto;will-change:transform;
+  display:grid;place-items:center;
+}
+.hero-bird{
+  width:100%;height:100%;object-fit:contain;display:block;
+  filter:drop-shadow(0 0 50px rgba(238,70,221,.5)) drop-shadow(0 30px 60px rgba(0,0,0,.65));
+  animation:bird-float 8s ease-in-out infinite;
+}
+@keyframes bird-float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+}
+.hero-tag{
+  position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:999px;
+  background:rgba(10,0,16,.78);border:1px solid rgba(238,70,221,.4);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#F6A6EB;backdrop-filter:blur(10px);white-space:nowrap;z-index:2;
+}
+
+/* ── MARQUEE SECTION (scroll-driven verticales) ───── */
+.marquee-section{padding:clamp(64px,8vw,140px) 0 clamp(48px,6vw,100px);overflow:hidden}
+.marquee-row{display:flex;gap:16px;width:max-content;will-change:transform}
+.marquee-row + .marquee-row{margin-top:16px}
+.marquee-tile{
+  flex:0 0 auto;width:clamp(280px,32vw,460px);height:clamp(180px,22vw,280px);
+  border-radius:28px;padding:24px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:linear-gradient(140deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);position:relative;overflow:hidden;
+}
+.marquee-tile.alt{
+  background:linear-gradient(140deg,rgba(238,70,221,.20),rgba(98,22,90,.35));
+  border-color:rgba(238,70,221,.38);
+}
+.marquee-tile.dark{
+  background:#FDECEA;color:#160020;border-color:rgba(0,0,0,.06)
+}
+.marquee-tile.dark .mt-label{color:rgba(22,0,32,.6)}
+.marquee-tile.dark .mt-title{background:linear-gradient(180deg,#160020 0%,#62165A 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.mt-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.mt-title{
+  font-size:clamp(28px,3.3vw,48px);font-weight:800;letter-spacing:-.04em;line-height:.95;
+  background:linear-gradient(180deg,#fff,#F27BE3 80%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.mt-icon{width:42px;height:42px;color:rgba(255,255,255,.7);position:absolute;top:24px;right:24px}
+.marquee-tile.alt .mt-icon{color:#FAD1F4}
+.marquee-tile.dark .mt-icon{color:#62165A}
+.mt-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:rgba(255,255,255,.5);text-transform:uppercase}
+.marquee-tile.dark .mt-meta{color:rgba(22,0,32,.5)}
+
+/* ── PANEL / CARDS BASIC ─────────────────────────── */
+.panel{
+  position:relative;border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);
+  padding:clamp(28px,4vw,64px);overflow:hidden;
+}
+.panel.dark-edge{box-shadow:0 50px 100px -30px rgba(0,0,0,.5)}
+.panel.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);color:#160020;
+  box-shadow:0 50px 100px -30px rgba(238,70,221,.3);
+}
+.panel.light .kicker{background:rgba(255,255,255,.6);border-color:rgba(177,47,164,.3);color:#8B2380}
+.panel.light h2,.panel.light h3,.panel.light .hero-heading{color:#160020;-webkit-text-fill-color:#160020;background:none}
+.panel.light .lead,.panel.light .copy,.panel.light p{color:rgba(22,0,32,.7)}
+.panel.light strong{color:#8B2380}
+
+/* Light panel adjustments for ecosystem and postulation */
+.panel.light .orbit-map{
+  background:radial-gradient(circle at 50% 50%,rgba(177,47,164,.10),transparent 50%),rgba(255,255,255,.5);
+  border-color:rgba(22,0,32,.10);
+}
+.panel.light .orbit-map svg.lines circle,
+.panel.light .orbit-map svg.lines path{stroke:#8B2380;stroke-opacity:.45}
+.panel.light .orbit-map svg.lines g circle{fill:#8B2380}
+.panel.light .orbit-pill{border-color:rgba(22,0,32,.12);box-shadow:0 18px 36px rgba(98,22,90,.18)}
+.panel.light em{color:#8B2380;font-style:italic}
+.panel.light .post-card .lead,
+.panel.light .date-card .lead{color:rgba(22,0,32,.7)}
+ — light section between dark ones */
+.spotlight-strip{padding:clamp(48px,5vw,80px) 0}
+.spotlight-strip .panel.light{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:36px;align-items:center;
+  padding:clamp(32px,3.5vw,56px);
+}
+.spotlight-strip .sp-intro{display:flex;flex-direction:column;gap:10px}
+.spotlight-strip .sp-intro .kicker{align-self:flex-start;margin-bottom:0}
+.spotlight-strip .sp-intro h3{font-size:clamp(22px,2.4vw,32px);font-weight:700;letter-spacing:-.025em;line-height:1.05;color:#160020}
+.spotlight-strip .sp-stat{display:flex;flex-direction:column;gap:6px;border-left:1px solid rgba(22,0,32,.15);padding-left:24px}
+.spotlight-strip .sp-stat strong{font-size:clamp(38px,4.2vw,64px);line-height:.9;letter-spacing:-.05em;color:#8B2380;font-weight:800;font-variant-numeric:tabular-nums}
+.spotlight-strip .sp-stat span{font-size:13px;font-weight:500;color:rgba(22,0,32,.65);letter-spacing:-.01em;line-height:1.3}
+@media (max-width:1180px){
+  .spotlight-strip .panel.light{grid-template-columns:1fr 1fr;gap:24px}
+  .spotlight-strip .sp-intro{grid-column:span 2}
+}
+@media (max-width:720px){
+  .spotlight-strip .panel.light{grid-template-columns:1fr;gap:20px}
+  .spotlight-strip .sp-intro{grid-column:span 1}
+  .spotlight-strip .sp-stat{border-left:0;border-top:1px solid rgba(22,0,32,.15);padding-left:0;padding-top:16px}
+}
+
+/* ── ECOSISTEMA ──────────────────────────────────── */
+.ecosystem{display:grid;grid-template-columns:.88fr 1.12fr;gap:48px;align-items:center}
+.orbit-map{
+  position:relative;height:clamp(440px,52vw,580px);
+  border-radius:36px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(238,70,221,.16),transparent 50%),
+    rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.10);overflow:hidden;
+}
+.orbit-map svg.lines{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.orbit-node{
+  position:absolute;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.orbit-node.center{
+  left:50%;top:50%;width:clamp(150px,18vw,200px);height:clamp(150px,18vw,200px);
+  border-radius:50%;background:rgba(10,0,16,.92);
+  border:1px solid rgba(238,70,221,.7);
+  box-shadow:0 0 50px rgba(238,70,221,.28),inset 0 0 30px rgba(238,70,221,.10);
+  flex-direction:column;gap:8px;padding:18px;
+}
+.orbit-node.center img{width:90%;height:auto;max-height:60%;object-fit:contain;display:block}
+.orbit-pill{
+  position:absolute;transform:translate(-50%,-50%);
+  width:clamp(140px,15vw,180px);height:clamp(78px,8.5vw,100px);
+  padding:14px 16px;
+  border-radius:20px;background:#fff;color:#160020;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 18px 36px rgba(0,0,0,.25);
+  font:inherit;
+}
+button.orbit-pill{cursor:pointer}
+.orbit-pill img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+.orbit-pill.p1{left:50%;top:14%}
+.orbit-pill.p2{left:18%;top:72%}
+.orbit-pill.p3{left:82%;top:72%}
+
+/* Rotating orbit ring */
+.orbit-ring{position:absolute;inset:0;animation:orbit-spin 40s linear infinite;transform-origin:center}
+.orbit-ring .orbit-pill{
+  animation:orbit-counter 40s linear infinite, pill-pulse 2.6s ease-in-out infinite;
+  cursor:pointer;transition:box-shadow .3s var(--ease);
+  pointer-events:auto;position:absolute;
+}
+.orbit-ring .orbit-pill::after{
+  content:"+";position:absolute;top:-10px;right:-10px;
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,#B12FA4,#EE46DD);color:#fff;
+  display:grid;place-items:center;font-size:16px;font-weight:600;line-height:1;
+  box-shadow:0 6px 18px rgba(238,70,221,.45),0 0 0 2px #0A0010;
+  animation:badge-pop 2.6s ease-in-out infinite;
+}
+.orbit-ring .orbit-pill:hover{box-shadow:0 28px 60px rgba(238,70,221,.55),0 0 0 2px rgba(238,70,221,.5)}
+.orbit-ring .orbit-pill:nth-child(2){animation-delay:0s,.6s}
+.orbit-ring .orbit-pill:nth-child(2)::after{animation-delay:.6s}
+.orbit-ring .orbit-pill:nth-child(3){animation-delay:0s,1.2s}
+.orbit-ring .orbit-pill:nth-child(3)::after{animation-delay:1.2s}
+.orbit-map:hover .orbit-ring,
+.orbit-map:hover .orbit-ring .orbit-pill,
+.orbit-map:hover .orbit-ring .orbit-pill::after{animation-play-state:paused}
+@keyframes orbit-spin{to{transform:rotate(360deg)}}
+@keyframes orbit-counter{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes pill-pulse{
+  0%,100%{box-shadow:0 18px 36px rgba(0,0,0,.25)}
+  50%{box-shadow:0 18px 36px rgba(0,0,0,.25),0 0 0 8px rgba(238,70,221,.18),0 0 30px rgba(238,70,221,.35)}
+}
+@keyframes badge-pop{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.18)}
+}
+
+/* Hint label under orbit */
+.orbit-hint{
+  position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:999px;
+  background:rgba(238,70,221,.14);border:1px solid rgba(238,70,221,.35);
+  color:#F6A6EB;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  pointer-events:none;backdrop-filter:blur(8px);
+  animation:hint-bob 2.6s ease-in-out infinite;
+}
+.orbit-hint::before{content:"✕";font-family:var(--font);font-size:13px;line-height:1;color:#F27BE3;transform:rotate(45deg);display:inline-block}
+@keyframes hint-bob{
+  0%,100%{transform:translateX(-50%) translateY(0);opacity:.85}
+  50%{transform:translateX(-50%) translateY(-3px);opacity:1}
+}
+
+/* Accelerator modal */
+.acc-modal-backdrop{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(10,0,16,.75);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  opacity:0;transition:opacity .3s var(--ease);
+}
+.acc-modal-backdrop.open{display:flex;opacity:1}
+.acc-modal{
+  width:min(640px,100%);max-height:85vh;overflow-y:auto;
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-radius:28px;padding:clamp(28px,3.5vw,44px);color:#160020;
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 60px 120px -30px rgba(0,0,0,.7);
+  transform:translateY(20px) scale(.96);transition:.4s var(--ease);position:relative;
+}
+.acc-modal-backdrop.open .acc-modal{transform:translateY(0) scale(1)}
+.acc-modal .modal-logo{
+  width:180px;height:90px;background:#fff;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;padding:14px;
+  margin-bottom:24px;
+}
+.acc-modal .modal-logo img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.acc-modal h3{font-size:clamp(22px,2.4vw,32px);font-weight:700;letter-spacing:-.025em;color:#160020;margin:0 0 16px;line-height:1.1}
+.acc-modal p{font-size:15px;line-height:1.6;color:rgba(22,0,32,.78);font-weight:400}
+.acc-modal .close{
+  position:absolute;top:18px;right:18px;width:36px;height:36px;
+  border-radius:50%;background:rgba(22,0,32,.10);border:0;cursor:pointer;
+  display:grid;place-items:center;color:#160020;font-size:18px;line-height:1;
+  transition:.2s var(--ease);
+}
+.acc-modal .close:hover{background:rgba(22,0,32,.18);transform:scale(1.05)}
+
+.support-strip{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.support-card{
+  border-radius:24px;padding:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);
+  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
+}
+.support-badge{
+  width:140px;height:90px;border-radius:16px;background:#fff;color:#160020;
+  display:flex;align-items:center;justify-content:center;padding:14px;
+  flex:0 0 140px;
+}
+.support-badge img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+.support-card p{font-size:14.5px;line-height:1.42;color:rgba(255,255,255,.75)}
+.support-card strong{color:#F6A6EB;font-weight:700}
+
+/* ── AHORA (stats) ───────────────────────────────── */
+.stat-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:start}
+.data-stack{display:grid;gap:14px}
+.data-card{
+  border-radius:24px;padding:28px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(238,70,221,.22);
+  display:grid;grid-template-columns:120px 1fr;gap:26px;align-items:center;
+}
+.data-card .num{
+  font-size:clamp(40px,4.5vw,70px);line-height:.85;color:#F27BE3;
+  letter-spacing:-.06em;font-weight:800;font-variant-numeric:tabular-nums;
+}
+.icon-round{
+  width:120px;height:120px;border-radius:50%;
+  border:1.5px solid rgba(238,70,221,.5);
+  display:grid;place-items:center;
+  background:rgba(238,70,221,.08);color:#F27BE3;
+  flex:0 0 120px;
+}
+.icon-round svg{width:100px;height:100px;stroke-width:2.4}
+.icon-round.sm{width:88px;height:88px;flex:0 0 88px}
+.icon-round.sm svg{width:74px;height:74px;stroke-width:2.4}
+
+/* ── PROGRAMA / RUTA SVG ─────────────────────────── */
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.route{
+  position:relative;min-height:clamp(320px,38vw,420px);
+  border-radius:32px;overflow:hidden;
+  background:
+    linear-gradient(160deg,rgba(238,70,221,.10),rgba(255,255,255,.02)),
+    radial-gradient(circle at 76% 22%,rgba(255,150,225,.20),transparent 30%);
+  border:1px solid rgba(255,255,255,.10);
+}
+.route svg.path-svg{position:absolute;inset:0;width:100%;height:100%}
+.route-step{position:absolute;width:clamp(150px,18vw,200px);transform:translate(-50%,-50%);text-align:center}
+.route-step .icon-round{margin:0 auto 14px;width:108px;height:108px;background:rgba(10,0,16,.92);border-width:2px;flex:0 0 108px}
+.route-step .icon-round svg{width:76px;height:76px;stroke-width:2.4}
+.route-step strong{display:block;font-size:clamp(14px,1.2vw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.route-step.s1{left:14%;top:50%}
+.route-step.s2{left:50%;top:50%}
+.route-step.s3{left:86%;top:50%}
+
+/* ── VERTICALES (4 cards) ─────────────────────────── */
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.v-card{
+  border-radius:28px;padding:28px;min-height:340px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);
+  transition:.4s var(--ease);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.v-card::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:.4s var(--ease);
+  background:radial-gradient(70% 60% at 50% 0%,rgba(238,70,221,.18),transparent 60%);
+}
+.v-card:hover{transform:translateY(-6px);border-color:rgba(238,70,221,.5)}
+.v-card:hover::before{opacity:1}
+.v-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);color:#160020;
+}
+.v-card.light::before{background:radial-gradient(70% 60% at 50% 0%,rgba(177,47,164,.10),transparent 60%)}
+.v-card.light .v-num{color:rgba(22,0,32,.5)}
+.v-card.light h3{color:#160020}
+.v-card.light p,.v-card.light .copy{color:rgba(22,0,32,.65)}
+.v-card.light .icon-round{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.40);color:#8B2380}
+.v-card .icon-round{margin-bottom:24px}
+.v-card .v-num{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:12px;position:relative;z-index:1}
+.v-card h3{margin-bottom:14px;position:relative;z-index:1}
+.v-card p{position:relative;z-index:1}
+
+/* ── PERFIL (eligibility) ─────────────────────────── */
+.eligibility{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px}
+.chips{display:grid;gap:10px;margin-top:28px}
+.chip{
+  display:flex;align-items:center;gap:16px;
+  border-radius:20px;border:1px solid rgba(238,70,221,.30);
+  background:rgba(238,70,221,.06);
+  padding:18px 22px;font-weight:600;font-size:17px;
+}
+.chip svg{width:50px;height:50px;color:#F27BE3;flex:0 0 50px;stroke-width:2.4}
+.checklist{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;
+  border-radius:20px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  padding:16px 18px;color:rgba(255,255,255,.82);font-weight:500;line-height:1.4;font-size:15px;
+}
+.check::before{
+  content:"";flex:0 0 24px;width:24px;height:24px;border-radius:50%;
+  background:rgba(238,70,221,.18);border:1px solid rgba(238,70,221,.5);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F27BE3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+  background-size:14px;background-position:center;background-repeat:no-repeat;
+  margin-top:1px;
+}
+
+/* ── BENEFICIOS · STICKY STACKING CARDS ───────────── */
+.benefits-list{position:relative}
+.benefits-list .phase-anchor{position:relative;height:90vh}
+.phase-card{
+  position:sticky;top:90px;
+  border-radius:40px;border:2px solid rgba(215,226,234,.18);
+  background:linear-gradient(180deg,#1A0023 0%,#0F0017 100%);
+  padding:clamp(32px,4vw,56px);
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  transform-origin:top center;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.5);
+}
+.phase-card .ph-num{font-family:var(--mono);font-size:13px;letter-spacing:.18em;color:#F27BE3;text-transform:uppercase;font-weight:600}
+.phase-card h3{margin-top:14px;font-size:clamp(28px,3.4vw,46px);font-weight:800;letter-spacing:-.04em;line-height:.95}
+.phase-card .ph-count{display:inline-flex;margin-top:12px;padding:6px 12px;border-radius:999px;background:rgba(238,70,221,.12);border:1px solid rgba(238,70,221,.35);font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#F6A6EB;text-transform:uppercase}
+.phase-card .ph-tag{display:block;color:#F27BE3;font-weight:700;font-size:clamp(16px,1.4vw,20px);margin-top:24px;letter-spacing:-.01em}
+.phase-card ul{margin-top:16px;list-style:none;display:grid;gap:10px}
+.phase-card li{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:14px 16px;border-radius:16px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  font-size:14.5px;line-height:1.4;color:rgba(255,255,255,.82);
+}
+.phase-card li::before{
+  content:"→";color:#F27BE3;flex:0 0 auto;font-weight:700;margin-top:1px;
+}
+.phase-card .ph-icon{
+  width:120px;height:120px;border-radius:50%;
+  border:1.5px solid rgba(238,70,221,.5);background:rgba(238,70,221,.10);
+  display:grid;place-items:center;color:#F27BE3;flex:0 0 120px;
+}
+.phase-card .ph-icon svg{width:84px;height:84px;stroke-width:2.4}
+.phase-card .ph-left{display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.all-phase{
+  margin-top:24px;border-radius:32px;padding:36px;
+  background:linear-gradient(160deg,rgba(238,70,221,.14),rgba(238,70,221,.04));
+  border:1px solid rgba(238,70,221,.32);
+}
+.all-phase h3{text-align:center;color:#F27BE3;margin-bottom:24px;font-size:clamp(20px,2vw,28px);letter-spacing:-.02em}
+.all-phase ul{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;list-style:none}
+.all-phase li{padding-left:18px;border-left:1px solid rgba(238,70,221,.3);color:rgba(255,255,255,.78);font-size:14.5px;line-height:1.42}
+
+/* ── RUTA / TIMELINE ─────────────────────────────── */
+.timeline{position:relative;display:grid;gap:14px;margin-top:36px}
+.timeline::before{content:"";position:absolute;left:32px;top:0;bottom:0;width:2px;background:linear-gradient(#EE46DD,rgba(238,70,221,.06))}
+.t-row{position:relative;display:grid;grid-template-columns:64px 1fr;gap:20px}
+.t-num{
+  position:relative;z-index:2;width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#62165A,#B12FA4);
+  border:1px solid rgba(255,255,255,.16);font-size:22px;font-weight:800;
+  box-shadow:0 0 30px rgba(238,70,221,.30),inset 0 1px 0 rgba(255,255,255,.18);
+  font-family:var(--mono);letter-spacing:-.02em;
+}
+.t-card{
+  border-radius:24px;padding:24px 26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);
+  display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
+}
+.t-card h3{font-size:clamp(18px,1.6vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.tags{display:flex;gap:8px;flex-wrap:wrap;align-content:start;justify-content:flex-end}
+.tag{
+  display:inline-flex;align-items:center;border-radius:999px;
+  border:1px solid rgba(238,70,221,.35);background:rgba(238,70,221,.10);
+  padding:7px 12px;font-family:var(--mono);font-weight:500;color:#ffd4f8;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+}
+
+/* ── RESULTADOS ──────────────────────────────────── */
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.metric{
+  border-radius:24px;padding:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(238,70,221,.22);
+  display:flex;gap:18px;align-items:center;
+}
+.metric strong{display:block;font-size:clamp(28px,3.4vw,48px);line-height:.9;color:#F27BE3;letter-spacing:-.05em;font-weight:800}
+.metric.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+}
+.metric.light strong{color:#8B2380}
+.metric.light .copy{color:rgba(22,0,32,.7)}
+.metric.light .icon-round{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.40);color:#8B2380}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.result-card{
+  border-radius:22px;padding:28px;min-height:240px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;gap:20px;
+}
+.result-card .icon-round{margin-bottom:4px}
+.result-card p{font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.75)}
+.result-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+}
+.result-card.light p{color:rgba(22,0,32,.7)}
+.result-card.light .icon-round{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.40);color:#8B2380}
+
+/* Phase card light variant */
+.phase-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+}
+.phase-card.light .ph-num{color:#8B2380}
+.phase-card.light h3,.phase-card.light .ph-count{color:#160020;background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.30)}
+.phase-card.light h3{background:none;border:0;padding:0}
+.phase-card.light .ph-tag{color:#8B2380}
+.phase-card.light li{background:rgba(255,255,255,.5);border-color:rgba(22,0,32,.08);color:rgba(22,0,32,.75)}
+.phase-card.light li::before{color:#8B2380}
+.phase-card.light .ph-icon{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.40);color:#8B2380}
+
+/* Timeline t-card light variant */
+.t-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+}
+.t-card.light h3{color:#160020}
+.t-card.light .copy{color:rgba(22,0,32,.7)}
+.t-card.light .tag{background:rgba(177,47,164,.14);border-color:rgba(177,47,164,.35);color:#8B2380}
+
+/* Bento variants for featured result cards */
+.result-grid.bento{grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(220px,auto);gap:14px}
+.result-grid.bento .result-card:nth-child(1){
+  grid-column:span 4;grid-row:span 2;min-height:auto;
+  padding:38px;
+  background:
+    radial-gradient(120% 80% at 0% 100%,rgba(238,70,221,.30),transparent 55%),
+    linear-gradient(160deg,rgba(238,70,221,.18) 0%,rgba(98,22,90,.45) 50%,rgba(10,0,16,.85) 100%);
+  border:1px solid rgba(238,70,221,.42);
+  display:grid;grid-template-rows:auto 1fr auto;gap:24px;
+}
+.result-grid.bento .result-card:nth-child(1) .feat-big{
+  font-size:clamp(56px,7vw,108px);line-height:.85;color:#fff;
+  letter-spacing:-.06em;font-weight:800;
+}
+.result-grid.bento .result-card:nth-child(1) .feat-big small{display:block;font-size:.30em;color:#FAD1F4;font-weight:500;letter-spacing:.04em;margin-top:14px;font-family:var(--mono);text-transform:uppercase}
+.result-grid.bento .result-card:nth-child(1) p{font-size:16.5px;color:rgba(255,255,255,.85);max-width:520px;line-height:1.55}
+.result-grid.bento .result-card:nth-child(2){grid-column:span 2;background:#1A0023;border-color:rgba(255,255,255,.10)}
+.result-grid.bento .result-card:nth-child(3){grid-column:span 2;background:#1A0023;border-color:rgba(255,255,255,.10)}
+.result-grid.bento .result-card:nth-child(4){grid-column:span 2}
+.result-grid.bento .result-card:nth-child(5){grid-column:span 2}
+.result-grid.bento .result-card:nth-child(6){grid-column:span 2}
+@media(max-width:1180px){
+  .result-grid.bento{grid-template-columns:repeat(2,1fr)}
+  .result-grid.bento .result-card:nth-child(1){grid-column:span 2;grid-row:auto}
+  .result-grid.bento .result-card:nth-child(2),
+  .result-grid.bento .result-card:nth-child(3),
+  .result-grid.bento .result-card:nth-child(4),
+  .result-grid.bento .result-card:nth-child(5),
+  .result-grid.bento .result-card:nth-child(6){grid-column:span 1}
+}
+@media(max-width:720px){
+  .result-grid.bento{grid-template-columns:1fr}
+  .result-grid.bento .result-card:nth-child(n){grid-column:span 1}
+}
+
+/* Typographic marquee (mixed fonts) */
+.type-marquee{
+  overflow:hidden;margin-top:28px;padding:14px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+}
+.type-track{display:flex;align-items:center;gap:48px;width:max-content;animation:type-marquee 38s linear infinite}
+.type-marquee:hover .type-track{animation-play-state:paused}
+.type-item{flex:0 0 auto;color:rgba(255,255,255,.55);white-space:nowrap;display:inline-flex;align-items:center;gap:48px}
+.type-item::after{content:"•";color:#F27BE3;font-size:14px}
+@keyframes type-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── GÉNERO ───────────────────────────────────────── */
+.gender{display:grid;grid-template-columns:1fr .8fr;gap:48px;align-items:center}
+.gender-art{
+  position:relative;min-height:clamp(440px,55vw,620px);border-radius:32px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  background:#160020;
+}
+.gender-art img.founder{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.95) contrast(1.02);
+}
+.gender-art::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,transparent 0%,transparent 45%,rgba(10,0,16,.55) 100%),
+    linear-gradient(180deg,rgba(238,70,221,.18) 0%,transparent 35%);
+  mix-blend-mode:multiply;
+}
+.gender-art .stat-overlay{
+  position:absolute;left:24px;bottom:24px;right:24px;z-index:2;
+  display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:end;
+  padding:20px;border-radius:20px;background:rgba(10,0,16,.78);
+  border:1px solid rgba(238,70,221,.32);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.gender-art .stat-overlay strong{font-size:clamp(38px,5vw,68px);line-height:.85;color:#F27BE3;letter-spacing:-.06em;font-weight:800}
+.gender-art .stat-overlay p{font-size:12.5px;line-height:1.35;color:#FAD1F4;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-weight:500;max-width:200px}
+.highlight{
+  display:inline-block;margin-top:24px;padding:12px 20px;border-radius:999px;
+  background:rgba(238,70,221,.14);border:1px solid rgba(238,70,221,.42);
+  color:#FAD1F4;font-weight:700;font-size:15px;letter-spacing:-.01em;
+}
+
+/* ── APOYO marquee ────────────────────────────────── */
+.support-marquee{
+  overflow:hidden;border-radius:24px;
+  border:1px solid rgba(238,70,221,.18);
+  background:rgba(255,255,255,.025);padding:14px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+}
+.support-track{display:flex;gap:16px;width:max-content;animation:slow-marquee 34s linear infinite}
+.support-marquee:hover .support-track{animation-play-state:paused}
+.support-logo{
+  height:84px;min-width:190px;padding:14px 26px;border-radius:16px;
+  background:#fff;color:#160020;display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;opacity:.92;
+}
+.support-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+.support-logo.small{min-width:160px}
+@keyframes slow-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── COFINANCIACIÓN (funders + iniciativas) ───────── */
+.funder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:8px}
+.funder-card{
+  border-radius:28px;padding:clamp(28px,3vw,44px);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(238,70,221,.18);
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+}
+.funder-logo{
+  width:100%;height:clamp(140px,16vw,180px);border-radius:20px;background:#fff;
+  display:flex;align-items:center;justify-content:center;padding:clamp(22px,2.6vw,38px);
+}
+.funder-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+.funder-card .f-name{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.initiatives{margin-top:clamp(40px,5vw,64px);display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.initiatives .kicker{margin:0 auto}
+.initiative-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;width:100%;max-width:820px}
+.initiative-box{
+  border-radius:22px;padding:12px;background:#fff;
+  border:1px solid rgba(255,255,255,.6);
+  height:clamp(120px,14vw,150px);display:flex;align-items:center;justify-content:center;
+}
+.initiative-box img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+
+/* ── FAQ ──────────────────────────────────────────── */
+.faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:48px;align-items:start}
+.faq-list{display:grid;gap:10px}
+.faq-item{
+  border-radius:20px;border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+  overflow:hidden;transition:.3s var(--ease);
+}
+.faq-q{
+  width:100%;text-align:left;padding:20px 22px;
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  font-weight:700;font-size:17px;letter-spacing:-.01em;color:#fff;
+}
+.faq-q .icon{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(238,70,221,.14);border:1px solid rgba(238,70,221,.35);
+  display:grid;place-items:center;color:#F27BE3;font-size:20px;font-weight:600;
+  flex:0 0 32px;transition:.3s var(--ease);
+}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.faq-a p{padding:0 22px 22px;color:rgba(255,255,255,.72);font-size:15px;line-height:1.55}
+.faq-item.open{border-color:rgba(238,70,221,.5);background:rgba(238,70,221,.06)}
+.faq-item.open .faq-q .icon{transform:rotate(45deg);background:rgba(238,70,221,.30)}
+.faq-item.open .faq-a{max-height:260px}
+
+/* ── POSTULACIÓN ─────────────────────────────────── */
+.post-card{text-align:center;max-width:1000px;margin:0 auto}
+.post-card h2{font-size:clamp(48px,8vw,140px);line-height:.86;letter-spacing:-.05em}
+.date-card{
+  margin-top:32px;border-radius:32px;padding:36px;
+  background:linear-gradient(180deg,rgba(238,70,221,.10),rgba(238,70,221,.02));
+  border:1px solid rgba(238,70,221,.4);
+}
+.date-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+  box-shadow:0 40px 80px -30px rgba(238,70,221,.35);
+}
+.date-card.light strong{color:#8B2380}
+.date-card.light .lead{color:rgba(22,0,32,.7)}
+.date-card.light .icon-round{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.40);color:#8B2380}
+.date-card.light .btn-ghost{color:#160020;border-color:rgba(22,0,32,.4)}
+.date-card.light .btn-ghost:hover{background:rgba(22,0,32,.06)}
+
+/* Light variant for support cards */
+.support-card.light{
+  background:linear-gradient(180deg,#FDECEA 0%,#FAD1F4 100%);
+  border-color:rgba(255,255,255,.7);
+}
+.support-card.light p{color:rgba(22,0,32,.7)}
+.support-card.light strong{color:#8B2380}
+.date-card .icon-round{margin:0 auto 18px}
+.date-card strong{display:block;font-size:clamp(28px,4vw,52px);color:#F27BE3;letter-spacing:-.04em;font-weight:800;margin-top:8px}
+.footer{
+  margin-top:32px;border-radius:24px;padding:24px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;
+}
+.footer p{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.55);max-width:780px}
+.footer .credits{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;text-align:right}
+
+/* Character reveal text */
+.anim-text{display:inline}
+.anim-text .ch{display:inline-block;opacity:.18;transition:opacity .35s var(--ease-out)}
+.anim-text .ch.on{opacity:1}
+
+/* SVG icons */
+svg.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Logo images */
+.logo-img{display:block;width:auto;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+.brand-logo{height:36px;width:auto;display:block;filter:drop-shadow(0 0 18px rgba(238,70,221,.35))}
+.nav.scrolled .brand-logo{height:32px}
+@media(max-width:720px){.brand-logo{height:30px}}
+
+/* ── TWEAKS: expressive design knobs ─────────────── */
+:root{--density:1}
+
+/* MOOD · editorial — sober, journalist tone */
+html[data-mood="editorial"] body{
+  background:linear-gradient(180deg,#0F0A12 0%,#1A0E1F 50%,#0A0710 100%);
+}
+html[data-mood="editorial"] body::after{background:radial-gradient(circle at var(--mx,55%) var(--my,35%),rgba(238,70,221,.04),transparent 22rem)}
+html[data-mood="editorial"] .hero-bg{filter:saturate(.5) brightness(.55)}
+html[data-mood="editorial"] .hero-bird{filter:drop-shadow(0 20px 50px rgba(0,0,0,.5))}
+html[data-mood="editorial"] .hero-heading,html[data-mood="editorial"] .muted-heading{
+  background:linear-gradient(180deg,#F5EFF1 0%,#C9BAC5 80%,#7B6873 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+html[data-mood="editorial"] .kicker{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.10);color:#C9BAC5}
+html[data-mood="editorial"] .icon-round,html[data-mood="editorial"] .data-card,html[data-mood="editorial"] .v-card,html[data-mood="editorial"] .metric{border-color:rgba(255,255,255,.10)}
+html[data-mood="editorial"] .icon-round{background:rgba(255,255,255,.04);color:#C9BAC5;border-color:rgba(255,255,255,.14)}
+
+/* MOOD · gallery — deep dark, dramatic shadow museum */
+html[data-mood="gallery"] body{
+  background:linear-gradient(180deg,#050007 0%,#0A0010 60%,#000 100%);
+}
+html[data-mood="gallery"] body::before{opacity:.4}
+html[data-mood="gallery"] body::after{background:radial-gradient(circle at var(--mx,55%) var(--my,35%),rgba(238,70,221,.06),transparent 32rem)}
+html[data-mood="gallery"] .panel,html[data-mood="gallery"] .v-card,html[data-mood="gallery"] .data-card,html[data-mood="gallery"] .result-card,html[data-mood="gallery"] .metric,html[data-mood="gallery"] .t-card,html[data-mood="gallery"] .phase-card{
+  background:#06000B;border-color:rgba(238,70,221,.18);box-shadow:0 60px 120px -40px rgba(0,0,0,.7)
+}
+html[data-mood="gallery"] .hero-bg{filter:brightness(.45) contrast(1.1)}
+html[data-mood="gallery"] .hero-bird{filter:drop-shadow(0 0 80px rgba(238,70,221,.55)) drop-shadow(0 40px 100px rgba(0,0,0,.7))}
+html[data-mood="gallery"] .marquee-tile{background:#0A0010;border-color:rgba(238,70,221,.20)}
+
+/* DENSITY · scales padding, radius, gaps via --density (0.75–1.4) */
+html[style*="--density"] .section{padding-block:calc(clamp(28px,3vw,56px) * var(--density))}
+html[style*="--density"] .panel{padding:calc(clamp(28px,4vw,64px) * var(--density));border-radius:calc(32px * var(--density))}
+html[style*="--density"] .v-card,html[style*="--density"] .data-card,html[style*="--density"] .result-card,html[style*="--density"] .metric,html[style*="--density"] .t-card{padding:calc(24px * var(--density));border-radius:calc(24px * var(--density))}
+html[style*="--density"] .cards4{gap:calc(16px * var(--density))}
+html[style*="--density"] .result-grid{gap:calc(14px * var(--density))}
+html[style*="--density"] .icon-round{transform:scale(calc(.7 + .3 * var(--density)))}
+html[style*="--density"] .copy,html[style*="--density"] .lead{line-height:calc(1.3 + .25 * var(--density))}
+
+/* MOTION · sharp — snappy, no float */
+html[data-motion="sharp"] *,html[data-motion="sharp"] *::before,html[data-motion="sharp"] *::after{transition-duration:.18s!important;animation-duration:.5s!important}
+html[data-motion="sharp"] .hero-bird{animation:none!important}
+html[data-motion="sharp"] .support-track{animation-duration:18s!important}
+html[data-motion="sharp"] .type-track{animation-duration:22s!important}
+html[data-motion="sharp"] .reveal{transition-duration:.35s!important}
+
+/* MOTION · gentle — dreamy, slow */
+html[data-motion="gentle"] .hero-bird{animation:bird-float 14s ease-in-out infinite!important}
+html[data-motion="gentle"] .support-track{animation-duration:55s!important}
+html[data-motion="gentle"] .type-track{animation-duration:70s!important}
+html[data-motion="gentle"] .reveal{transition-duration:1.3s!important}
+html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-motion="gentle"] .nav,html[data-motion="gentle"] .nav .brand{transition-duration:.7s!important}
+
+/* TWEAKS PANEL UI */
+#tweaks-panel{
+  position:fixed;bottom:18px;right:18px;width:300px;z-index:9999;
+  background:rgba(10,0,16,.92);backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  border:1px solid rgba(238,70,221,.32);border-radius:20px;
+  padding:18px;color:#fff;font-family:var(--font);
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);
+  display:none;
+}
+#tweaks-panel.active{display:block}
+#tweaks-panel header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+#tweaks-panel h4{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#F27BE3;font-weight:600;margin:0}
+#tweaks-panel button.close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);width:24px;height:24px;border-radius:50%;color:#fff;font-size:14px;line-height:1;cursor:pointer;padding:0;display:grid;place-items:center}
+#tweaks-panel button.close:hover{background:rgba(238,70,221,.20)}
+#tweaks-panel .tweak{margin-bottom:14px}
+#tweaks-panel .tweak:last-child{margin-bottom:0}
+#tweaks-panel .tweak label{display:block;font-size:11.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:7px;color:#FAD1F4}
+#tweaks-panel .tweak .val{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.55);float:right;font-weight:400}
+#tweaks-panel .radio-row{display:flex;gap:4px;background:rgba(255,255,255,.04);border-radius:10px;padding:3px}
+#tweaks-panel .radio-row button{flex:1;padding:8px 4px;font-size:11px;font-weight:600;letter-spacing:.02em;border:0;background:transparent;color:rgba(255,255,255,.6);border-radius:8px;cursor:pointer;transition:.2s var(--ease)}
+#tweaks-panel .radio-row button:hover{color:#fff}
+#tweaks-panel .radio-row button.active{background:linear-gradient(135deg,#62165A,#EE46DD);color:#fff;box-shadow:0 4px 12px rgba(238,70,221,.3)}
+#tweaks-panel input[type=range]{width:100%;accent-color:#EE46DD;cursor:pointer}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width:1180px){
+  .navlinks{
+    position:absolute;left:8px;right:8px;top:72px;
+    display:none;flex-direction:column;align-items:stretch;
+    border-radius:24px;background:rgba(10,0,16,.96);padding:14px;
+    border:1px solid rgba(255,255,255,.10);
+  }
+  .navlinks.open{display:flex}
+  .menu-btn{display:grid;place-items:center}
+  .nav-cta{padding:10px 16px;font-size:12px}
+  .ecosystem,.stat-layout,.prog-grid,.eligibility,.gender,.faq{grid-template-columns:1fr;gap:36px}
+  .cards4,.result-grid,.all-phase ul{grid-template-columns:repeat(2,1fr)}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .side-dots{display:none}
+  .phase-card{grid-template-columns:1fr;gap:28px}
+  .footer{grid-template-columns:1fr}
+  .footer .credits{text-align:left}
+}
+@media (max-width:720px){
+  .nav{left:10px;right:10px;top:10px;height:58px;padding:6px 6px 6px 16px}
+  .nav.scrolled{height:52px}
+  .brand span{font-size:18px}
+  .brand svg{width:26px;height:26px;flex:0 0 26px}
+  .hero{padding-top:96px;padding-bottom:24px}
+  .hero-headline h1{font-size:clamp(40px,10vw,72px);max-width:none}
+  .hero-headline .l2{font-size:.72em}
+  .hero-bottom{grid-template-columns:1fr;gap:24px}
+  .hero-actions{justify-content:flex-start}
+  .hero-visual{position:relative;right:auto;left:auto;top:auto;transform:none;width:min(80vw,420px);margin:32px auto 0;aspect-ratio:5/4}
+  .hero .wrap{max-width:100%}
+  .cards4,.metrics,.result-grid,.all-phase ul,.support-strip{grid-template-columns:1fr}
+  .orbit-pill{width:clamp(108px,28vw,140px);padding:10px 12px}
+  .orbit-pill strong{font-size:13px}
+  .orbit-pill span{font-size:9.5px}
+  .t-row{grid-template-columns:50px 1fr;gap:14px}
+  .timeline::before{left:24px}
+  .t-num{width:50px;height:50px;font-size:18px}
+  .t-card{grid-template-columns:1fr;padding:20px}
+  .tags{justify-content:flex-start}
+  .nav-cta{padding:9px 14px;font-size:11px}
+  .menu-btn{width:36px;height:36px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;filter:none}
+  .anim-text .ch{opacity:1}
+  /* keep the partners marquee moving — explicit user request */
+  .support-track{animation:slow-marquee 30s linear infinite!important}
+  .type-track{animation:type-marquee 38s linear infinite!important}
+  .hero-bird{animation:bird-float 8s ease-in-out infinite!important}
+  /* hero visual must remain visible even when animation is killed */
+  .hero-visual{opacity:1!important;transform:translateY(-50%)!important}
+  /* keep ecosystem orbit rotating */
+  .orbit-ring{animation:orbit-spin 40s linear infinite!important}
+  .orbit-ring .orbit-pill{animation:orbit-counter 40s linear infinite,pill-pulse 2.6s ease-in-out infinite!important}
+  .orbit-ring .orbit-pill::after{animation:badge-pop 2.6s ease-in-out infinite!important}
+  .orbit-hint{animation:hint-bob 2.6s ease-in-out infinite!important}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ICONS -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-leaf" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 46C13.5 31 24 17.5 50 14c-1.5 24-14.5 37-30 36-3.5-.2-5-1.4-5-4Z"/>
+      <path d="M18 47c8.8-14 19.3-23 31-30"/>
+      <path d="M29 36c-2.7-4-6-6.5-10-7.5M37 28.5c-.8-4.5.2-8.4 3-11.5" opacity=".65"/>
+    </g>
+  </symbol>
+  <symbol id="i-bolt" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M35 7 17 35h15l-3 22 20-32H34l1-18Z"/>
+      <path d="M12 49c5.2 5.2 12.4 8 20 8 9.5 0 18-4.6 23-11.7M52 15.5A28.5 28.5 0 0 0 14.5 14" opacity=".6"/>
+      <circle cx="12" cy="49" r="2.2"/><circle cx="52" cy="15.5" r="2.2"/>
+    </g>
+  </symbol>
+  <symbol id="i-recycle" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 11c6.8 0 13 2.9 17.2 7.5"/>
+      <path d="M44 10.5 48.7 18 40 18.4"/>
+      <path d="M52 31c0 6.8-2.9 13-7.5 17.2"/>
+      <path d="M53.5 44 46 48.7 45.6 40"/>
+      <path d="M33 53c-6.8 0-13-2.9-17.2-7.5"/>
+      <path d="M20 53.5 15.3 46 24 45.6"/>
+      <path d="M11 33c0-6.8 2.9-13 7.5-17.2" opacity=".9"/>
+      <path d="M10.5 20 18 15.3 18.4 24" opacity=".9"/>
+      <circle cx="32" cy="32" r="6.2" opacity=".28"/>
+    </g>
+  </symbol>
+  <symbol id="i-agri" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 52V29"/>
+      <path d="M32 30c-8.4-10-18.6-10.2-25-4.4 4.1 10.9 15.5 13.7 25 4.4Z"/>
+      <path d="M32 31.5c9.2-8.6 19.7-7.8 25 0-5.6 9.2-16.6 10.5-25 0Z"/>
+      <path d="M16 53h32M22 45h20" opacity=".55"/>
+      <path d="M13 42h8M43 42h8M20 42v-5M48 42v-5" opacity=".55"/>
+      <circle cx="20" cy="36" r="1.8"/><circle cx="48" cy="36" r="1.8"/>
+    </g>
+  </symbol>
+  <symbol id="i-chart" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 53V13M11 53h44"/>
+      <path d="M20 53V41M31 53V32M42 53V24" opacity=".78"/>
+      <path d="M18 34l10-9 8 6 16-18"/>
+      <path d="M46 13h6v6"/>
+      <path d="M18 43h4M29 34h4M40 26h4" opacity=".45"/>
+    </g>
+  </symbol>
+  <symbol id="i-doc" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 7h24l10 10v40H17z"/>
+      <path d="M41 7v12h12"/>
+      <path d="M24 31h16M24 39h9" opacity=".7"/>
+      <path d="M24 49l5.5-6.4 6 4.2L44 36"/>
+      <circle cx="24" cy="49" r="2"/><circle cx="44" cy="36" r="2"/>
+    </g>
+  </symbol>
+  <symbol id="i-people" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="32" cy="20" r="7.5"/>
+      <path d="M20 50c2-10 7.5-15 12-15s10 5 12 15"/>
+      <circle cx="14" cy="31" r="5.5" opacity=".75"/>
+      <circle cx="50" cy="31" r="5.5" opacity=".75"/>
+      <path d="M8 50c1.2-7 5-11 10.5-13M56 50c-1.2-7-5-11-10.5-13" opacity=".75"/>
+    </g>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="32" cy="32" rx="18" ry="23"/>
+      <path d="M14 32h36"/>
+      <path d="M18 20c8 3 20 3 28 0" opacity=".95"/>
+      <path d="M18 44c8-3 20-3 28 0" opacity=".95"/>
+      <path d="M32 9c-6 6-9 14-9 23s3 17 9 23" opacity=".95"/>
+      <path d="M32 9c6 6 9 14 9 23s-3 17-9 23" opacity=".95"/>
+      <path d="M23 12c-2.2 5.6-3.4 12.4-3.4 20S20.8 46.4 23 52" opacity=".5"/>
+      <path d="M41 12c2.2 5.6 3.4 12.4 3.4 20S43.2 46.4 41 52" opacity=".5"/>
+    </g>
+  </symbol>
+  <symbol id="i-calendar" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="10" y="13" width="44" height="43" rx="8"/>
+      <path d="M20 8v11M44 8v11M10 26h44"/>
+      <path d="m23 42 6 6 13-16"/>
+      <path d="M20 34h4M40 34h4" opacity=".55"/>
+    </g>
+  </symbol>
+  <symbol id="i-hand" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="42" cy="16" r="10"/>
+      <path d="M42 10v12M37 16h10"/>
+      <path d="M10 28v18"/>
+      <path d="M18 46h11l7 4c3 1.7 6.7 1.6 9.5-.4L57 42c2.6-1.8 2.7-5.6.1-7.5a5.3 5.3 0 0 0-6.1-.2l-6.4 4.2H32"/>
+      <path d="M18 31h15c3.5 0 6 2.2 6 5s-2.5 5-6 5h-8"/>
+      <path d="M10 28h8v18h-8z"/>
+    </g>
+  </symbol>
+  <symbol id="i-book" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 13c7-3 15-2 23 3v40c-8-5-16-6-23-3z"/>
+      <path d="M55 13c-7-3-15-2-23 3v40c8-5 16-6 23-3z"/>
+      <path d="M20 25h7M20 34h7M38 25h7M38 34h7" opacity=".65"/>
+    </g>
+  </symbol>
+  <symbol id="i-gender" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="28" cy="24" r="13"/>
+      <path d="M28 37v19M20 47h16"/>
+      <path d="M41 16h11v11"/>
+      <path d="M39 29 52 16"/>
+      <path d="M10 54c8-5 18-6 29-3" opacity=".55"/>
+    </g>
+  </symbol>
+  <symbol id="i-building" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 56V15l19-8 19 8v41"/>
+      <path d="M26 56V43h12v13"/>
+      <path d="M23 22h.01M32 22h.01M41 22h.01M23 31h.01M32 31h.01M41 31h.01"/>
+      <path d="M8 56h48"/>
+      <path d="M46 45c5-2 8-6 8-12" opacity=".65"/>
+      <path d="m50 34 4-4 4 4" opacity=".65"/>
+    </g>
+  </symbol>
+  <symbol id="i-spark" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 7l5 16 16 5-16 5-5 24-5-24-16-5 16-5z"/>
+      <circle cx="12" cy="12" r="3" opacity=".65"/><circle cx="52" cy="48" r="3" opacity=".65"/>
+    </g>
+  </symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+    </g>
+  </symbol>
+  <symbol id="i-bird" viewBox="0 0 64 64">
+    <polygon fill="#F27BE3" points="6,27 31,15 24,33"/>
+    <polygon fill="#EE46DD" points="24,33 31,15 58,10 40,37"/>
+    <polygon fill="#B12FA4" points="24,33 40,37 49,55"/>
+    <polygon fill="#F6A6EB" points="6,27 24,33 17,49"/>
+  </symbol>
+</svg>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a class="brand" href="#inicio" aria-label="Tángara · Alistamiento para la Inversión">
+    <img class="brand-logo" src="assets/logo-tangara-white.png" alt="Tángara" />
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
+  <div class="navlinks" id="navlinks">
+    <a href="#inicio">Inicio</a>
+    <a href="#ecosistema">Ecosistema</a>
+    <a href="#ahora">Ahora</a>
+    <a href="#programa">Programa</a>
+    <a href="#verticales">Verticales</a>
+    <a href="#perfil">Perfil</a>
+    <a href="#beneficios">Beneficios</a>
+    <a href="#ruta">Ruta</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#genero">Género</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a class="nav-cta" href="#postulacion">Postúlate →</a>
+</nav>
+
+<div class="side-dots" id="sideDots" aria-label="Navegación por secciones"></div>
+
+<main>
+
+  <!-- ── 01 HERO ─────────────────────────────────────── -->
+  <section class="section hero" id="inicio" data-nav="Inicio" data-screen-label="01 Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-top reveal">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">TÁNGARA</span>
+        <span class="hero-meta" style="font-family: &quot;Bricolage Grotesque&quot;">Investment readiness climatech · Alistamiento · conexión · capital</span>
+      </div>
+      <div class="hero-headline reveal d1">
+        <h1>
+          <span class="l1 hero-heading">El capital climático</span>
+          <span class="l2 muted-heading">que impulsa soluciones de alto impacto</span>
+        </h1>
+      </div>
+      <div class="hero-bottom">
+        <p class="hero-lead reveal d3">
+          <span class="anim-text" data-anim-text>Tángara es el puente que conecta soluciones climáticas de base tecnológica con inversión a través de Fondo Impacta.</span>
+        </p>
+        <div class="hero-actions reveal d4">
+          <a class="btn btn-ghost" href="#ruta">Ver ruta del programa</a>
+          <a class="btn-pill" href="#postulacion">
+            <span>Postular mi emprendimiento</span>
+            <span class="arrow-circle"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="magnet" id="heroMagnet" data-magnet="3.5" data-magnet-pad="200">
+        <img class="hero-bird" src="assets/logo-tangara-white.png" alt="Tángara · Alistamiento para la Inversión" />
+        <div class="hero-tag" style="font-family: &quot;Bricolage Grotesque&quot;">INVESTMENT READINESS FOR CLIMATECH</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 02 MARQUEE Verticales — removed by user request ── -->
+
+
+  <!-- ── 03 ECOSISTEMA ──────────────────────────────── -->
+  <section class="section" id="ecosistema" data-nav="Ecosistema" data-screen-label="03 Ecosistema">
+    <div class="wrap">
+      <div class="panel ecosystem reveal">
+        <div>
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">ARQUITECTURA</span>
+          <h2 class="hero-heading" style="font-size:clamp(32px,4.4vw,64px)">El poder de un ecosistema unido para acelerar la transición climática.</h2>
+          <p class="lead" style="margin-top: 24px; color: rgba(255, 255, 255, 0.72)">Tres aceleradoras, Impacta Emprendimiento Sostenible, Connect, B nos unimos para conformar Tángara. Una iniciativa cofinanciada por el Fondo Verde Catalítico, operado por BID Lab — el laboratorio de innovación del Banco Interamericano de Desarrollo — y el Fondo Resilient Futures, operado por 2X Global. </p>
+        </div>
+        <div class="orbit-map">
+          <svg class="lines" viewBox="0 0 700 520" preserveAspectRatio="xMidYMid meet">
+            <circle cx="350" cy="260" r="175" fill="none" stroke="#F27BE3" stroke-opacity=".35"/>
+            <circle cx="350" cy="260" r="250" fill="none" stroke="#F27BE3" stroke-opacity=".12"/>
+            <path d="M350 260 350 82M350 260 175 386M350 260 525 386" stroke="#F27BE3" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <g fill="#F27BE3">
+              <circle cx="350" cy="82" r="4"/>
+              <circle cx="175" cy="386" r="4"/>
+              <circle cx="525" cy="386" r="4"/>
+            </g>
+          </svg>
+          <div class="orbit-node center">
+            <img src="assets/logo-tangara-white.png" alt="Tángara" />
+          </div>
+          <div class="orbit-ring">
+            <button class="orbit-pill p1" data-acc="ean" type="button" aria-label="Ver información de Universidad EAN · Impacta"><img src="assets/logo-ean-impacta-color.png" alt="Universidad EAN · Impacta"/></button>
+            <button class="orbit-pill p2" data-acc="connect" type="button" aria-label="Ver información de Connect"><img src="assets/logo-connect.png" alt="Connect"/></button>
+            <button class="orbit-pill p3" data-acc="bio" type="button" aria-label="Ver información de Biointropic"><img src="assets/logo-biointropic.png" alt="Biointropic"/></button>
+          </div>
+          <span class="orbit-hint" aria-hidden="true">Click en cada aliado</span>
+        </div>
+      </div>
+
+      <div class="support-heading reveal" style="margin-top:48px;margin-bottom:18px">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">Con el apoyo de</span>
+      </div>
+      <div class="support-strip reveal d1">
+        <article class="support-card">
+          <div class="support-badge"><img src="assets/logo-bid-lab.png" alt="BID Lab"/></div>
+          <p><strong>BID Lab:</strong> el principal motor de innovación para el desarrollo en América Latina y el Caribe, impulsando soluciones Net-Zero a través del Fondo Verde Catalítico.</p>
+        </article>
+        <article class="support-card">
+          <div class="support-badge"><img src="assets/logo-2x-global.png" alt="2X Global"/></div>
+          <p><strong>2X Global:</strong> referente mundial en inversión con lente de género, asegurando que el capital climático cumpla los más altos estándares de equidad.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 04 AHORA / urgencia ─────────────────────────── -->
+  <section class="section" id="ahora" data-nav="Ahora" data-screen-label="04 Ahora">
+    <div class="wrap">
+      <div class="panel stat-layout reveal">
+        <div>
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">CONTEXTO</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">Acción Urgente.</h2>
+          <div style="display:grid;gap:18px;margin-top:28px">
+            <p class="copy">
+              <span class="anim-text" data-anim-text>Colombia enfrenta un desafío urgente y estructural: transformar un modelo económico altamente dependiente de actividades intensivas en carbono hacia uno resiliente, sostenible e inclusivo.</span>
+            </p>
+            <p class="copy">El 47 % de su territorio está en alto riesgo climático y el país pierde cada año el 4,3 % del PIB por impactos ambientales.</p>
+            <p class="copy">Existen soluciones tecnológicas con alto potencial de mitigación que no escalan a la velocidad que necesitamos.</p>
+          </div>
+        </div>
+        <div class="data-stack">
+          <article class="data-card">
+            <div class="icon-round"><svg class="icon"><use href="#i-globe"/></svg></div>
+            <div>
+              <span class="num counter" data-target="47" data-suffix="%">0%</span>
+              <p class="copy" style="margin-top:6px">del territorio en alto riesgo climático.</p>
+            </div>
+          </article>
+          <article class="data-card">
+            <div class="icon-round"><svg class="icon"><use href="#i-chart"/></svg></div>
+            <div>
+              <span class="num">4,3<span style="font-size:.55em;color:#FAD1F4">% PIB</span></span>
+              <p class="copy" style="margin-top:6px">pierde el país cada año por impactos ambientales.</p>
+            </div>
+          </article>
+          <article class="data-card">
+            <div class="icon-round"><svg class="icon"><use href="#i-leaf"/></svg></div>
+            <div>
+              <h3 style="color:#fff">Soluciones tecnológicas</h3>
+              <p class="copy" style="margin-top:6px">con alto potencial de mitigación que no escalan a la velocidad que necesitamos.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 05 PROGRAMA ─────────────────────────────────── -->
+  <section class="section" id="programa" data-nav="Programa" data-screen-label="05 Programa">
+    <div class="wrap">
+      <div class="prog-grid">
+        <div class="reveal">
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">PROGRAMA</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">¿Por qué existe Tángara?</h2>
+          <p class="lead" style="margin-top:24px;color:#FAD1F4;font-weight:500">
+            Tangara es el puente entre la innovación climática y el capital de impacto y te acompañamos atravesarlo.
+          </p>
+          <p class="copy" style="margin-top:18px;max-width:600px">El programa es un camino progresivo de fortalecimiento a innovaciones climática que inicia con el alistamiento de tu modelo financiero y de impacto hasta la conexión con inversión real. Al final del camino hay recursos comprometidos por inversionistas y corporativos que quieren financiar y pilotar soluciones como la tuya.</p>
+          <div class="buttons">
+            <a class="btn-pill" href="#postulacion">
+              <span>Postula tu solución</span>
+              <span class="arrow-circle"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="btn-arrow" href="#ruta">Ver la ruta completa →</a>
+          </div>
+        </div>
+        <div class="route reveal d1">
+          <svg class="path-svg" viewBox="0 0 620 440" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="routeg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#62165A"/>
+                <stop offset=".5" stop-color="#EE46DD"/>
+                <stop offset="1" stop-color="#FAD1F4"/>
+              </linearGradient>
+            </defs>
+            <path d="M40 220 L580 220" fill="none" stroke="url(#routeg)" stroke-linecap="round" stroke-width="10"/>
+            <path d="M40 220 L580 220" fill="none" opacity=".35" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="1.5"/>
+          </svg>
+          <div class="route-step s1">
+            <div class="icon-round"><svg class="icon"><use href="#i-doc"/></svg></div>
+            <strong>Modelo financiero<br/>y de impacto</strong>
+          </div>
+          <div class="route-step s2">
+            <div class="icon-round"><svg class="icon"><use href="#i-chart"/></svg></div>
+            <strong>Inversión real</strong>
+          </div>
+          <div class="route-step s3">
+            <div class="icon-round"><svg class="icon"><use href="#i-building"/></svg></div>
+            <strong>Pilotos<br/>corporativos</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 06 VERTICALES ──────────────────────────────── -->
+  <section class="section" id="verticales" data-nav="Verticales" data-screen-label="06 Verticales">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">VERTICALES</span>
+        <h2 class="hero-heading" style="font-size:clamp(48px,7.2vw,118px)">Verticales climáticas.</h2>
+        <p class="lead" style="margin-top:18px">Innovaciones climáticas que actúan desde cuatro frentes.</p>
+      </div>
+      <div class="cards4">
+        <article class="v-card reveal">
+          <div class="icon-round"><svg class="icon"><use href="#i-leaf"/></svg></div>
+          <span class="v-num">/ 01</span>
+          <h3>Bioeconomía</h3>
+          <p class="copy">Soluciones que usan ciencia, biodiversidad e innovación para crear productos y procesos de alto valor agregado, sin depender de recursos fósiles ni de ciclos extractivos.</p>
+        </article>
+        <article class="v-card light reveal d1">
+          <div class="icon-round"><svg class="icon"><use href="#i-bolt"/></svg></div>
+          <span class="v-num">/ 02</span>
+          <h3>Transición energética</h3>
+          <p class="copy">Tecnologías que electrifican, eficientizan y descarbonizan: movilidad sostenible, almacenamiento, hidrógeno, captura de carbono y más.</p>
+        </article>
+        <article class="v-card reveal d2">
+          <div class="icon-round"><svg class="icon"><use href="#i-recycle"/></svg></div>
+          <span class="v-num">/ 03</span>
+          <h3>Economía circular</h3>
+          <p class="copy">Diseñar para que nada sea residuo. Extender la vida de materiales, regenerar, reutilizar y cerrar los ciclos productivos. Menos extracción, más valor.</p>
+        </article>
+        <article class="v-card light reveal d3">
+          <div class="icon-round"><svg class="icon"><use href="#i-agri"/></svg></div>
+          <span class="v-num">/ 04</span>
+          <h3>Agritech</h3>
+          <p class="copy">Tecnología para un campo más productivo y resiliente. Agricultura de precisión, bioinsumos, trazabilidad y herramientas digitales que cuidan la tierra mientras aumentan los rendimientos.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 07 PERFIL ───────────────────────────────────── -->
+  <section class="section" id="perfil" data-nav="Perfil" data-screen-label="07 Perfil">
+    <div class="wrap">
+      <div class="panel eligibility reveal">
+        <div>
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">PERFIL</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">¿A quiénes buscamos?</h2>
+          <p class="copy" style="margin-top:24px">
+            Emprendedores con tecnología que reemplazan carbono, regeneran, reducen o cierran ciclos. Nos enfocamos en cuatro verticales con alto potencial de crecimiento, mitigación y generación de empleo verde en Colombia y LAC.
+          </p>
+          <div class="chips">
+            <div class="chip"><svg class="icon"><use href="#i-leaf"/></svg> Bioeconomía</div>
+            <div class="chip"><svg class="icon"><use href="#i-bolt"/></svg> Transición energética</div>
+            <div class="chip"><svg class="icon"><use href="#i-recycle"/></svg> Economía circular</div>
+            <div class="chip"><svg class="icon"><use href="#i-agri"/></svg> Agritech</div>
+          </div>
+        </div>
+        <div class="checklist">
+          <div class="check">Con liderazgo femenino</div>
+          <div class="check">Ubicados en Colombia. Si están en otro país de LATAM, interesados o iniciando soft-landing en Colombia.</div>
+          <div class="check">Mínimo 3 años legalmente constituidos</div>
+          <div class="check">Con Technology Readiness Level (TRL) nivel 7 en adelante</div>
+          <div class="check">Se valora que tengan ventas iguales o superiores a USD 80.000 año</div>
+          <div class="check">En búsqueda de financiación para crecer o validar comercialmente su tecnología</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 08 BENEFICIOS · STICKY STACKING ─────────────── -->
+  <section class="section" id="beneficios" data-nav="Beneficios" data-screen-label="08 Beneficios">
+    <div class="wrap">
+      <div class="section-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">BENEFICIOS</span>
+        <h2 class="hero-heading" style="font-size:clamp(48px,7.2vw,118px)">Valor en cada etapa.</h2>
+        <p class="lead" style="margin-top:18px;max-width:760px;margin-left:auto;margin-right:auto">
+          En Tángara construyes los activos con los que puedes tocar la puerta de cualquier inversionista, dentro o fuera del programa.
+        </p>
+      </div>
+
+      <div class="benefits-list" id="benefitsList">
+        <!-- FASE 1 -->
+        <div class="phase-anchor">
+          <article class="phase-card" data-stack-card data-stack-index="0">
+            <div class="ph-left">
+              <div>
+                <span class="ph-num" style="font-family: &quot;Bricolage Grotesque&quot;">FASE 1 — BOOTCAMP</span>
+                <h3>Alistamiento financiero<br/>y de impacto</h3>
+                <span class="ph-count" style="font-family: &quot;Bricolage Grotesque&quot;">44 emprendimientos</span>
+              </div>
+              <div class="ph-icon"><svg class="icon"><use href="#i-book"/></svg></div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-tag">Formación intensiva y herramientas listas para usar.</span>
+              <ul>
+                <li>Formación en modelo financiero, unit economics y mercado</li>
+                <li>Pitch deck actualizado y listo para inversionistas</li>
+                <li>Ruta de financiación recomendada para tu etapa</li>
+                <li>KPIs de negocio e impacto definidos</li>
+                <li>Diagnóstico de brechas y plan de trabajo</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- FASE 2 -->
+        <div class="phase-anchor">
+          <article class="phase-card light" data-stack-card data-stack-index="1">
+            <div class="ph-left">
+              <div>
+                <span class="ph-num" style="font-family: &quot;Bricolage Grotesque&quot;">FASE 2 — ALISTAMIENTO AVANZADO</span>
+                <h3>Preparación personalizada para la inversión</h3>
+                <span class="ph-count" style="font-family: &quot;Bricolage Grotesque&quot;">22 emprendimientos</span>
+              </div>
+              <div class="ph-icon"><svg class="icon"><use href="#i-chart"/></svg></div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-tag">Acompañamiento 1:1 con estándares institucionales.</span>
+              <ul>
+                <li>Asesoría individual con analistas financieros y de impacto</li>
+                <li>Memorando de inversión bajo estándares institucionales</li>
+                <li>Data room estructurado con documentos legales y financieros</li>
+                <li>Modelo financiero avanzado con escenarios</li>
+                <li>Presentación ante panel de inversionistas</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- FASE 3 -->
+        <div class="phase-anchor">
+          <article class="phase-card" data-stack-card data-stack-index="2">
+            <div class="ph-left">
+              <div>
+                <span class="ph-num">FASE 3 — CAPITAL</span>
+                <h3>Acceso a inversión<br/>y pilotos reales</h3>
+                <span class="ph-count" style="font-family: &quot;Bricolage Grotesque&quot;">15 emprendimientos</span>
+              </div>
+              <div class="ph-icon"><svg class="icon"><use href="#i-hand"/></svg></div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-tag">Capital real, pilotos reales, decisión de Comité.</span>
+              <ul>
+                <li>Elegibilidad para inversión vía Fondo Impacta o coinversores</li>
+                <li>Posibilidad de pilotos con corporativos aliados</li>
+                <li>Proceso de debida diligencia acompañado</li>
+                <li>Recursos comprometidos disponibles (USD 760K+)</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="all-phase reveal">
+        <h3>EN TODAS LAS FASES</h3>
+        <ul>
+          <li>Contacto con red de inversionistas y corporativos climáticos</li>
+          <li>Acceso a espacios en el edificio EAN Legacy</li>
+          <li>Visibilidad en eventos nacionales e internacionales</li>
+          <li>Ser parte de un portafolio curado de soluciones climatech de alto impacto</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 09 RUTA / TIMELINE ──────────────────────────── -->
+  <section class="section" id="ruta" data-nav="Ruta" data-screen-label="09 Ruta">
+    <div class="wrap">
+      <div class="panel reveal">
+        <div class="section-head">
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">RUTA</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">¿Cómo funciona el programa?</h2>
+          <p class="lead" style="margin-top:18px">
+            Tángara opera como un embudo de escalamiento. Cada fase tiene una parada de selección hacia la siguiente.
+          </p>
+        </div>
+        <div class="timeline">
+          <article class="t-row reveal">
+            <div class="t-num">01</div>
+            <div class="t-card">
+              <div>
+                <h3>Convocatoria · Postulación en línea</h3>
+                <p class="copy" style="margin-top:10px">Lee los términos de referencia y diligencia el formulario en la plataforma oficial. Puedes iniciar y guardar tus avances. Te sugerimos comenzar cuanto antes para realizar una excelente postulación. Preguntas: <span style="color:#F27BE3">tangra.ir@universidadean.edu.co</span></p>
+              </div>
+              <div class="tags"><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">1 — 30 jun 2026</span></div>
+            </div>
+          </article>
+          <article class="t-row reveal d1">
+            <div class="t-num">02</div>
+            <div class="t-card light">
+              <div>
+                <h3>Evaluación · Revisión técnica y selección</h3>
+                <p class="copy" style="margin-top:10px">El equipo evaluador revisa cada postulación con criterios claros: innovación, impacto climático, tracción de mercado y capacidad del equipo. Resultados informados por correo.</p>
+              </div>
+              <div class="tags"><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">Virtual</span><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">44 seleccionados</span></div>
+            </div>
+          </article>
+          <article class="t-row reveal d2">
+            <div class="t-num">03</div>
+            <div class="t-card">
+              <div>
+                <h3>Fase 1 · Bootcamp de alistamiento</h3>
+                <p class="copy" style="margin-top:10px">Formación intensiva en finanzas, impacto y acceso a mercados. Trabajas con mentores especializados y construyes los entregables para cualquier proceso de financiación: deck, modelo financiero, integración de criterios 2X Global y plan de inversión.</p>
+                <p class="copy" style="margin-top:8px">Presentación en Pitch Day ante evaluadores e inversionistas. 22 emprendimientos avanzan.</p>
+              </div>
+              <div class="tags"><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">Virtual</span><span class="tag">Pitch Day híbrido</span></div>
+            </div>
+          </article>
+          <article class="t-row reveal d3">
+            <div class="t-num">04</div>
+            <div class="t-card light">
+              <div>
+                <h3>Fase 2 · Alistamiento avanzado y personalizado</h3>
+                <p class="copy" style="margin-top:10px">Los 22 emprendimientos con mayor potencial reciben acompañamiento individual: memorando de inversión, data room, modelo de impacto y plan de género. También inicia el proceso de debida diligencia.</p>
+                <p class="copy" style="margin-top:8px">Presentación en comité interno del Fondo Impacta.</p>
+              </div>
+              <div class="tags"><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">Virtual</span></div>
+            </div>
+          </article>
+          <article class="t-row reveal d4">
+            <div class="t-num">05</div>
+            <div class="t-card">
+              <div>
+                <h3>Fase 3 · Decisión de inversión y pilotos</h3>
+                <p class="copy" style="margin-top:10px">Los mejores perfiles entran a un proceso formal de inversión con el Fondo Impacta y coinversores aliados, o a la estructuración de pilotos con corporativos. Decisión de Comité con debida diligencia completa. Riguroso, transparente y con capital real.</p>
+              </div>
+              <div class="tags"><span class="tag" style="font-family: &quot;Bricolage Grotesque&quot;">Capital real</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 10 RESULTADOS ──────────────────────────────── -->
+  <section class="section" id="resultados" data-nav="Resultados" data-screen-label="10 Resultados">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">RESULTADOS</span>
+        <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">¿Qué resultados esperamos del programa?</h2>
+        <p class="lead" style="margin-top:18px;max-width:880px">
+          Fortalecer emprendimientos climáticos con capacidad de crecer, generar más ventas, mejorar su rentabilidad y ampliar su impacto en el mercado y en los territorios.
+        </p>
+      </div>
+      <div class="metrics reveal d1">
+        <div class="metric">
+          <div class="icon-round"><svg class="icon"><use href="#i-leaf"/></svg></div>
+          <div><strong>110.000+</strong><p class="copy">toneladas de CO₂ equivalente</p></div>
+        </div>
+        <div class="metric light">
+          <div class="icon-round"><svg class="icon"><use href="#i-chart"/></svg></div>
+          <div><strong>USD 1.2M+</strong><p class="copy">en mecanismos de inversión y financiación para pilotos</p></div>
+        </div>
+        <div class="metric">
+          <div class="icon-round"><svg class="icon"><use href="#i-globe"/></svg></div>
+          <div><strong>Pipeline</strong><p class="copy">regional de soluciones climáticas</p></div>
+        </div>
+      </div>
+      <div class="result-grid bento">
+        <article class="result-card reveal">
+          <div class="icon-round"><svg class="icon"><use href="#i-spark"/></svg></div>
+          <div class="feat-big">Impacto<small style="font-family: &quot;Bricolage Grotesque&quot;">que escala con cada tonelada y cada peso comprometido</small></div>
+          <p>Cada emprendimiento del programa entra a un sistema de medición, validación y conexión que multiplica el efecto de su tecnología en territorios, ecosistemas y mercados de América Latina.</p>
+        </article>
+        <article class="result-card light reveal d1"><div class="icon-round sm"><svg class="icon"><use href="#i-chart"/></svg></div><p>Movilizar más de USD 1.2 millones en mecanismos de inversión y financiación para pilotos, facilitando el acceso a capital para soluciones climáticas con potencial de crecimiento.</p></article>
+        <article class="result-card reveal d2"><div class="icon-round sm"><svg class="icon"><use href="#i-people"/></svg></div><p>Facilitar conexiones estratégicas entre emprendimientos, inversionistas, corporativos y aliados del ecosistema climatech.</p></article>
+        <article class="result-card light reveal d3"><div class="icon-round sm"><svg class="icon"><use href="#i-gender"/></svg></div><p>Aumentar la participación de emprendimientos liderados por mujeres en procesos de financiación climática.</p></article>
+        <article class="result-card reveal d4"><div class="icon-round sm"><svg class="icon"><use href="#i-globe"/></svg></div><p>Construir un pipeline regional de soluciones climáticas con potencial de escalamiento en América Latina.</p></article>
+        <article class="result-card light reveal d5"><div class="icon-round sm"><svg class="icon"><use href="#i-book"/></svg></div><p>Generar conocimiento y aprendizajes para mejorar las condiciones de financiación del ecosistema climatech en la región.</p></article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 11 GÉNERO ──────────────────────────────────── -->
+  <section class="section" id="genero" data-nav="Género" data-screen-label="11 Género">
+    <div class="wrap">
+      <div class="panel gender reveal">
+        <div>
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">LENTE DE GÉNERO</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">El capital climático también <em style="font-style:italic;font-weight:600">cierra brechas.</em></h2>
+          <p class="lead" style="margin-top:24px">
+            <span class="anim-text" data-anim-text>En la industria climatech latinoamericana, las startups fundadas por mujeres reciben apenas el 1,14% del capital invertido en la región. Tángara cambia esa estadística.</span>
+          </p>
+          <p class="copy" style="margin-top:18px;max-width:560px">
+            <strong style="color:#F6A6EB;font-weight:600">80% de las empresas financiadas</strong> tendrán liderazgo femenino. Un módulo especializado fortalece acceso a capital, gobernanza y negociación para emprendedoras climáticas.
+          </p>
+          <span class="highlight">Una decisión de diseño, no un complemento.</span>
+          <p class="copy" style="margin-top:18px;font-size:13px;opacity:.55">Fuente: PwC, 2025; Climate Policy Lab, Tufts University.</p>
+        </div>
+        <figure class="gender-art">
+          <img class="founder" src="assets/founder-neylla-avila.jpg" alt="Neylla Ávila — emprendedora climática, Gescol" />
+          <figcaption class="founder-credit" style="position: absolute; top: 18px; left: 18px; z-index: 2; font-family: &quot;Bricolage Grotesque&quot;; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #FAD1F4; background: rgba(10,0,16,.55); padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(238,70,221,.32); backdrop-filter: blur(10px)">Neylla Ávila · Gescol</figcaption>
+          <div class="stat-overlay">
+            <strong>1,14<span style="font-size:.45em">%</span></strong>
+            <p>del capital climatech en LATAM va a startups lideradas por mujeres.</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 11.5 COFINANCIACIÓN ──────────────────────────── -->
+  <section class="section" id="cofinanciacion" data-nav="Financiadores" data-screen-label="11.5 Cofinanciación">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">Cofinanciación</span>
+        <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">Cofinanciado por:</h2>
+      </div>
+
+      <div class="funder-grid reveal d1">
+        <article class="funder-card">
+          <div class="funder-logo"><img src="assets/logo-bid-lab.png" alt="BID Lab"/></div>
+          <span class="f-name">BID Lab</span>
+        </article>
+        <article class="funder-card">
+          <div class="funder-logo"><img src="assets/logo-2x-global.png" alt="2X Global"/></div>
+          <span class="f-name">2X Global</span>
+        </article>
+      </div>
+
+      <div class="initiatives reveal d2">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">Con sus iniciativas:</span>
+        <div class="initiative-grid">
+          <div class="initiative-box"><img src="assets/logo-fondo-verde-catalitico.png" alt="Fondo Verde Catalítico"/></div>
+          <div class="initiative-box"><img src="assets/logo-resilient-futures.png" alt="Resilient Futures Fund"/></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 12 APOYO ───────────────────────────────────── -->
+  <section class="section" id="apoyo" data-nav="Apoyo" data-screen-label="12 Apoyo">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">Aliados</span>
+        <h3 style="font-size:clamp(22px,2.6vw,34px);color:rgba(255,255,255,.82)">Con el apoyo de</h3>
+      </div>
+      <div class="support-marquee reveal d1">
+        <div class="support-track">
+          <div class="support-logo"><img src="assets/logo-coca-cola.png" alt="Coca-Cola"/></div>
+          <div class="support-logo"><img src="assets/logo-bayer.png" alt="Bayer"/></div>
+          <div class="support-logo"><img src="assets/logo-ups.png" alt="UPS Foundation"/></div>
+          <div class="support-logo"><img src="assets/logo-visa-foundation.png" alt="Visa Foundation"/></div>
+          <div class="support-logo"><img src="assets/logo-skoll.jpg" alt="Skoll Foundation"/></div>
+          <div class="support-logo"><img src="assets/logo-reckitt.jpg" alt="Reckitt"/></div>
+          <div class="support-logo"><img src="assets/logo-amazon.png" alt="Amazon"/></div>
+          <!-- second identical set for seamless -50% loop -->
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-coca-cola.png" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-bayer.png" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-ups.png" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-visa-foundation.png" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-skoll.jpg" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-reckitt.jpg" alt=""/></div>
+          <div class="support-logo" aria-hidden="true"><img src="assets/logo-amazon.png" alt=""/></div>
+        </div>
+      </div>
+
+      <div class="type-marquee reveal d2" aria-hidden="true">
+        <div class="type-track">
+          <span class="type-item" style="font-family:'Times New Roman',serif;font-weight:400;font-size:28px;letter-spacing:-.01em">Climatech LAC</span>
+          <span class="type-item" style="font-family:var(--mono);font-weight:600;font-size:18px;letter-spacing:.18em;text-transform:uppercase">Bioeconomía</span>
+          <span class="type-item" style="font-family:Georgia,serif;font-weight:400;font-size:30px;font-style:italic;color:#FAD1F4">Net-Zero</span>
+          <span class="type-item" style="font-family:var(--font);font-weight:700;font-size:26px;letter-spacing:-.03em">USD 1.2M+</span>
+          <span class="type-item" style="font-family:var(--mono);font-weight:500;font-size:16px;letter-spacing:.16em;text-transform:uppercase">TRL 7+</span>
+          <span class="type-item" style="font-family:Palatino,'Book Antiqua',serif;font-weight:400;font-size:28px;font-style:italic">Lente de género</span>
+          <span class="type-item" style="font-family:var(--font);font-weight:800;font-size:32px;letter-spacing:-.04em;color:#F27BE3">110K tCO₂eq</span>
+          <span class="type-item" style="font-family:Verdana,sans-serif;font-weight:400;font-size:18px;letter-spacing:.04em">Pipeline regional</span>
+          <span class="type-item" style="font-family:Impact,'Arial Narrow',sans-serif;font-weight:400;font-size:26px;letter-spacing:.06em;text-transform:uppercase">Fondo Impacta</span>
+          <span class="type-item" style="font-family:'Courier New',monospace;font-weight:700;font-size:18px;letter-spacing:.14em">CAPITAL DE IMPACTO</span>
+          <!-- second identical set for seamless loop -->
+          <span class="type-item" style="font-family:'Times New Roman',serif;font-weight:400;font-size:28px;letter-spacing:-.01em">Climatech LAC</span>
+          <span class="type-item" style="font-family:var(--mono);font-weight:600;font-size:18px;letter-spacing:.18em;text-transform:uppercase">Bioeconomía</span>
+          <span class="type-item" style="font-family:Georgia,serif;font-weight:400;font-size:30px;font-style:italic;color:#FAD1F4">Net-Zero</span>
+          <span class="type-item" style="font-family:var(--font);font-weight:700;font-size:26px;letter-spacing:-.03em">USD 1.2M+</span>
+          <span class="type-item" style="font-family:var(--mono);font-weight:500;font-size:16px;letter-spacing:.16em;text-transform:uppercase">TRL 7+</span>
+          <span class="type-item" style="font-family:Palatino,'Book Antiqua',serif;font-weight:400;font-size:28px;font-style:italic">Lente de género</span>
+          <span class="type-item" style="font-family:var(--font);font-weight:800;font-size:32px;letter-spacing:-.04em;color:#F27BE3">110K tCO₂eq</span>
+          <span class="type-item" style="font-family:Verdana,sans-serif;font-weight:400;font-size:18px;letter-spacing:.04em">Pipeline regional</span>
+          <span class="type-item" style="font-family:Impact,'Arial Narrow',sans-serif;font-weight:400;font-size:26px;letter-spacing:.06em;text-transform:uppercase">Fondo Impacta</span>
+          <span class="type-item" style="font-family:'Courier New',monospace;font-weight:700;font-size:18px;letter-spacing:.14em">CAPITAL DE IMPACTO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 13 FAQ ─────────────────────────────────────── -->
+  <section class="section" id="faq" data-nav="FAQ" data-screen-label="13 FAQ">
+    <div class="wrap">
+      <div class="faq">
+        <div class="reveal">
+          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">FAQ</span>
+          <h2 class="hero-heading" style="font-size:clamp(40px,5.4vw,84px)">Preguntas frecuentes</h2>
+          <p class="copy" style="margin-top:18px;max-width:340px">¿Algo más que necesitas saber antes de postularte? Escríbenos a <span style="color:#F27BE3">tangra.ir@universidadean.edu.co</span></p>
+        </div>
+        <div class="faq-list reveal d1">
+          <article class="faq-item open">
+            <button class="faq-q">¿De qué se trata el programa?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Tángara es el puente entre la innovación climática y el capital de impacto, y te acompañamos a atravesarlo.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Qué tipo de innovaciones climáticas acompaña Tángara?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Innovaciones climáticas que actúan desde Bioeconomía, Transición energética, Economía circular y Agritech.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿A quiénes buscamos?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Emprendedores con tecnología que reemplazan carbono, regeneran, reducen o cierran ciclos.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Cuáles son los beneficios de participar?<span class="icon">+</span></button>
+            <div class="faq-a"><p>En Tángara construyes los activos con los que puedes tocar la puerta de cualquier inversionista, dentro o fuera del programa.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Cómo funciona el programa?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Tángara opera como un embudo de escalamiento. Cada fase tiene una parada de selección hacia la siguiente.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Cuándo abre y cierra la convocatoria?<span class="icon">+</span></button>
+            <div class="faq-a"><p>La convocatoria abre el 1 de junio y cierra el 30 de junio de 2026.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Cómo se conecta Tángara con inversión?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Los mejores perfiles entran a un proceso formal de inversión con el Fondo Impacta y coinversores aliados, o a la estructuración de pilotos con corporativos.</p></div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-q">¿Quiénes hacen posible Tángara?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Tángara es una iniciativa cofinanciada por el Fondo Verde Catalítico operado por BID Lab y el Fondo Resilient Futures operado por 2X Global.</p></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── 14 POSTULACIÓN ─────────────────────────────── -->
+  <section class="section" id="postulacion" data-nav="Postulación" data-screen-label="14 Postulación">
+    <div class="wrap">
+      <div class="panel post-card light reveal">
+        <span class="kicker" style="margin-left: auto; margin-right: auto; font-family: &quot;Bricolage Grotesque&quot;">Sección 13 · Postulación</span>
+        <h2 class="hero-heading">Postulación en línea</h2>
+        <p class="lead" style="max-width:880px;margin:24px auto 0">
+          Lee los términos de referencia y diligencia el formulario en la plataforma oficial. Puedes iniciar y guardar tus avances. Preguntas: <span style="color:#F27BE3">tangra.ir@universidadean.edu.co</span>
+        </p>
+        <div class="date-card light">
+          <div class="icon-round"><svg class="icon"><use href="#i-calendar"/></svg></div>
+          <p class="lead" style="opacity:.85">La convocatoria abre el</p>
+          <strong>1 de junio y cierra el 30 de junio de 2026</strong>
+          <div class="buttons" style="justify-content:center;margin-top:32px">
+            <a class="btn-pill" href="#">
+              <span>Enlace a plataforma</span>
+              <span class="arrow-circle"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="btn btn-ghost" href="assets/Terminos-de-Referencia-Tangara.pdf" target="_blank" rel="noopener">Términos de referencia</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer reveal d1">
+        <a class="brand" href="#inicio">
+          <img class="brand-logo" src="assets/logo-tangara-white.png" alt="Tángara" style="height:42px"/>
+        </a>
+        <p><strong style="color:#F6A6EB;font-weight:600">Disclaimer:</strong> La participación en Tángara Investment Readiness y el avance entre fases no constituyen promesa, obligación ni garantía de inversión, cofinanciación de pilotos, desembolsos o contratación. Toda decisión posterior estará sujeta al desempeño del emprendimiento, a la evaluación técnica y financiera, a la debida diligencia, a las decisiones de los comités competentes y a la disponibilidad de recursos.</p>
+        <p class="credits">V11 · 2026<br/>Investment Readiness</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Accelerator info modal -->
+<div class="acc-modal-backdrop" id="acc-modal-bd" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="acc-modal">
+    <button class="close" id="acc-modal-close" aria-label="Cerrar">×</button>
+    <div class="modal-logo"><img id="acc-modal-logo" alt="" /></div>
+    <h3 id="acc-modal-title"></h3>
+    <p id="acc-modal-body"></p>
+  </div>
+</div>
+
+<!-- TWEAKS PANEL · expressive design knobs -->
+<aside id="tweaks-panel" aria-label="Tweaks" aria-hidden="true">
+  <header>
+    <h4>Tweaks</h4>
+    <button class="close" id="tweaks-close" aria-label="Cerrar">×</button>
+  </header>
+  <div class="tweak">
+    <label>Ambiente</label>
+    <div class="radio-row" data-tweak="mood">
+      <button data-val="editorial">Editorial</button>
+      <button data-val="vibrant">Vibrante</button>
+      <button data-val="gallery">Galería</button>
+    </div>
+  </div>
+  <div class="tweak">
+    <label>Densidad <span class="val" id="density-val">1.00×</span></label>
+    <input type="range" id="density-slider" min="0.75" max="1.4" step="0.05" />
+  </div>
+  <div class="tweak">
+    <label>Movimiento</label>
+    <div class="radio-row" data-tweak="motion">
+      <button data-val="sharp">Aguda</button>
+      <button data-val="cinematic">Cinem.</button>
+      <button data-val="gentle">Suave</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── Cursor radial glow ───────────────────────────────
+  addEventListener('pointermove', e => {
+    document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+    document.documentElement.style.setProperty('--my', e.clientY + 'px');
+  }, {passive:true});
+
+  // ── Nav active + progress + scrolled state ───────────
+  const nav = document.getElementById('nav');
+  const progress = document.getElementById('progress');
+  const links = [...document.querySelectorAll('.navlinks a')];
+  const sections = [...document.querySelectorAll('section[id]')];
+  const dots = document.getElementById('sideDots');
+
+  sections.forEach(s => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.title = s.dataset.nav || s.id;
+    dots.appendChild(a);
+  });
+  const dotLinks = [...dots.querySelectorAll('a')];
+
+  function setActive(){
+    const y = scrollY + innerHeight * .35;
+    let current = sections[0];
+    sections.forEach(s => { if (s.offsetTop <= y) current = s; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+    dotLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+    nav.classList.toggle('scrolled', scrollY > 40);
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    progress.style.width = (scrollY / max * 100) + '%';
+  }
+  addEventListener('scroll', setActive, {passive:true});
+  addEventListener('resize', setActive);
+  setActive();
+
+  // ── Mobile menu ──────────────────────────────────────
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('navlinks').classList.toggle('open');
+  });
+  links.forEach(a => a.addEventListener('click', () => {
+    document.getElementById('navlinks').classList.remove('open');
+  }));
+
+  // ── Reveal on intersect ──────────────────────────────
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:.12, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── FAQ ─────────────────────────────────────────────
+  document.querySelectorAll('.faq-q').forEach(btn => btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }));
+
+  // ── Counter animation ───────────────────────────────
+  const countObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const target = Number(el.dataset.target || 0);
+      const suffix = el.dataset.suffix || '';
+      const start = performance.now();
+      function tick(t){
+        const p = Math.min(1, (t - start) / 1200);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('.counter[data-target]').forEach(el => countObserver.observe(el));
+
+  // ── Magnetic hero (mouse-following) ─────────────────
+  document.querySelectorAll('[data-magnet]').forEach(el => {
+    const strength = Number(el.dataset.magnet) || 3;
+    const pad = Number(el.dataset.magnetPad) || 150;
+    let active = false;
+    function onMove(e){
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const within = Math.abs(dx) < r.width/2 + pad && Math.abs(dy) < r.height/2 + pad;
+      if (within){
+        if (!active){
+          el.style.transition = 'transform .3s cubic-bezier(.16,1,.3,1)';
+          active = true;
+        }
+        el.style.transform = `translate3d(${dx/strength}px, ${dy/strength}px, 0)`;
+      } else if (active){
+        el.style.transition = 'transform .6s cubic-bezier(.22,1,.36,1)';
+        el.style.transform = 'translate3d(0,0,0)';
+        active = false;
+      }
+    }
+    addEventListener('pointermove', onMove, {passive:true});
+  });
+
+  // ── Character-by-character scroll reveal (word-safe) ──
+  document.querySelectorAll('[data-anim-text]').forEach(el => {
+    const text = el.textContent;
+    const frag = document.createDocumentFragment();
+    const words = text.split(/(\s+)/); // keep whitespace tokens
+    words.forEach(word => {
+      if (/^\s+$/.test(word)){
+        // breakable whitespace between words
+        frag.appendChild(document.createTextNode(word));
+        return;
+      }
+      const wrap = document.createElement('span');
+      wrap.style.display = 'inline-block';
+      wrap.style.whiteSpace = 'nowrap';
+      [...word].forEach(ch => {
+        const sp = document.createElement('span');
+        sp.className = 'ch';
+        sp.textContent = ch;
+        wrap.appendChild(sp);
+      });
+      frag.appendChild(wrap);
+    });
+    el.textContent = '';
+    el.appendChild(frag);
+  });
+  function updateAnimText(){
+    document.querySelectorAll('[data-anim-text]').forEach(el => {
+      const chars = el.querySelectorAll('.ch');
+      const total = chars.length;
+      const r = el.getBoundingClientRect();
+      const startY = innerHeight * 0.8;
+      const endY = innerHeight * 0.2;
+      const p = Math.max(0, Math.min(1, (startY - r.top) / (startY - endY + r.height)));
+      const cutoff = Math.floor(p * total);
+      chars.forEach((c,i) => c.classList.toggle('on', i < cutoff));
+    });
+  }
+  addEventListener('scroll', updateAnimText, {passive:true});
+  addEventListener('resize', updateAnimText);
+  updateAnimText();
+
+  // ── MARQUEE: scroll-driven horizontal rows ───────────
+  const verticales = [
+    {icon:'i-leaf',    label:'/ 01',  title:'Bioeconomía',          meta:'Ciencia · Biodiversidad'},
+    {icon:'i-bolt',    label:'/ 02',  title:'Transición energética', meta:'Movilidad · H₂ · Captura CO₂'},
+    {icon:'i-recycle', label:'/ 03',  title:'Economía circular',     meta:'Reuso · Regeneración'},
+    {icon:'i-agri',    label:'/ 04',  title:'Agritech',              meta:'Precisión · Trazabilidad'},
+    {icon:'i-spark',   label:'TRL 7+', title:'Tecnología validada', meta:'Lista para escalar'},
+    {icon:'i-people',  label:'80%',   title:'Liderazgo femenino',   meta:'Lente de género · 2X'},
+    {icon:'i-globe',   label:'LATAM', title:'Pipeline regional',    meta:'Colombia + LAC'},
+    {icon:'i-chart',   label:'USD 1.2M+', title:'Capital movilizado', meta:'Fondo Impacta + coinversores'},
+    {icon:'i-leaf',    label:'110K tCO₂eq', title:'Impacto medible', meta:'Mitigación verificable'},
+    {icon:'i-building', label:'CORP', title:'Pilotos corporativos', meta:'Coca-Cola · Bayer · UPS · Visa'},
+  ];
+  function tileHTML(item, variant){
+    const cls = variant === 'alt' ? 'marquee-tile alt' : variant === 'dark' ? 'marquee-tile dark' : 'marquee-tile';
+    return `
+      <div class="${cls}">
+        <svg class="mt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#${item.icon}"/></svg>
+        <div>
+          <span class="mt-label">${item.label}</span>
+        </div>
+        <div>
+          <div class="mt-title">${item.title}</div>
+          <span class="mt-meta" style="display:block;margin-top:10px">${item.meta}</span>
+        </div>
+      </div>`;
+  }
+  function buildRow(rowEl, items, variantPattern){
+    // triple for seamless scroll
+    let html = '';
+    for (let pass = 0; pass < 3; pass++){
+      items.forEach((it, i) => {
+        html += tileHTML(it, variantPattern[i % variantPattern.length]);
+      });
+    }
+    rowEl.innerHTML = html;
+  }
+  const row1 = document.getElementById('mq-row-1');
+  const row2 = document.getElementById('mq-row-2');
+  if (row1 && row2) {
+  const items1 = verticales.slice(0, 5).concat([verticales[8]]);
+  const items2 = verticales.slice(4, 10);
+  buildRow(row1, items1, [null, 'alt', null, 'dark', null, 'alt']);
+  buildRow(row2, items2, ['alt', null, 'dark', null, 'alt', null]);
+
+  function updateMarquee(){
+    const section = row1.parentElement;
+    const r = section.getBoundingClientRect();
+    const offset = (scrollY - (scrollY + r.top - innerHeight) + innerHeight) * 0;
+    // simpler: progress from when section enters viewport bottom to when it exits top
+    const start = -innerHeight;
+    const end = section.offsetHeight;
+    const prog = (innerHeight - r.top) * 0.4;
+    const w1 = row1.scrollWidth / 3;
+    const w2 = row2.scrollWidth / 3;
+    // Row 1 moves right (negative offset means content goes left, image goes right => use negative)
+    const t1 = -((prog - 200) % w1);
+    const t2 = ((prog - 200) % w2) - w2;
+    row1.style.transform = `translate3d(${t1}px,0,0)`;
+    row2.style.transform = `translate3d(${-t2 - w2}px,0,0)`;
+  }
+  addEventListener('scroll', updateMarquee, {passive:true});
+  addEventListener('resize', updateMarquee);
+  updateMarquee();
+  }
+
+  // ── STICKY STACKING phase cards (scale down) ────────
+  function updateStack(){
+    const cards = document.querySelectorAll('[data-stack-card]');
+    const total = cards.length;
+    cards.forEach((card, i) => {
+      const targetScale = 1 - (total - 1 - i) * 0.04;
+      const anchor = card.parentElement;
+      const r = anchor.getBoundingClientRect();
+      // when next anchor is above viewport top + 90 (sticky top), scale this card
+      const stickyTop = 90;
+      // progress: 0 when card is in normal stick position, 1 when next card has fully scrolled to top
+      const next = cards[i + 1] ? cards[i + 1].parentElement : null;
+      let p = 0;
+      if (next){
+        const nextR = next.getBoundingClientRect();
+        // when nextR.top reaches stickyTop, p should be 1
+        const startDist = anchor.offsetHeight; // when next is one screen down
+        p = Math.max(0, Math.min(1, (startDist - (nextR.top - stickyTop)) / startDist));
+      }
+      const scale = 1 - (1 - targetScale) * p;
+      const offset = i * 18 * (1 - p);
+      card.style.transform = `translateY(${offset}px) scale(${scale})`;
+      card.style.top = (stickyTop + i * 22) + 'px';
+    });
+  }
+  addEventListener('scroll', updateStack, {passive:true});
+  addEventListener('resize', updateStack);
+  updateStack();
+
+})();
+</script>
+
+<script>
+/* ── TWEAKS protocol ──────────────────────────────── */
+(function(){
+  'use strict';
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "mood": "vibrant",
+    "density": 1,
+    "motion": "cinematic"
+  }/*EDITMODE-END*/;
+  const state = Object.assign({}, TWEAK_DEFAULTS);
+  const html = document.documentElement;
+  const panel = document.getElementById('tweaks-panel');
+
+  function apply(){
+    html.setAttribute('data-mood', state.mood);
+    html.setAttribute('data-motion', state.motion);
+    html.style.setProperty('--density', state.density);
+    // sync UI
+    panel.querySelectorAll('[data-tweak]').forEach(row => {
+      const key = row.dataset.tweak;
+      row.querySelectorAll('button').forEach(b => {
+        b.classList.toggle('active', b.dataset.val === String(state[key]));
+      });
+    });
+    const slider = document.getElementById('density-slider');
+    const valEl = document.getElementById('density-val');
+    if (slider.value != state.density) slider.value = state.density;
+    valEl.textContent = Number(state.density).toFixed(2) + '×';
+  }
+
+  function setKey(k, v){
+    state[k] = v;
+    apply();
+    try{
+      window.parent.postMessage({type:'__edit_mode_set_keys',edits:{[k]:v}},'*');
+    }catch(e){}
+  }
+
+  // wire radio rows
+  panel.querySelectorAll('[data-tweak]').forEach(row => {
+    const key = row.dataset.tweak;
+    row.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => setKey(key, b.dataset.val));
+    });
+  });
+  // wire slider
+  document.getElementById('density-slider').addEventListener('input', e => {
+    setKey('density', Number(e.target.value));
+  });
+  // close button
+  document.getElementById('tweaks-close').addEventListener('click', () => {
+    panel.classList.remove('active');
+    try{ window.parent.postMessage({type:'__edit_mode_dismissed'},'*'); }catch(e){}
+  });
+
+  // listen for host activate/deactivate
+  window.addEventListener('message', e => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode'){
+      panel.classList.add('active');
+      panel.setAttribute('aria-hidden','false');
+    } else if (e.data.type === '__deactivate_edit_mode'){
+      panel.classList.remove('active');
+      panel.setAttribute('aria-hidden','true');
+    }
+  });
+
+  // apply defaults on load
+  apply();
+
+  // announce availability after listener is wired
+  try{ window.parent.postMessage({type:'__edit_mode_available'},'*'); }catch(e){}
+})();
+</script>
+
+<script>
+/* ── Accelerator modal ──────────────────────────────── */
+(function(){
+  'use strict';
+  const ACC_INFO = {
+    ean: {
+      logo:'assets/logo-ean-impacta-color.png',
+      title:'Universidad EAN · Impacta',
+      body:'Universidad Ean, pionera y líder en la promoción y acompañamiento en emprendimiento en Colombia. Con 12 años de experiencia, Impacta es la plataforma de la Universidad Ean de emprendimiento sostenible que crea, transforma y financia soluciones sostenibles con alto potencial de crecimiento, ofreciendo programas de incubación y aceleración, solución a retos de innovación, conexiones de valor, asesoría y acceso a herramientas de tecnología, y acceso a financiamiento.'
+    },
+    connect: {
+      logo:'assets/logo-connect.png',
+      title:'Connect',
+      body:'Pioneros en programas de Innovación Abierta en sostenibilidad desde 2015. Connect Climatech Accelerator es la primera aceleradora multicorporativa con enfoque en Climatech en la región. Con experiencia exitosa promoviendo el compromiso entre empresas y startups para mejorar el crecimiento de las startups (más de 20 pilotos).'
+    },
+    bio: {
+      logo:'assets/logo-biointropic.png',
+      title:'Biointropic',
+      body:'Promueve y apoya proyectos innovadores de base bio y aceleración de bionegocios. Actualmente es reconocido como centro de innovación y productividad por MinCiencias. Biointropic ha acompañado más de 100 proyectos bio, más de 500 empresas de base biotecnológica y de bioeconomía, y cuenta con más de 30 aliados a nivel nacional e internacional. Tiene participación activa en 12 redes asociadas a bioeconomía, ingredientes naturales y cosméticos, economía circular y comercio justo.'
+    }
+  };
+  const bd = document.getElementById('acc-modal-bd');
+  const logo = document.getElementById('acc-modal-logo');
+  const titleEl = document.getElementById('acc-modal-title');
+  const bodyEl = document.getElementById('acc-modal-body');
+  function open(key){
+    const info = ACC_INFO[key]; if (!info) return;
+    logo.src = info.logo; logo.alt = info.title;
+    titleEl.textContent = info.title;
+    bodyEl.textContent = info.body;
+    bd.classList.add('open');
+    bd.setAttribute('aria-hidden','false');
+  }
+  function close(){
+    bd.classList.remove('open');
+    bd.setAttribute('aria-hidden','true');
+  }
+  document.querySelectorAll('[data-acc]').forEach(el => {
+    el.addEventListener('click', () => open(el.dataset.acc));
+  });
+  document.getElementById('acc-modal-close').addEventListener('click', close);
+  bd.addEventListener('click', e => { if (e.target === bd) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && bd.classList.contains('open')) close(); });
+})();
+</script>
+</body>
+</html>
