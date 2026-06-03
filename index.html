@@ -931,6 +931,18 @@ button.orbit-pill{cursor:pointer}
 .ribbon-logo.ribbon-logo--lg{min-width:188px;padding:4px 20px}
 @keyframes ribbon-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* Fallback visual para logos del modal: evita el icono roto del navegador si falta algún asset en GitHub */
+.ribbon-logo.logo-missing{
+  border:1px dashed rgba(139,35,128,.28);
+  background:linear-gradient(180deg,#fff,rgba(255,255,255,.88));
+}
+.logo-fallback-text{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:var(--mono);font-size:11px;line-height:1.25;letter-spacing:.08em;
+  text-transform:uppercase;color:#8B2380;font-weight:800;padding:4px 8px;
+}
+
+
 /* ── FAQ ──────────────────────────────────────────── */
 .faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:48px;align-items:start}
 .faq-list{display:grid;gap:10px}
@@ -2335,13 +2347,13 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
       body:'El Fondo Verde Catalítico apoya soluciones de impacto social y ambiental que contribuyan a reducir las emisiones de gases de efecto invernadero y a fomentar la innovación en el capital natural como herramienta de cero emisiones netas.',
       ribbons:[
         {label:'Iniciativa de:', logos:[
-          {src:'assets/logo-bid-lab-tr.png', alt:'BID Lab'},
-          {src:'assets/logo-latimpacto-tr.png', alt:'Latimpacto'},
-          {src:'assets/logo-green-climate-fund-tr.png', alt:'Green Climate Fund', cls:'ribbon-logo--lg'}
+          {src:'assets/logo-bid-lab.png', alt:'BID Lab'},
+          {src:'assets/logo-latimpacto.png', alt:'Latimpacto'},
+          {src:'assets/logo-green-climate-fund.png', alt:'Green Climate Fund', cls:'ribbon-logo--lg'}
         ]},
         {label:'Apoya:', static:true, logos:[
-          {src:'assets/logo-bayer-foundation-tr.png', alt:'Bayer Foundation'},
-          {src:'assets/logo-coca-cola-al-tr.png', alt:'Coca-Cola América Latina'}
+          {src:'assets/logo-bayer-foundation.png', alt:'Bayer Foundation'},
+          {src:'assets/logo-coca-cola-al.png', alt:'Coca-Cola América Latina'}
         ]}
       ]
     },
@@ -2351,11 +2363,11 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
       body:'The Resilient Futures Fund (RFF) tiene como objetivo promover la resiliencia y ampliar las oportunidades para soluciones climáticas lideradas por mujeres y niñas, que las involucren o que las beneficien. A través de capital catalítico y apoyo especializado, RFF moviliza capital hacia quienes están en la primera línea del cambio climático y se encuentran en una posición única para innovar y generar un impacto duradero.',
       ribbons:[
         {label:'Apoya:', logos:[
-          {src:'assets/logo-amazon-tr.png', alt:'Amazon'},
-          {src:'assets/logo-reckitt-tr.png', alt:'Reckitt'},
-          {src:'assets/logo-skoll-tr.png', alt:'Skoll Foundation'},
-          {src:'assets/logo-ups-foundation-tr.png', alt:'The UPS Foundation'},
-          {src:'assets/logo-visa-foundation-tr.png', alt:'Visa Foundation'}
+          {src:'assets/logo-amazon.png', alt:'Amazon'},
+          {src:'assets/logo-reckitt.jpg', alt:'Reckitt'},
+          {src:'assets/logo-skoll.jpg', alt:'Skoll Foundation'},
+          {src:'assets/logo-ups-foundation.png', alt:'The UPS Foundation'},
+          {src:'assets/logo-visa-foundation.png', alt:'Visa Foundation'}
         ]}
       ]
     }
@@ -2384,6 +2396,22 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
     titleEl.textContent = info.title;
     bodyEl.textContent = info.body;
     ribbonsEl.innerHTML = info.ribbons.map(r => ribbonHTML(r.label, r.logos, r.static)).join('');
+    // Si GitHub no tiene un asset, no mostramos el ícono roto: dejamos el nombre del aliado.
+    ribbonsEl.querySelectorAll('img').forEach(img => {
+      img.addEventListener('error', () => {
+        const box = img.closest('.ribbon-logo');
+        if(!box) return;
+        const label = img.getAttribute('alt') || 'Aliado';
+        img.remove();
+        box.classList.add('logo-missing');
+        if(!box.querySelector('.logo-fallback-text')){
+          const span = document.createElement('span');
+          span.className = 'logo-fallback-text';
+          span.textContent = label;
+          box.appendChild(span);
+        }
+      }, {once:true});
+    });
     bd.classList.add('open'); bd.setAttribute('aria-hidden','false');
   }
   function close(){ bd.classList.remove('open'); bd.setAttribute('aria-hidden','true'); }
