@@ -931,18 +931,6 @@ button.orbit-pill{cursor:pointer}
 .ribbon-logo.ribbon-logo--lg{min-width:188px;padding:4px 20px}
 @keyframes ribbon-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* Fallback visual para logos del modal: evita el icono roto del navegador si falta algún asset en GitHub */
-.ribbon-logo.logo-missing{
-  border:1px dashed rgba(139,35,128,.28);
-  background:linear-gradient(180deg,#fff,rgba(255,255,255,.88));
-}
-.logo-fallback-text{
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  font-family:var(--mono);font-size:11px;line-height:1.25;letter-spacing:.08em;
-  text-transform:uppercase;color:#8B2380;font-weight:800;padding:4px 8px;
-}
-
-
 /* ── FAQ ──────────────────────────────────────────── */
 .faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:48px;align-items:start}
 .faq-list{display:grid;gap:10px}
@@ -1166,6 +1154,73 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .orbit-ring .orbit-pill::after{animation:badge-pop 2.6s ease-in-out infinite!important}
   .orbit-hint{animation:hint-bob 2.6s ease-in-out infinite!important}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   FONDO INTERMEDIO — degradado mauve → violeta (premium midtone)
+   Punto medio entre la versión oscura y la clara: conserva el
+   lenguaje de vidrio + texto claro del diseño base y sólo eleva el
+   fondo a un degradado luminoso, volviendo las cartas un poco más
+   translúcidas para que el color se transparente.
+   ══════════════════════════════════════════════════════════════ */
+html,body{background:#7A4A9E}
+body{
+  background:
+    radial-gradient(900px 620px at 3% -6%,rgba(255,206,196,.60),transparent 56%),
+    radial-gradient(760px 540px at 99% 8%,rgba(158,88,170,.40),transparent 60%),
+    radial-gradient(1200px 880px at 52% 120%,rgba(54,20,104,.60),transparent 62%),
+    linear-gradient(143deg,#DCAEC2 0%,#C189B6 18%,#A061A8 42%,#7C429E 68%,#52248F 100%);
+  background-attachment:fixed;
+}
+/* Foto del valle: presencia tenue, fundida con el degradado medio */
+.page-bg{filter:saturate(1.12) brightness(1.08) contrast(1.02);opacity:.24}
+.page-bg::after{
+  background:
+    radial-gradient(900px 600px at 4% -6%,rgba(255,206,196,.30),transparent 56%),
+    linear-gradient(160deg,rgba(184,122,182,.36) 0%,rgba(120,60,156,.46) 52%,rgba(70,30,128,.60) 100%);
+}
+
+/* Vidrio premium: cartas un punto más oscuras/translúcidas para que el
+   texto claro resalte sobre el degradado medio (se conserva el blanco base) */
+.panel{background:linear-gradient(180deg,rgba(38,12,52,.46),rgba(26,8,40,.34));border-color:rgba(255,255,255,.18);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%)}
+.marquee-tile{background:linear-gradient(140deg,rgba(42,14,56,.50),rgba(26,8,40,.36));border-color:rgba(255,255,255,.16);backdrop-filter:blur(12px) saturate(135%);-webkit-backdrop-filter:blur(12px) saturate(135%)}
+.support-card,.data-card,.v-card,.t-card,.metric,.result-card,.faq-item,.funder-card,.fund-card{background:linear-gradient(180deg,rgba(38,12,52,.44),rgba(26,8,40,.32));border-color:rgba(255,255,255,.15);backdrop-filter:blur(13px) saturate(135%);-webkit-backdrop-filter:blur(13px) saturate(135%)}
+.check{background:rgba(38,12,52,.38);border-color:rgba(255,255,255,.15)}
+.phase-card{background:linear-gradient(180deg,rgba(46,16,62,.62),rgba(28,10,42,.50));border-color:rgba(255,255,255,.16);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%)}
+.faq-item.open{background:rgba(238,70,221,.12);border-color:rgba(238,70,221,.5)}
+.date-card{background:linear-gradient(180deg,rgba(238,70,221,.16),rgba(38,12,52,.40));border-color:rgba(238,70,221,.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.footer{background:rgba(34,12,48,.40);border-color:rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.orbit-map{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+
+/* ── BENEFICIOS: flujo normal (sin apilado que recorta el texto) ── */
+.benefits-list .phase-anchor{height:auto;margin-bottom:20px}
+.phase-card{position:static!important;top:auto!important;transform:none!important}
+@media(max-width:980px){
+  .phase-card{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:720px){
+  .phase-card{padding:26px;gap:22px;border-radius:28px}
+  .phase-card .ph-left{flex-direction:row;align-items:center;justify-content:space-between;gap:16px}
+  .phase-card .ph-icon{width:74px;height:74px;flex:0 0 74px}
+  .phase-card .ph-icon svg{width:48px;height:48px}
+  .phase-card h3{font-size:clamp(24px,7vw,32px)}
+}
+
+/* ── HERO: rejilla balanceada texto + visual (web y móvil) ── */
+.hero{justify-content:center}
+.hero .wrap{max-width:min(1280px,100%)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(300px,.82fr);gap:clamp(28px,5vw,72px);align-items:center;width:100%}
+.hero-copy{min-width:0;display:flex;flex-direction:column;gap:clamp(14px,2vw,24px)}
+.hero-headline h1{max-width:16ch}
+/* visual integrado a la rejilla (ya no flotante absoluto) */
+.hero-visual{position:relative;right:auto;left:auto;top:auto;transform:none!important;margin:0 auto;width:100%;max-width:460px;aspect-ratio:5/4;animation:hero-fade 1.1s .3s var(--ease-out) backwards}
+@keyframes hero-fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media(max-width:900px){
+  .hero{min-height:auto;max-height:none;padding-bottom:clamp(40px,8vw,64px)}
+  .hero-grid{grid-template-columns:1fr;gap:clamp(22px,6vw,38px)}
+  .hero-visual{order:-1;max-width:300px}
+  .hero-headline h1{max-width:none}
+  .hero-top{justify-content:flex-start;gap:14px}
+}
 </style>
 </head>
 <body>
@@ -1341,7 +1396,8 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   <!-- ── 01 HERO ─────────────────────────────────────── -->
   <section class="section hero" id="inicio" data-nav="Inicio" data-screen-label="01 Hero">
     <div class="hero-bg" aria-hidden="true"></div>
-    <div class="wrap">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
       <div class="hero-top reveal">
         <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">TÁNGARA</span>
         <span class="hero-meta" style="font-family: &quot;Bricolage Grotesque&quot;">Investment readiness climatech · Alistamiento · conexión · capital</span>
@@ -1364,12 +1420,13 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
           </a>
         </div>
       </div>
-    </div>
+      </div>
     <div class="hero-visual" aria-hidden="true">
       <div class="magnet" id="heroMagnet" data-magnet="3.5" data-magnet-pad="200">
         <img class="hero-bird" src="assets/logo-tangara-white.png" alt="Tángara · Alistamiento para la Inversión" />
         <div class="hero-tag" style="font-family: &quot;Bricolage Grotesque&quot;">INVESTMENT READINESS FOR CLIMATECH</div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -2347,13 +2404,13 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
       body:'El Fondo Verde Catalítico apoya soluciones de impacto social y ambiental que contribuyan a reducir las emisiones de gases de efecto invernadero y a fomentar la innovación en el capital natural como herramienta de cero emisiones netas.',
       ribbons:[
         {label:'Iniciativa de:', logos:[
-          {src:'assets/logo-bid-lab.png', alt:'BID Lab'},
-          {src:'assets/logo-latimpacto.png', alt:'Latimpacto'},
-          {src:'assets/logo-green-climate-fund.png', alt:'Green Climate Fund', cls:'ribbon-logo--lg'}
+          {src:'assets/logo-bid-lab-tr.png', alt:'BID Lab'},
+          {src:'assets/logo-latimpacto-tr.png', alt:'Latimpacto'},
+          {src:'assets/logo-green-climate-fund-tr.png', alt:'Green Climate Fund', cls:'ribbon-logo--lg'}
         ]},
         {label:'Apoya:', static:true, logos:[
-          {src:'assets/logo-bayer-foundation.png', alt:'Bayer Foundation'},
-          {src:'assets/logo-coca-cola-al.png', alt:'Coca-Cola América Latina'}
+          {src:'assets/logo-bayer-foundation-tr.png', alt:'Bayer Foundation'},
+          {src:'assets/logo-coca-cola-al-tr.png', alt:'Coca-Cola América Latina'}
         ]}
       ]
     },
@@ -2363,11 +2420,11 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
       body:'The Resilient Futures Fund (RFF) tiene como objetivo promover la resiliencia y ampliar las oportunidades para soluciones climáticas lideradas por mujeres y niñas, que las involucren o que las beneficien. A través de capital catalítico y apoyo especializado, RFF moviliza capital hacia quienes están en la primera línea del cambio climático y se encuentran en una posición única para innovar y generar un impacto duradero.',
       ribbons:[
         {label:'Apoya:', logos:[
-          {src:'assets/logo-amazon.png', alt:'Amazon'},
-          {src:'assets/logo-reckitt.jpg', alt:'Reckitt'},
-          {src:'assets/logo-skoll.jpg', alt:'Skoll Foundation'},
-          {src:'assets/logo-ups-foundation.png', alt:'The UPS Foundation'},
-          {src:'assets/logo-visa-foundation.png', alt:'Visa Foundation'}
+          {src:'assets/logo-amazon-tr.png', alt:'Amazon'},
+          {src:'assets/logo-reckitt-tr.png', alt:'Reckitt'},
+          {src:'assets/logo-skoll-tr.png', alt:'Skoll Foundation'},
+          {src:'assets/logo-ups-foundation-tr.png', alt:'The UPS Foundation'},
+          {src:'assets/logo-visa-foundation-tr.png', alt:'Visa Foundation'}
         ]}
       ]
     }
@@ -2396,22 +2453,6 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
     titleEl.textContent = info.title;
     bodyEl.textContent = info.body;
     ribbonsEl.innerHTML = info.ribbons.map(r => ribbonHTML(r.label, r.logos, r.static)).join('');
-    // Si GitHub no tiene un asset, no mostramos el ícono roto: dejamos el nombre del aliado.
-    ribbonsEl.querySelectorAll('img').forEach(img => {
-      img.addEventListener('error', () => {
-        const box = img.closest('.ribbon-logo');
-        if(!box) return;
-        const label = img.getAttribute('alt') || 'Aliado';
-        img.remove();
-        box.classList.add('logo-missing');
-        if(!box.querySelector('.logo-fallback-text')){
-          const span = document.createElement('span');
-          span.className = 'logo-fallback-text';
-          span.textContent = label;
-          box.appendChild(span);
-        }
-      }, {once:true});
-    });
     bd.classList.add('open'); bd.setAttribute('aria-hidden','false');
   }
   function close(){ bd.classList.remove('open'); bd.setAttribute('aria-hidden','true'); }
