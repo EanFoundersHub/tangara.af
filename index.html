@@ -546,20 +546,36 @@ button.orbit-pill{cursor:pointer}
 .prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
 .route{
   position:relative;min-height:clamp(320px,38vw,420px);
-  border-radius:32px;overflow:hidden;
+  border-radius:32px;overflow:visible;
   background:
     linear-gradient(160deg,rgba(238,70,221,.10),rgba(255,255,255,.02)),
     radial-gradient(circle at 76% 22%,rgba(255,150,225,.20),transparent 30%);
   border:1px solid rgba(255,255,255,.15);
 }
 .route svg.path-svg{position:absolute;inset:0;width:100%;height:100%}
-.route-step{position:absolute;width:108px;transform:translate(-50%,-50%)}
+.route-step{position:absolute;width:108px;margin-left:-54px;margin-top:-54px}
 .route-step .icon-round{margin:0 auto;width:108px;height:108px;background:rgba(10,0,16,.92);border-width:2px;flex:0 0 108px}
 .route-step .icon-round svg{width:76px;height:76px;stroke-width:2.4}
-.route-step strong{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(150px,18vw,200px);text-align:center;display:block;font-size:clamp(14px,1.2vw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.1}
-.route-step.s1{left:16%;top:50%}
-.route-step.s2{left:82%;top:26%}
-.route-step.s3{left:82%;top:74%}
+.route-step strong{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(120px,15vw,170px);text-align:center;display:block;font-size:clamp(14px,1.2vw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.route-step.s1{left:20%;top:50%}
+.route-step.s2{left:74%;top:26%}
+.route-step.s3{left:74%;top:74%}
+.path-m{display:none}
+
+/* Route — phone: keep the Y decision, rotated to a vertical fork */
+@media (max-width:760px){
+  .route{min-height:clamp(450px,120vw,580px);overflow:visible}
+  .path-d{display:none}
+  .path-m{display:block}
+  .route-step{width:82px;margin-left:-41px;margin-top:-41px}
+  .route-step .icon-round{width:82px;height:82px;flex:0 0 82px}
+  .route-step .icon-round svg{width:50px;height:50px}
+  .route-step strong{width:min(42vw,150px);font-size:14px;top:calc(100% + 10px)}
+  .route-step.s1{left:50%;top:14%}
+  .route-step.s1 strong{top:auto;bottom:calc(100% + 10px)}
+  .route-step.s2{left:27%;top:74%}
+  .route-step.s3{left:73%;top:74%}
+}
 
 /* ── VERTICALES (4 cards) ─────────────────────────── */
 .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -1167,6 +1183,9 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .hero-bird{animation:bird-float 8s ease-in-out infinite!important}
   /* hero visual must remain visible even when animation is killed */
   .hero-visual{opacity:1!important;transform:translateY(-50%)!important}
+  /* keep the program route flowing + junction pulsing */
+  .route .path-svg path[stroke="#fff"]{animation:route-flow 1.5s linear infinite!important}
+  .route .path-svg circle{animation:route-pulse 2.4s ease-in-out infinite!important}
   /* keep ecosystem orbit rotating */
   .orbit-ring{animation:orbit-spin 40s linear infinite!important}
   .orbit-ring .orbit-pill{animation:orbit-counter 40s linear infinite,pill-pulse 2.6s ease-in-out infinite!important}
@@ -1644,7 +1663,7 @@ body{
             <img class="fund-main" src="assets/logo-fondo-verde-catalitico.png" alt="Fondo Verde Catalítico"/>
             <div class="fund-operator">
               <span class="fund-op-label">Operado por:</span>
-              <img src="assets/logo-bid-lab-tr.png" alt="BID Lab"/>
+              <img src="assets/logo-bid-lab-clean.png" alt="BID Lab"/>
             </div>
           </div>
         </button>
@@ -1715,7 +1734,7 @@ body{
           </div>
         </div>
         <div class="route reveal d1">
-          <svg class="path-svg" viewBox="0 0 620 440" preserveAspectRatio="none">
+          <svg class="path-svg path-d" viewBox="0 0 620 440" preserveAspectRatio="none">
             <defs>
               <linearGradient id="routeg" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stop-color="#62165A"/>
@@ -1727,7 +1746,21 @@ body{
             <path d="M300 220 C 380 220 388 114 460 114" fill="none" stroke="url(#routeg)" stroke-linecap="round" stroke-width="10"/>
             <path d="M300 220 C 380 220 388 326 460 326" fill="none" stroke="url(#routeg)" stroke-linecap="round" stroke-width="10"/>
             <circle cx="300" cy="220" r="9" fill="#EE46DD"/>
-            <path d="M150 220 H300 M300 220 C 380 220 388 114 460 114 M300 220 C 380 220 388 326 460 326" fill="none" opacity=".35" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="1.5"/>
+            <path d="M150 220 H300 M300 220 C 380 220 388 114 460 114 M300 220 C 380 220 388 326 460 326" fill="none" opacity=".5" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="2"/>
+          </svg>
+          <svg class="path-svg path-m" viewBox="0 0 300 520" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="routegm" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#62165A"/>
+                <stop offset=".5" stop-color="#EE46DD"/>
+                <stop offset="1" stop-color="#FAD1F4"/>
+              </linearGradient>
+            </defs>
+            <path d="M150 250 V150" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
+            <path d="M150 250 C 150 330 81 320 81 385" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
+            <path d="M150 250 C 150 330 219 320 219 385" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
+            <circle cx="150" cy="250" r="9" fill="#EE46DD"/>
+            <path d="M150 250 V150 M150 250 C 150 330 81 320 81 385 M150 250 C 150 330 219 320 219 385" fill="none" opacity=".5" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="2"/>
           </svg>
           <div class="route-step s1">
             <div class="icon-round"><svg class="icon"><use href="#i-doc"/></svg></div>
