@@ -146,8 +146,8 @@ h4{font-weight:700;letter-spacing:-.02em;font-size:clamp(16px,1.4vw,20px)}
   margin-bottom:24px;
 }
 .kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:#F27BE3;box-shadow:0 0 10px #F27BE3}
-.lead{font-size:clamp(17px,1.4vw,22px);line-height:1.42;color:rgba(255,255,255,.88);font-weight:400;text-wrap:pretty;text-shadow:0 1px 16px rgba(8,2,16,.5)}
-.copy{font-size:clamp(15px,1.05vw,18px);line-height:1.55;color:rgba(255,255,255,.84);font-weight:400;text-wrap:pretty;text-shadow:0 1px 14px rgba(8,2,16,.45)}
+.lead{font-size:clamp(17px,1.4vw,22px);line-height:1.42;color:rgba(255,255,255,.95);font-weight:400;text-wrap:pretty;text-shadow:0 1px 18px rgba(8,2,16,.65)}
+.copy{font-size:clamp(15px,1.05vw,18px);line-height:1.55;color:rgba(255,255,255,.93);font-weight:400;text-wrap:pretty;text-shadow:0 1px 16px rgba(8,2,16,.55)}
 .eyebrow-num{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:rgba(255,255,255,.40);font-weight:500}
 .light .lead,.light .copy,.light p,.light .feat-big,.panel.light h2,.panel.light h3{text-shadow:none}
 /* Resaltado: nombres de aliados/aceleradoras (.hl) y frases contundentes (.hl-key) */
@@ -571,7 +571,7 @@ button.orbit-pill{cursor:pointer}
   .route-step .icon-round{width:82px;height:82px;flex:0 0 82px}
   .route-step .icon-round svg{width:50px;height:50px}
   .route-step strong{width:min(42vw,150px);font-size:14px;top:calc(100% + 10px)}
-  .route-step.s1{left:50%;top:14%}
+  .route-step.s1{left:50%;top:20%}
   .route-step.s1 strong{top:auto;bottom:calc(100% + 10px)}
   .route-step.s2{left:27%;top:74%}
   .route-step.s3{left:73%;top:74%}
@@ -1167,7 +1167,9 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .t-row{grid-template-columns:50px 1fr;gap:14px}
   .timeline::before{left:24px}
   .t-num{width:50px;height:50px;font-size:18px}
-  .t-card{grid-template-columns:1fr;padding:20px}
+  .t-card{grid-template-columns:1fr;padding:20px;overflow:visible}
+  .t-card h3{font-size:clamp(17px,5vw,22px)}
+  .t-card .copy{font-size:15px}
   .tags{justify-content:flex-start}
   .nav-cta{padding:9px 14px;font-size:11px}
   .menu-btn{width:36px;height:36px}
@@ -1267,9 +1269,10 @@ body{
   .hero .wrap{max-width:100%}
   .hero-grid{grid-template-columns:1fr;gap:26px;text-align:center;justify-items:center}
   .hero-top{display:none}                 /* el logo ya comunica la marca */
-  .hero-visual{display:block!important;order:-1;position:relative;width:min(62vw,250px);max-width:250px;margin:0 auto;aspect-ratio:auto;overflow:visible}
+  .hero-visual{display:block!important;order:-1;position:relative;width:min(48vw,200px);max-width:200px;margin:0 auto;aspect-ratio:1;overflow:hidden;border-radius:50%}
   .hero-visual::before{display:none}
-  .hero-bird{animation:none!important;filter:drop-shadow(0 0 40px rgba(238,70,221,.35)) drop-shadow(0 18px 40px rgba(40,12,60,.5))}
+  .hero-visual .magnet{transform:none!important;pointer-events:none}
+  .hero-bird{animation:bird-float-m 5s ease-in-out infinite!important;filter:drop-shadow(0 0 40px rgba(238,70,221,.35)) drop-shadow(0 18px 40px rgba(40,12,60,.5))}
   .hero-tag{position:static;transform:none;margin:16px auto 0;display:inline-flex}
   .hero-copy{gap:22px;align-items:center;width:100%}
   .hero-headline{margin-top:0}
@@ -1279,6 +1282,7 @@ body{
   .hero-actions{flex-direction:column;align-items:stretch;width:100%;max-width:340px;margin:4px auto 0;gap:12px}
   .hero-actions .btn,.hero-actions .btn-pill{width:100%;justify-content:center}
   .hero-actions .btn-pill{padding-left:24px}
+@keyframes bird-float-m{0%,100%{transform:scale(1.02) translateY(0)}50%{transform:scale(1.05) translateY(-6px)}}
 
   /* Ecosistema: detener la órbita giratoria; logos rectos, completos y centrados */
   .orbit-map{height:auto;padding:30px 16px;display:flex;flex-direction:column;align-items:center;gap:22px;overflow:visible}
@@ -1756,11 +1760,11 @@ body{
                 <stop offset="1" stop-color="#FAD1F4"/>
               </linearGradient>
             </defs>
-            <path d="M150 250 V150" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
+            <path d="M150 250 V175" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
             <path d="M150 250 C 150 330 81 320 81 385" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
             <path d="M150 250 C 150 330 219 320 219 385" fill="none" stroke="url(#routegm)" stroke-linecap="round" stroke-width="10"/>
             <circle cx="150" cy="250" r="9" fill="#EE46DD"/>
-            <path d="M150 250 V150 M150 250 C 150 330 81 320 81 385 M150 250 C 150 330 219 320 219 385" fill="none" opacity=".5" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="2"/>
+            <path d="M150 250 V175 M150 250 C 150 330 81 320 81 385 M150 250 C 150 330 219 320 219 385" fill="none" opacity=".5" stroke="#fff" stroke-dasharray="6 12" stroke-linecap="round" stroke-width="2"/>
           </svg>
           <div class="route-step s1">
             <div class="icon-round"><svg class="icon"><use href="#i-doc"/></svg></div>
@@ -2261,8 +2265,8 @@ body{
   }, {threshold:.6});
   document.querySelectorAll('.counter[data-target]').forEach(el => countObserver.observe(el));
 
-  // ── Magnetic hero (mouse-following) ─────────────────
-  document.querySelectorAll('[data-magnet]').forEach(el => {
+  // ── Magnetic hero (mouse-following) — disabled on mobile ──
+  if (window.innerWidth > 760) document.querySelectorAll('[data-magnet]').forEach(el => {
     const strength = Number(el.dataset.magnet) || 3;
     const pad = Number(el.dataset.magnetPad) || 150;
     let active = false;
