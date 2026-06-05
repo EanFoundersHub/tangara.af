@@ -101,6 +101,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   color:#F27BE3;text-decoration:none;letter-spacing:.04em;white-space:nowrap;
   transition:.25s var(--ease);
 }
+.nav-label-short{display:none}
 .nav-cta-secondary:hover{background:rgba(238,70,221,.12);color:#fff;border-color:#EE46DD;transform:translateY(-1px)}
 .nav-cta{
   display:inline-flex;align-items:center;gap:8px;
@@ -1168,14 +1169,16 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .footer .credits{text-align:left}
 }
 @media (max-width:720px){
-  .nav{left:10px;right:10px;top:10px;height:auto;padding:8px 10px;flex-wrap:wrap;gap:6px}
-  .nav.scrolled{height:auto}
+  .nav{left:10px;right:10px;top:10px;height:54px;padding:6px 8px 6px 12px;flex-wrap:nowrap;gap:6px}
+  .nav.scrolled{height:50px}
   .brand span{font-size:18px}
   .brand svg{width:26px;height:26px;flex:0 0 26px}
-  .brand-logo{height:28px}
-  .nav-cta-secondary{padding:7px 12px;font-size:10px;order:3}
-  .nav-cta{padding:7px 14px;font-size:10px;order:4}
-  .menu-btn{order:2}
+  .brand-logo{height:26px}
+  .nav-label-full{display:none}
+  .nav-label-short{display:inline}
+  .nav-cta-secondary{padding:6px 10px;font-size:10px}
+  .nav-cta{padding:6px 12px;font-size:10px}
+  .menu-btn{width:40px;height:40px;font-size:22px;flex-shrink:0}
   .hero{padding-top:96px;padding-bottom:24px}
   .hero-headline h1{font-size:clamp(40px,10vw,72px);max-width:none}
   .hero-headline .l2{font-size:.72em}
@@ -1194,7 +1197,7 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .t-card h3{font-size:clamp(17px,5vw,22px)}
   .t-card .copy{font-size:15px}
   .tags{justify-content:flex-start}
-  .menu-btn{width:38px;height:38px;font-size:20px}
+  .menu-btn{width:40px;height:40px;font-size:22px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -1584,7 +1587,7 @@ body{
     <a href="#resultados">Resultados</a>
     <a href="#genero">Género</a>
   </div>
-  <a class="nav-cta-secondary" href="assets/Terminos-de-Referencia-Tangara.pdf" target="_blank">Términos de Referencia</a>
+  <a class="nav-cta-secondary" href="assets/Terminos-de-Referencia-Tangara.pdf" target="_blank"><span class="nav-label-full">Términos de Referencia</span><span class="nav-label-short">TdR</span></a>
   <a class="nav-cta" href="#postulacion">Postúlate →</a>
 </nav>
 
