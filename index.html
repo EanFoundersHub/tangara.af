@@ -94,10 +94,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .navlinks a{font-size:11.5px;line-height:1;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);padding:9px 11px;border-radius:999px;transition:.2s var(--ease)}
 .navlinks a:hover{color:#fff}
 .navlinks a.active{background:rgba(238,70,221,.18);color:#fff}
+.nav-cta-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:999px;padding:11px 18px;font-size:13px;font-weight:700;
+  background:transparent;border:1.5px solid rgba(238,70,221,.5);
+  color:#F27BE3;text-decoration:none;letter-spacing:.04em;white-space:nowrap;
+  transition:.25s var(--ease);
+}
+.nav-cta-secondary:hover{background:rgba(238,70,221,.12);color:#fff;border-color:#EE46DD;transform:translateY(-1px)}
 .nav-cta{
   display:inline-flex;align-items:center;gap:8px;
-  border-radius:999px;padding:12px 20px;font-size:13px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  border-radius:999px;padding:12px 24px;font-size:13px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap;
   background:linear-gradient(135deg,#B12FA4 0%,#EE46DD 100%);
   box-shadow:0 12px 30px -8px rgba(238,70,221,.55),inset 0 1px 0 rgba(255,255,255,.25);
   transition:.25s var(--ease);
@@ -342,6 +350,7 @@ h4{font-weight:700;letter-spacing:-.02em;font-size:clamp(16px,1.4vw,20px)}
 }
 .panel.light .kicker{background:rgba(255,255,255,.6);border-color:rgba(177,47,164,.3);color:#8B2380}
 .panel.light h2,.panel.light h3,.panel.light .hero-heading{color:#160020;-webkit-text-fill-color:#160020;background:none}
+.post-card.light .hero-heading{background:linear-gradient(180deg,#8B2380 0%,#B12FA4 50%,#6A1B6D 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
 .panel.light .lead,.panel.light .copy,.panel.light p{color:rgba(22,0,32,.7)}
 .panel.light strong{color:#8B2380}
 
@@ -387,7 +396,7 @@ h4{font-weight:700;letter-spacing:-.02em;font-size:clamp(16px,1.4vw,20px)}
   background:
     radial-gradient(circle at 50% 50%,rgba(238,70,221,.16),transparent 50%),
     rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.15);overflow:hidden;
+  border:1px solid rgba(255,255,255,.15);overflow:visible;
 }
 .orbit-map svg.lines{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
 .orbit-node{
@@ -414,9 +423,10 @@ h4{font-weight:700;letter-spacing:-.02em;font-size:clamp(16px,1.4vw,20px)}
 }
 button.orbit-pill{cursor:pointer}
 .orbit-pill img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
-.orbit-pill.p1{left:50%;top:14%}
-.orbit-pill.p2{left:18%;top:72%}
-.orbit-pill.p3{left:82%;top:72%}
+.orbit-pill.p1{left:50%;top:10%}
+.orbit-pill.p2{left:10%;top:50%}
+.orbit-pill.p3{left:90%;top:50%}
+.orbit-pill.p4{left:50%;top:90%}
 
 /* Rotating orbit ring */
 .orbit-ring{position:absolute;inset:0;animation:orbit-spin 40s linear infinite;transform-origin:center}
@@ -438,6 +448,8 @@ button.orbit-pill{cursor:pointer}
 .orbit-ring .orbit-pill:nth-child(2)::after{animation-delay:.6s}
 .orbit-ring .orbit-pill:nth-child(3){animation-delay:0s,1.2s}
 .orbit-ring .orbit-pill:nth-child(3)::after{animation-delay:1.2s}
+.orbit-ring .orbit-pill:nth-child(4){animation-delay:0s,1.8s}
+.orbit-ring .orbit-pill:nth-child(4)::after{animation-delay:1.8s}
 .orbit-map:hover .orbit-ring,
 .orbit-map:hover .orbit-ring .orbit-pill,
 .orbit-map:hover .orbit-ring .orbit-pill::after{animation-play-state:paused}
@@ -674,7 +686,7 @@ button.orbit-pill{cursor:pointer}
 .all-phase li{padding-left:18px;border-left:1px solid rgba(238,70,221,.3);color:rgba(255,255,255,.86);font-size:14.5px;line-height:1.42}
 
 /* ── RUTA / TIMELINE ─────────────────────────────── */
-.timeline{position:relative;display:grid;gap:14px;margin-top:36px}
+.timeline{position:relative;display:grid;gap:14px;margin-top:36px;overflow:hidden}
 .timeline::before{content:"";position:absolute;left:32px;top:0;bottom:0;width:2px;background:linear-gradient(#EE46DD,rgba(238,70,221,.06))}
 .t-row{position:relative;display:grid;grid-template-columns:64px 1fr;gap:20px}
 .t-num{
@@ -886,7 +898,7 @@ button.orbit-pill{cursor:pointer}
 .initiative-box img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
 
 /* ── Cofinanciado: clickable fund cards ───────────── */
-.fund-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-top:8px;max-width:980px;margin-left:auto;margin-right:auto}
+.fund-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin-top:8px;max-width:1200px;margin-left:auto;margin-right:auto}
 .fund-card{
   border:1px solid rgba(255,255,255,.12);cursor:pointer;font:inherit;text-align:center;
   border-radius:34px;padding:0;position:relative;
@@ -1024,6 +1036,7 @@ button.orbit-pill{cursor:pointer}
   background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.13);
   display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;
 }
+.footer .brand{opacity:1;transform:none;pointer-events:auto}
 .footer p{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.55);max-width:780px}
 .footer .credits{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;text-align:right}
 
@@ -1140,6 +1153,7 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .navlinks.open{display:flex}
   .menu-btn{display:grid;place-items:center}
   .nav-cta{padding:10px 16px;font-size:12px}
+  .nav-cta-secondary{padding:9px 14px;font-size:11px}
   .ecosystem,.stat-layout,.prog-grid,.eligibility,.gender,.faq{grid-template-columns:1fr;gap:36px}
   .cards4,.result-grid,.all-phase ul{grid-template-columns:repeat(2,1fr)}
   .metrics{grid-template-columns:repeat(2,1fr)}
@@ -1167,11 +1181,12 @@ html[data-motion="gentle"] .btn,html[data-motion="gentle"] .btn-pill,html[data-m
   .t-row{grid-template-columns:50px 1fr;gap:14px}
   .timeline::before{left:24px}
   .t-num{width:50px;height:50px;font-size:18px}
-  .t-card{grid-template-columns:1fr;padding:20px;overflow:visible}
+  .t-card{grid-template-columns:1fr;padding:18px;overflow:hidden;min-width:0;box-sizing:border-box}
   .t-card h3{font-size:clamp(17px,5vw,22px)}
   .t-card .copy{font-size:15px}
   .tags{justify-content:flex-start}
   .nav-cta{padding:9px 14px;font-size:11px}
+  .nav-cta-secondary{padding:8px 12px;font-size:10px}
   .menu-btn{width:36px;height:36px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -1562,6 +1577,7 @@ body{
     <a href="#resultados">Resultados</a>
     <a href="#genero">Género</a>
   </div>
+  <a class="nav-cta-secondary" href="assets/Terminos-de-Referencia-Tangara.pdf" target="_blank">Términos de Referencia</a>
   <a class="nav-cta" href="#postulacion">Postúlate →</a>
 </nav>
 
@@ -1620,13 +1636,14 @@ body{
         </div>
         <div class="orbit-map">
           <svg class="lines" viewBox="0 0 700 520" preserveAspectRatio="xMidYMid meet">
-            <circle cx="350" cy="260" r="175" fill="none" stroke="#F27BE3" stroke-opacity=".35"/>
+            <circle cx="350" cy="260" r="190" fill="none" stroke="#F27BE3" stroke-opacity=".35"/>
             <circle cx="350" cy="260" r="250" fill="none" stroke="#F27BE3" stroke-opacity=".12"/>
-            <path d="M350 260 350 82M350 260 175 386M350 260 525 386" stroke="#F27BE3" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <path d="M350 260 350 70M350 260 100 260M350 260 600 260M350 260 350 450" stroke="#F27BE3" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="4 6"/>
             <g fill="#F27BE3">
-              <circle cx="350" cy="82" r="4"/>
-              <circle cx="175" cy="386" r="4"/>
-              <circle cx="525" cy="386" r="4"/>
+              <circle cx="350" cy="70" r="4"/>
+              <circle cx="100" cy="260" r="4"/>
+              <circle cx="600" cy="260" r="4"/>
+              <circle cx="350" cy="450" r="4"/>
             </g>
           </svg>
           <div class="orbit-node center">
@@ -1636,6 +1653,7 @@ body{
             <button class="orbit-pill p1" data-acc="ean" type="button" aria-label="Ver información de Universidad EAN · Impacta"><img src="assets/logo-ean-impacta-color.png" alt="Universidad EAN · Impacta"/></button>
             <button class="orbit-pill p2" data-acc="connect" type="button" aria-label="Ver información de Connect"><img src="assets/logo-connect.png" alt="Connect"/></button>
             <button class="orbit-pill p3" data-acc="bio" type="button" aria-label="Ver información de Biointropic"><img src="assets/logo-biointropic.png" alt="Biointropic"/></button>
+            <button class="orbit-pill p4" data-acc="fimpacta" type="button" aria-label="Ver información de Fondo Impacta"><img src="assets/logo-fondo-impacta.png" alt="Fondo Impacta"/></button>
           </div>
           <span class="orbit-hint" aria-hidden="true">Click en cada aliado</span>
         </div>
@@ -2534,6 +2552,12 @@ body{
       url:'https://biointropic.com/',
       title:'Biointropic',
       body:'Promueve y apoya proyectos innovadores de base bio y aceleración de bionegocios. Actualmente es reconocido como centro de innovación y productividad por MinCiencias. Biointropic ha acompañado más de 100 proyectos bio, más de 500 empresas de base biotecnológica y de bioeconomía, y cuenta con más de 30 aliados a nivel nacional e internacional. Tiene participación activa en 12 redes asociadas a bioeconomía, ingredientes naturales y cosméticos, economía circular y comercio justo.'
+    },
+    fimpacta: {
+      logo:'assets/logo-fondo-impacta.png',
+      url:'https://impacta.emprendimientosostenible.com.co/portafolio-de-servicios/fondo-de-inversion/',
+      title:'Fundación para el Emprendimiento Impacta – Fondo Impacta',
+      body:'Fondo de capital privado de la Universidad Ean, especializado en capital de riesgo orientado a soluciones climáticas en etapa temprana. En operaciones desde octubre de 2022, con 6 inversiones realizadas en transición energética, economía circular e inclusión financiera, y más de 450 oportunidades evaluadas. Como vehículo de financiación, despliega instrumentos de equity, cuasi-deuda (notas convertibles, SAFE) y deuda flexible, adaptados al perfil y madurez de cada emprendimiento.'
     }
   };
   const bd = document.getElementById('acc-modal-bd');
