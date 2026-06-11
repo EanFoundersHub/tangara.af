@@ -1,21 +1,34 @@
-# Tángara · Alistamiento para la Inversión — Landing Page
+# Tángara · Alistamiento para la Inversión
 
-Landing page estática (un solo archivo `index.html` + carpeta `assets/`).
+Landing page estática para GitHub Pages.
 
-## Contenido
-- `index.html` — la página completa (HTML, CSS y JS embebidos).
-- `assets/` — logos, imágenes, foto y el PDF de Términos de Referencia.
+## Dominio
+- GitHub Pages: https://eanfoundershub.github.io/tangara.af/
+- Dominio personalizado: https://tangara-ir.com/
 
-Las tipografías (Bricolage Grotesque y JetBrains Mono) se cargan desde Google Fonts,
-por lo que el sitio necesita conexión a internet para mostrarlas correctamente.
+## Estructura
+```
+index.html
+assets/
+CNAME
+README.md
+```
 
-## Publicar en GitHub Pages
-1. Crea un repositorio nuevo en GitHub y sube **todo el contenido de esta carpeta**
-   (deja `index.html` en la raíz del repositorio, junto a la carpeta `assets/`).
-2. En el repositorio ve a **Settings → Pages**.
-3. En **Source** elige la rama (`main`) y la carpeta `/ (root)`. Guarda.
-4. En unos minutos tu sitio estará disponible en
-   `https://<tu-usuario>.github.io/<nombre-del-repo>/`.
+## Contacto
+tangara.ir@universidadean.edu.co
 
-> Importante: respeta la estructura `index.html` + `assets/` para que las rutas
-> relativas (`assets/...`) sigan funcionando.
+---
+
+## Configuración DNS en GoDaddy para tangara-ir.com
+
+| Tipo  | Nombre | Valor                          |
+|-------|--------|--------------------------------|
+| A     | @      | 185.199.108.153                |
+| A     | @      | 185.199.109.153                |
+| A     | @      | 185.199.110.153                |
+| A     | @      | 185.199.111.153                |
+| CNAME | www    | eanfoundershub.github.io       |
+
+## En GitHub
+Settings → Pages → Custom domain: `tangara-ir.com`
+Activar **Enforce HTTPS** cuando esté disponible.
