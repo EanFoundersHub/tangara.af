@@ -702,37 +702,34 @@ button.orbit-pill{cursor:pointer}
 .inv-graphic{position:relative;z-index:1;margin-top:34px;max-width:430px}
 .inv-graphic svg{width:100%;height:auto;display:block;overflow:visible}
 .inv-axis{stroke:rgba(255,255,255,.22);stroke-width:1.5;stroke-dasharray:4 6}
-.inv-bars rect{fill:url(#invBar);transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
+.inv-bars rect{fill:url(#invBar);transform-box:fill-box;transform-origin:bottom}
 .inv-trend{fill:none;stroke:#F6A6EB;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 4px 14px rgba(238,70,221,.6))}
 .inv-arrow{fill:none;stroke:#F6A6EB;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .inv-node{fill:#2A1046;stroke:#F6A6EB;stroke-width:2.5}
 .inv-coin circle{fill:#EE46DD;filter:drop-shadow(0 6px 18px rgba(238,70,221,.7))}
 .inv-coin text{fill:#fff;font-weight:800;font-size:15px}
-.inv-trend,.inv-arrow{stroke-dasharray:var(--len,400);stroke-dashoffset:var(--len,400)}
-.inv-coin,.inv-node{opacity:0}
-/* Animated state, triggered when the panel reveals */
-.inv-panel.visible .inv-bars rect{animation:invGrow .9s var(--ease-premium) forwards}
+.inv-trend,.inv-arrow{stroke-dasharray:400}
+.inv-coin,.inv-node{transform-box:fill-box;transform-origin:center}
+/* Animated entrance — base state is VISIBLE, we animate FROM hidden when the panel reveals */
+.inv-panel.visible .inv-bars rect{animation:invGrow .9s var(--ease-premium) backwards}
 .inv-panel.visible .inv-bars rect:nth-child(1){animation-delay:.15s}
 .inv-panel.visible .inv-bars rect:nth-child(2){animation-delay:.27s}
 .inv-panel.visible .inv-bars rect:nth-child(3){animation-delay:.39s}
 .inv-panel.visible .inv-bars rect:nth-child(4){animation-delay:.51s}
 .inv-panel.visible .inv-bars rect:nth-child(5){animation-delay:.63s}
-.inv-panel.visible .inv-trend{animation:invDraw 1.1s var(--ease-premium) .5s forwards}
-.inv-panel.visible .inv-arrow{animation:invDraw .4s var(--ease-premium) 1.5s forwards}
-.inv-panel.visible .inv-coin{animation:invPop .5s var(--ease-premium) 1.6s forwards}
-.inv-panel.visible .inv-node{animation:invPop .4s var(--ease-premium) forwards}
+.inv-panel.visible .inv-trend{animation:invDraw 1.1s var(--ease-premium) .5s backwards}
+.inv-panel.visible .inv-arrow{animation:invDraw .4s var(--ease-premium) 1.5s backwards}
+.inv-panel.visible .inv-coin{animation:invPop .5s var(--ease-premium) 1.6s backwards}
+.inv-panel.visible .inv-node{animation:invPop .4s var(--ease-premium) backwards}
 .inv-panel.visible .inv-node:nth-of-type(1){animation-delay:.7s}
 .inv-panel.visible .inv-node:nth-of-type(2){animation-delay:.85s}
 .inv-panel.visible .inv-node:nth-of-type(3){animation-delay:1s}
 .inv-panel.visible .inv-node:nth-of-type(4){animation-delay:1.15s}
-@keyframes invGrow{to{transform:scaleY(1)}}
-@keyframes invDraw{to{stroke-dashoffset:0}}
+@keyframes invGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes invDraw{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
 @keyframes invPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
-.inv-coin,.inv-node{transform-box:fill-box;transform-origin:center}
 @media(prefers-reduced-motion:reduce){
-  .inv-bars rect{transform:scaleY(1)}
-  .inv-trend,.inv-arrow{stroke-dashoffset:0}
-  .inv-coin,.inv-node{opacity:1}
+  .inv-graphic *{animation:none!important}
 }
 @media(max-width:900px){
   .inv-panel{grid-template-columns:1fr;gap:32px}
@@ -2145,7 +2142,6 @@ body{
     <div class="wrap">
       <div class="inv-panel reveal">
         <div class="inv-lead">
-          <span class="kicker" style="font-family: &quot;Bricolage Grotesque&quot;">INVERSIONISTAS</span>
           <h2 class="hero-heading" style="font-size:clamp(38px,4.8vw,72px)">¿Eres inversionista de impacto?</h2>
           <p class="copy" style="margin-top:24px">
             Tángara es <span class="hl-key">el puente entre la innovación climática y el capital de impacto.</span> Conectamos soluciones de base tecnológica con inversión a través del Fondo Impacta. Si inviertes con interés en clima y género, este es tu acceso anticipado al pipeline.
