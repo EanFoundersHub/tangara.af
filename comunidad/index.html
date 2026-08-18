@@ -471,7 +471,7 @@ function parseMaybeJSON(v){
 function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
 function storeSession(s,token){session={...s,accessToken:token};sessionStorage.setItem('tangara.session',JSON.stringify(session));const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);openApp()}
 async function boot(){
-  const token=params.get('access');
+  const token=params.get('accessToken')||params.get('access');
   if(token){
     try{const res=await apiPost(FLOW_VALIDATE_URL,{accessToken:token});if(!res?.ok) throw new Error('ACCESS_DENIED');return storeSession(res,token)}catch(err){console.error(err);return showGateError('No pudimos validar este enlace. Revisa que sea el enlace personal más reciente que te envió Tángara.')}
   }
