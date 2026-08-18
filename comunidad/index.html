@@ -10,91 +10,306 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <style>
-:root{--font:'Bricolage Grotesque',system-ui,-apple-system,sans-serif;--bg:#1A0A2A;--bg2:#26133C;--ink:#160020;--rose:#FAD1F4;--cream:#FDECEA;--mag:#EE46DD;--mag2:#F27BE3;--mag3:#B12FA4;--plum:#62165A;--line:rgba(255,255,255,.15);--card:rgba(255,255,255,.075);--card2:rgba(255,255,255,.11);--ok:#9be8be;--warn:#ffd48b;--danger:#ff9aa8;--r:28px;--ease:cubic-bezier(.22,1,.36,1)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:var(--font);background:var(--bg);color:#fff}html{scroll-behavior:smooth}body{overflow-x:hidden;background:radial-gradient(850px 600px at 6% -5%,rgba(238,70,221,.25),transparent 62%),radial-gradient(900px 620px at 98% 0%,rgba(98,22,90,.48),transparent 65%),linear-gradient(180deg,#1d0c2f,#28153f 52%,#150822)}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:url('../assets/hero-bg-cocora.png') center/cover no-repeat;opacity:.18;filter:saturate(1.1) contrast(1.05)}body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(#000,transparent 92%)}
-button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}.shell{width:min(1380px,100%);margin:auto;padding:0 clamp(18px,3vw,46px)}.glass{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.045));border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 80px -35px rgba(0,0,0,.65)}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.04em}.brand-logo{height:28px;width:auto;max-width:190px}.brand small{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:600;margin-top:2px}.btn{border:0;border-radius:999px;padding:12px 18px;color:#fff;font-weight:700;letter-spacing:.02em;transition:.25s var(--ease)}.btn:hover:not(:disabled){transform:translateY(-2px)}.btn:disabled{cursor:not-allowed;opacity:.55}.btn-primary{background:linear-gradient(135deg,#B12FA4,#EE46DD);box-shadow:0 14px 32px -12px rgba(238,70,221,.7)}.btn-soft{background:rgba(255,255,255,.07);border:1px solid var(--line)}.btn-light{background:#fff;color:#62165A}.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(238,70,221,.10);border:1px solid rgba(238,70,221,.28);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:#F6A6EB;font-weight:700}.pill:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mag2);box-shadow:0 0 10px var(--mag2)}
-/* gate */
-#gateView{min-height:100svh;display:grid;place-items:center;padding:24px}.gate{width:min(980px,100%);border-radius:38px;overflow:hidden;display:grid;grid-template-columns:1.08fr .92fr;min-height:590px}.gate-visual{position:relative;padding:clamp(34px,5vw,62px);display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(150deg,rgba(98,22,90,.82),rgba(25,8,43,.84)),url('../assets/hero-bg-cocora.png') center/cover}.gate-visual:after{content:"";position:absolute;inset:0;background:radial-gradient(600px 420px at 30% 20%,rgba(238,70,221,.28),transparent 62%);pointer-events:none}.gate-visual>*{position:relative;z-index:1}.gate-visual h1{font-size:clamp(42px,5vw,70px);line-height:.9;letter-spacing:-.055em;margin:0;background:linear-gradient(180deg,#fff,#F27BE3 70%);-webkit-background-clip:text;color:transparent}.gate-visual p{font-size:17px;line-height:1.55;color:rgba(255,255,255,.82);max-width:520px}.gate-side{padding:clamp(34px,5vw,62px);background:linear-gradient(180deg,#FDECEA,#FAD1F4);color:var(--ink);display:flex;flex-direction:column;justify-content:center}.gate-side h2{font-size:clamp(28px,3vw,40px);letter-spacing:-.035em;margin:0 0 10px}.gate-side p{color:rgba(22,0,32,.64);line-height:1.55}.loader{display:flex;align-items:center;gap:10px;margin-top:20px;color:#62165A;font-weight:700}.spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(98,22,90,.18);border-top-color:#B12FA4;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.gate-error{margin-top:18px;padding:14px;border-radius:14px;background:rgba(190,35,70,.08);border:1px solid rgba(190,35,70,.14);color:#8c1738;font-size:13px;line-height:1.5}.micro{font-size:11px!important;color:rgba(22,0,32,.5)!important;margin-top:18px}
-/* app */
-#appView{min-height:100vh}.demo-bar{display:none;background:linear-gradient(90deg,#FDECEA,#FAD1F4);color:#43165c;padding:10px 18px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.02em}body.demo .demo-bar{display:block}.topbar{position:sticky;top:12px;z-index:30;margin:12px auto 0;width:min(1380px,calc(100% - 24px));min-height:68px;border-radius:999px;padding:8px 10px 8px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(26,10,42,.84);border:1px solid var(--line);backdrop-filter:blur(22px)}.top-actions{display:flex;align-items:center;gap:8px}.user-chip{display:flex;align-items:center;gap:10px;padding:7px 10px 7px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)}.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#B12FA4,#F27BE3);font-size:12px;font-weight:800}.user-chip strong{font-size:12px;display:block}.user-chip span{display:block;font-size:10px;color:rgba(255,255,255,.5)}
-.hero{padding:72px 0 34px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:end}.hero h1{font-size:clamp(44px,6vw,84px);line-height:.88;letter-spacing:-.055em;margin:18px 0 20px;background:linear-gradient(180deg,#FDECEA,#F27BE3 62%,#B12FA4);-webkit-background-clip:text;color:transparent}.hero p{font-size:clamp(16px,1.35vw,20px);line-height:1.5;color:rgba(255,255,255,.82);max-width:760px}.hero-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{border-radius:22px;padding:20px}.stat strong{font-size:36px;line-height:.9;display:block;color:#F27BE3}.stat span{display:block;margin-top:9px;color:rgba(255,255,255,.6);font-size:12px}
-.demo-callout{display:none;margin:0 0 18px;border-radius:22px;padding:18px 20px;background:linear-gradient(135deg,rgba(253,236,234,.98),rgba(250,209,244,.98));color:#43165c;align-items:center;justify-content:space-between;gap:18px}body.demo .demo-callout{display:flex}.demo-callout strong{font-size:14px}.demo-callout span{font-size:12px;color:rgba(67,22,92,.68)}
-.toolbar{position:sticky;top:92px;z-index:20;border-radius:24px;padding:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0 24px}.search{position:relative;flex:1;min-width:250px}.search input,.toolbar select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;border-radius:14px;padding:13px 14px;outline:none}.toolbar select{width:auto;min-width:220px}.toolbar option{background:#26133C}.search input::placeholder{color:rgba(255,255,255,.4)}.directory-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:rgba(255,255,255,.58);font-size:12px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px;padding-bottom:70px}.company{border-radius:24px;padding:20px;text-align:left;color:#fff;transition:.35s var(--ease);position:relative;overflow:hidden}.company:hover{transform:translateY(-5px);border-color:rgba(238,70,221,.48);box-shadow:0 28px 60px -35px rgba(238,70,221,.8)}.company.demo-target{border-color:rgba(255,212,139,.65);box-shadow:0 0 0 1px rgba(255,212,139,.12) inset}.company.demo-target:after{content:'Sugerida para demo';position:absolute;right:12px;bottom:12px;background:#ffd48b;color:#43165c;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.company-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:18px}.company-logo{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:#FDECEA;color:#62165A;font-size:14px;font-weight:800;box-shadow:inset 0 0 0 1px rgba(22,0,32,.08)}.vertical{font-size:10px;padding:7px 10px;border-radius:999px;background:rgba(238,70,221,.11);border:1px solid rgba(238,70,221,.25);color:#F6A6EB;max-width:185px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.company h3{font-size:22px;letter-spacing:-.025em;margin:0 0 8px}.company p{font-size:13px;line-height:1.5;color:rgba(255,255,255,.65);height:60px;overflow:hidden}.company-foot{margin-top:18px;padding-top:15px;border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:8px}.company-foot span{font-size:11px;color:rgba(255,255,255,.5)}.company-foot b{font-size:12px;color:#F27BE3}
-/* requests */
-.requests{padding:0 0 30px}.requests h2{font-size:26px;margin:0 0 12px;letter-spacing:-.03em}.request-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}.request-card{border-radius:18px;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.request-card strong{font-size:13px}.request-card span{font-size:10px;color:#ffd48b;text-transform:uppercase;letter-spacing:.08em}
-/* modal */
-.backdrop{position:fixed;inset:0;z-index:80;background:rgba(10,0,16,.76);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px}.backdrop.open{display:flex}.modal{width:min(940px,100%);max-height:92vh;overflow:auto;border-radius:30px;background:linear-gradient(180deg,#FDECEA,#FAD1F4);color:var(--ink);box-shadow:0 60px 130px -40px #000;animation:modalin .35s var(--ease)}@keyframes modalin{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}.modal-head{padding:32px;background:linear-gradient(145deg,#26113c,#4b1854);color:#fff;position:relative;overflow:hidden}.modal-head:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-110px;top:-130px;background:rgba(238,70,221,.17)}.modal-head>*{position:relative;z-index:1}.modal-head h2{font-size:clamp(32px,4vw,54px);line-height:.96;letter-spacing:-.045em;margin:18px 0 12px}.modal-head p{color:rgba(255,255,255,.68);line-height:1.55;max-width:760px}.close{position:absolute;right:18px;top:18px;z-index:3;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:22px}.modal-body{padding:28px}.profile-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.light-card{background:rgba(255,255,255,.68);border:1px solid rgba(22,0,32,.09);border-radius:20px;padding:20px}.light-card h4{margin:0 0 12px;color:#62165A;font-size:12px;letter-spacing:.09em;text-transform:uppercase}.light-card p{font-size:14px;line-height:1.6;color:rgba(22,0,32,.72);white-space:pre-line}.facts{display:grid;gap:11px}.fact{display:grid;gap:3px;padding-bottom:9px;border-bottom:1px solid rgba(22,0,32,.08)}.fact:last-child{border:0}.fact span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(22,0,32,.48)}.fact strong{font-size:13px;line-height:1.35}.privacy-note{margin-top:14px;border-radius:14px;padding:12px;background:rgba(98,22,90,.07);color:#62165A;font-size:12px;line-height:1.5}.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.profile-actions .btn-soft{color:#62165A;border-color:rgba(98,22,90,.18);background:rgba(255,255,255,.56)}.website-btn{text-decoration:none;display:inline-flex;align-items:center}
-.confirm{width:min(560px,100%);border-radius:28px;background:linear-gradient(180deg,#FDECEA,#FAD1F4);color:var(--ink);padding:30px;box-shadow:0 60px 130px -40px #000;position:relative}.confirm h3{font-size:30px;letter-spacing:-.035em;margin:14px 0 10px}.confirm p{color:rgba(22,0,32,.66);line-height:1.55}.confirm-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}.confirm .btn-soft{color:#62165A;border-color:rgba(98,22,90,.18);background:rgba(255,255,255,.55)}
-.success-icon{width:60px;height:60px;border-radius:20px;display:grid;place-items:center;background:#62165A;color:#fff;font-size:28px}.tech{display:none;margin-top:16px;padding:12px;border-radius:12px;background:#251031;color:#f5dff2;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}body.demo .tech{display:block}
-.toast{position:fixed;left:50%;bottom:24px;z-index:120;transform:translate(-50%,20px);opacity:0;padding:12px 16px;border-radius:999px;background:#FDECEA;color:#43165c;box-shadow:0 20px 60px rgba(0,0,0,.34);font-size:12px;font-weight:800;transition:.3s}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:820px){.gate{grid-template-columns:1fr}.gate-visual{min-height:370px}.hero-grid,.profile-grid{grid-template-columns:1fr}.topbar{border-radius:22px;height:auto;padding:12px 14px}.brand small{display:none}.user-chip div:not(.avatar){display:none}.hero{padding-top:42px}.toolbar{top:92px}.demo-callout{align-items:flex-start;flex-direction:column}}
-@media(max-width:560px){.hero-stats{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr}.modal-body{padding:18px}.modal-head{padding:24px}.top-actions .btn-soft{display:none}}
+:root{
+  --font:'Bricolage Grotesque',system-ui,-apple-system,sans-serif;
+  --mono:'Bricolage Grotesque',system-ui,-apple-system,sans-serif;
+  --bg:#140820;--bg2:#1E0F30;--ink:#1B0726;
+  --rose:#FAD1F4;--cream:#FDECEA;
+  --mag:#EE46DD;--mag2:#F27BE3;--mag3:#B12FA4;--plum:#62165A;
+  --line:rgba(255,255,255,.11);--line2:rgba(255,255,255,.16);
+  --card:rgba(255,255,255,.035);--card2:rgba(255,255,255,.06);
+  --txt:#F4ECF6;--txt2:rgba(244,236,246,.62);--txt3:rgba(244,236,246,.42);
+  --ok:#8fe6b6;--warn:#ffd48b;--danger:#ff9aa8;
+  --r:18px;--ease:cubic-bezier(.4,0,.2,1)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:var(--font);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden;background:radial-gradient(900px 640px at 4% -8%,rgba(238,70,221,.16),transparent 60%),radial-gradient(1000px 680px at 100% -4%,rgba(98,22,90,.4),transparent 62%),linear-gradient(180deg,#180B26,#1c0f2f 55%,#120720)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:url('../assets/hero-bg-cocora.png') center/cover no-repeat;opacity:.10;filter:saturate(1.05)}
+img{display:block;max-width:100%}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--mag2);text-decoration:none}a:hover{color:var(--mag)}
+.hidden{display:none!important}
+.shell{width:min(1300px,100%);margin:auto;padding:0 clamp(18px,3.4vw,44px)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#F6A6EB;font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+h1,h2,h3{letter-spacing:-.03em;font-weight:700;margin:0}
 
-/* v2: carousel + connection center */
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 0 14px}.section-head h2{font-size:clamp(25px,3vw,34px);letter-spacing:-.035em;margin:0}.section-head p{margin:6px 0 0;color:rgba(255,255,255,.58);font-size:13px;line-height:1.5}.carousel-section{padding:4px 0 30px}.carousel-wrap{position:relative}.carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 4px 16px}.carousel::-webkit-scrollbar{display:none}.carousel-card{flex:0 0 min(330px,82vw);scroll-snap-align:start;border-radius:22px;padding:18px;text-align:left;color:#fff;min-height:195px;transition:.3s var(--ease)}.carousel-card:hover{transform:translateY(-4px);border-color:rgba(238,70,221,.45)}.carousel-card h3{font-size:20px;letter-spacing:-.025em;margin:13px 0 7px}.carousel-card p{margin:0;color:rgba(255,255,255,.6);font-size:12px;line-height:1.45;height:51px;overflow:hidden}.carousel-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;color:rgba(255,255,255,.48)}.carousel-controls{display:flex;gap:7px}.carousel-arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;font-size:18px}.connection-hub{padding:12px 0 36px;scroll-margin-top:110px}.connection-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.connection-stat{padding:16px 18px;border-radius:19px}.connection-stat strong{display:block;font-size:26px;color:#F27BE3}.connection-stat span{font-size:11px;color:rgba(255,255,255,.55)}.connection-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.connection-tab{border:1px solid var(--line);background:rgba(255,255,255,.05);color:rgba(255,255,255,.72);padding:9px 13px;border-radius:999px;font-weight:700;font-size:12px}.connection-tab.active{background:#FDECEA;color:#62165A;border-color:transparent}.badge-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:5px;border-radius:999px;background:#EE46DD;color:#fff;font-size:10px}.connection-panel{display:none}.connection-panel.active{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:11px}.connection-card{border-radius:21px;padding:18px;min-height:155px}.connection-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.connection-card h3{font-size:19px;margin:0 0 4px;letter-spacing:-.025em}.connection-card .sub{font-size:11px;color:rgba(255,255,255,.52)}.status-chip{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-radius:999px;white-space:nowrap}.status-pending{background:rgba(255,212,139,.12);color:#ffd48b;border:1px solid rgba(255,212,139,.25)}.status-accepted{background:rgba(155,232,190,.12);color:#9be8be;border:1px solid rgba(155,232,190,.25)}.status-declined{background:rgba(255,154,168,.1);color:#ffb2bd;border:1px solid rgba(255,154,168,.2)}.connection-card p{font-size:12px;color:rgba(255,255,255,.62);line-height:1.45;margin:13px 0}.connection-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.connection-actions .btn{padding:9px 12px;font-size:11px}.empty-state{grid-column:1/-1;padding:25px;border-radius:20px;text-align:center;color:rgba(255,255,255,.52)}.contact-card{margin-top:13px;padding:14px;border-radius:16px;background:linear-gradient(145deg,#FDECEA,#FAD1F4);color:#43165c}.contact-card strong{font-size:15px}.contact-card .role{font-size:11px;color:rgba(67,22,92,.62);margin:2px 0 10px}.contact-links{display:flex;gap:6px;flex-wrap:wrap}.contact-links a{font-size:10px;font-weight:700;text-decoration:none;padding:7px 9px;border-radius:999px;background:rgba(98,22,90,.08);border:1px solid rgba(98,22,90,.12)}.connections-loading{padding:20px;border-radius:20px;color:rgba(255,255,255,.6)}.toolbar{display:grid;grid-template-columns:minmax(240px,1.4fr) repeat(3,minmax(175px,.7fr));}.toolbar select{width:100%;min-width:0}.directory-title{font-size:clamp(27px,3vw,38px);margin:12px 0 5px;letter-spacing:-.04em}.directory-intro{color:rgba(255,255,255,.57);font-size:13px;margin:0 0 15px}.loading-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#F27BE3;animation:pulse 1s infinite alternate}@keyframes pulse{to{opacity:.25}}
-@media(max-width:900px){.connection-summary{grid-template-columns:1fr 1fr 1fr}.toolbar{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.hero{padding-top:45px}}
-@media(max-width:640px){.connection-summary{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.search{grid-column:auto}.carousel-card{flex-basis:84vw}.section-head{align-items:flex-start}.connection-panel.active{grid-template-columns:1fr}}
+/* ── BUTTONS (sobrios, sin exceso de píldoras) ─────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:12px 20px;color:#fff;font-weight:600;font-size:14px;line-height:1;transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease),opacity .2s}
+.btn:disabled{cursor:not-allowed;opacity:.45}
+.btn-primary{background:var(--mag3)}
+.btn-primary:hover:not(:disabled){background:var(--mag)}
+.btn-soft{background:transparent;border-color:var(--line2);color:var(--txt)}
+.btn-soft:hover:not(:disabled){border-color:rgba(238,70,221,.55);color:#fff}
+.btn-ghost{background:transparent;color:var(--txt2);padding:10px 14px}
+.btn-ghost:hover:not(:disabled){color:#fff}
+.btn-sm{padding:9px 14px;font-size:12.5px;border-radius:10px}
 
+/* status pills (etiquetas, no botones) */
+.chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:6px 11px;border-radius:999px}
+.chip-mag{background:rgba(238,70,221,.10);border:1px solid rgba(238,70,221,.28);color:#F6A6EB}
+.chip-mag:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--mag2);animation:dot-pulse 2.6s ease-in-out infinite}
+@keyframes dot-pulse{0%,100%{box-shadow:0 0 0 0 rgba(242,123,227,.55)}55%{box-shadow:0 0 0 6px rgba(242,123,227,0)}}
+
+/* brand lockup */
+.brand{display:flex;align-items:center;gap:13px}
+.brand-logo{height:30px;width:auto}
+.brand-tag{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--txt3);font-weight:500;padding-left:14px;border-left:1px solid var(--line2)}
+
+/* ── GATE ──────────────────────────────────────────────── */
+#gateView{min-height:100svh;display:grid;place-items:center;padding:24px}
+.gate{width:min(1000px,100%);border-radius:26px;overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr;min-height:600px;border:1px solid var(--line);box-shadow:0 40px 120px -50px rgba(0,0,0,.8)}
+.gate-visual{position:relative;padding:clamp(34px,4.6vw,58px);display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(155deg,rgba(74,17,68,.72),rgba(20,8,32,.9)),url('../assets/hero-bg-cocora.png') center/cover}
+.gate-visual::after{content:"";position:absolute;right:-56px;bottom:-30px;width:74%;max-width:540px;aspect-ratio:2048/1185;background:url('../assets/hero-bird-network.png') no-repeat center/contain;opacity:.15;pointer-events:none;z-index:0}
+.gate-visual>*{position:relative;z-index:1}
+.gate-visual h1{font-size:clamp(38px,4.4vw,58px);line-height:.98;margin:22px 0 16px;color:#fff}
+.gate-visual p{font-size:16px;line-height:1.6;color:rgba(255,255,255,.8);max-width:460px}
+.gate-side{padding:clamp(34px,4.6vw,58px);background:var(--bg2);border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.gate-side h2{font-size:clamp(24px,2.6vw,32px);margin:0 0 12px}
+.gate-side p{color:var(--txt2);line-height:1.6;font-size:15px}
+.loader{display:flex;align-items:center;gap:11px;margin-top:24px;color:#F6A6EB;font-family:var(--mono);font-size:12px;letter-spacing:.06em}
+.spinner{width:17px;height:17px;border-radius:50%;border:2px solid rgba(238,70,221,.22);border-top-color:var(--mag);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gate-error{margin-top:20px;padding:15px 16px;border-radius:12px;background:rgba(255,154,168,.07);border:1px solid rgba(255,154,168,.2);color:#ffb2bd;font-size:13.5px;line-height:1.55}
+.micro{font-size:12px!important;color:var(--txt3)!important;margin-top:22px;line-height:1.5}
+
+/* ── TOPBAR ────────────────────────────────────────────── */
+.demo-bar{display:none;background:linear-gradient(90deg,#3a1150,#62165A);color:#FDECEA;padding:9px 18px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.05em}
+body.demo .demo-bar{display:block}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(20,8,32,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.topbar-inner{width:min(1300px,100%);margin:auto;padding:14px clamp(18px,3.4vw,44px);display:flex;align-items:center;justify-content:space-between;gap:18px}
+.top-actions{display:flex;align-items:center;gap:12px}
+.user-chip{display:flex;align-items:center;gap:11px;padding:6px 8px}
+.avatar{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(140deg,var(--plum),var(--mag3));font-family:var(--mono);font-size:12px;font-weight:600;color:#fff}
+.user-chip .u-name{font-size:13px;font-weight:600;line-height:1.2}
+.user-chip .u-co{display:block;font-family:var(--mono);font-size:10.5px;color:var(--txt3);letter-spacing:.02em}
+
+/* ── HERO ──────────────────────────────────────────────── */
+.hero{padding:clamp(48px,6vw,84px) 0 30px;position:relative}
+.hero-rings{position:absolute;right:1%;top:34%;width:min(40vw,470px);aspect-ratio:1;transform:translateY(-50%);pointer-events:none;z-index:0}
+.hero-rings i{position:absolute;inset:0;margin:auto;border-radius:50%}
+.hero-rings i:nth-child(1){width:100%;height:100%;border:1px dashed rgba(242,123,227,.28);animation:spin-cw 52s linear infinite}
+.hero-rings i:nth-child(2){width:68%;height:68%;border:1px solid rgba(246,166,235,.16);animation:spin-ccw 40s linear infinite}
+.hero-rings i:nth-child(3){width:38%;height:38%;border:1px dashed rgba(242,123,227,.34);animation:spin-cw 30s linear infinite}
+.hero-rings i:nth-child(1)::after,.hero-rings i:nth-child(3)::after{content:"";position:absolute;top:-4px;left:50%;width:9px;height:9px;border-radius:50%;background:#F27BE3;box-shadow:0 0 18px 4px rgba(242,123,227,.7);transform:translateX(-50%)}
+.hero-rings i:nth-child(3)::after{background:#FAD1F4;box-shadow:0 0 14px 3px rgba(250,209,244,.7)}
+@keyframes spin-cw{to{transform:rotate(360deg)}}
+@keyframes spin-ccw{to{transform:rotate(-360deg)}}
+.hero-bird{position:absolute;right:-40px;top:-10px;width:min(46%,560px);opacity:.13;pointer-events:none;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:880px}
+.hero h1{font-size:clamp(40px,5.4vw,76px);line-height:.94;margin:20px 0 22px;color:#fff}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,#FAD1F4,#F27BE3 55%,#B12FA4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{font-size:clamp(16px,1.35vw,19px);line-height:1.55;color:var(--txt2);max-width:640px;text-wrap:pretty}
+.hero-stats{display:flex;flex-wrap:wrap;gap:38px;margin-top:38px;padding-top:30px;border-top:1px solid var(--line)}
+.stat strong{font-size:34px;font-weight:700;letter-spacing:-.04em;color:#fff;display:block;line-height:1}
+.stat span{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)}
+
+.demo-callout{display:none;margin:26px 0 0;border-radius:14px;padding:16px 20px;background:rgba(238,70,221,.06);border:1px solid rgba(238,70,221,.22);align-items:center;justify-content:space-between;gap:18px}
+body.demo .demo-callout{display:flex}
+.demo-callout strong{font-size:14px}.demo-callout span{font-size:13px;color:var(--txt2);line-height:1.5}
+
+/* ── SECTIONS ──────────────────────────────────────────── */
+section.block{padding:clamp(40px,5vw,66px) 0 0}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin:0 0 24px}
+.section-head h2{font-size:clamp(26px,3vw,38px);color:#fff}
+.section-head p{margin:9px 0 0;color:var(--txt2);font-size:14px;line-height:1.55;max-width:560px}
+
+/* carousel */
+.carousel-controls{display:flex;gap:8px;flex-shrink:0}
+.carousel-arrow{width:42px;height:42px;border-radius:11px;border:1px solid var(--line2);background:transparent;color:var(--txt);font-size:18px;display:grid;place-items:center;transition:border-color .2s,color .2s}
+.carousel-arrow:hover{border-color:rgba(238,70,221,.55);color:#fff}
+.carousel-wrap{position:relative}
+.carousel{display:flex;overflow:hidden;padding:4px 2px 12px;-webkit-mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.marquee-track{display:flex;gap:14px;width:max-content;animation:marquee var(--dur,60s) linear infinite;will-change:transform}
+.carousel-wrap:hover .marquee-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(calc(-50% - 7px))}}
+.carousel::-webkit-scrollbar{display:none}
+.carousel-card{flex:0 0 min(322px,80vw);scroll-snap-align:center;border-radius:16px;padding:20px;text-align:left;color:#fff;background:var(--card);border:1px solid var(--line);min-height:196px;transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
+.carousel-card:hover{border-color:rgba(238,70,221,.4);background:var(--card2);transform:translateY(-4px)}
+.carousel-card h3{font-size:18px;margin:14px 0 8px;line-height:1.15}
+.carousel-card p{margin:0;color:var(--txt2);font-size:12.5px;line-height:1.5;height:54px;overflow:hidden}
+.carousel-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;padding-top:13px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--txt3)}
+.carousel-meta b{color:#F6A6EB;font-weight:500;font-family:var(--font);font-size:12px;letter-spacing:0}
+
+.company-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.company-logo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(140deg,var(--cream),var(--rose));color:var(--plum);font-family:var(--mono);font-size:13px;font-weight:600;flex-shrink:0}
+.vertical{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#F6A6EB;font-weight:500;max-width:168px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
+.vertical::before{content:"";width:18px;height:1.5px;background:var(--mag2);flex-shrink:0}
+
+/* connection hub */
+.connection-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.connection-stat{padding:18px 20px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.connection-stat strong{display:block;font-size:30px;font-weight:700;letter-spacing:-.04em;color:#fff}
+.connection-stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);margin-top:6px;display:block;line-height:1.4}
+.connection-tabs{display:inline-flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:16px}
+.connection-tab{border:0;background:transparent;color:var(--txt2);padding:9px 16px;border-radius:9px;font-weight:600;font-size:13px;transition:background .2s,color .2s}
+.connection-tab.active{background:rgba(238,70,221,.16);color:#fff}
+.badge-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 6px;margin-left:6px;border-radius:999px;background:rgba(238,70,221,.9);color:#fff;font-family:var(--mono);font-size:10px}
+.connection-panel{display:none}
+.connection-panel.active{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:13px}
+.connection-card{border-radius:16px;padding:20px;background:var(--card);border:1px solid var(--line);min-height:150px}
+.connection-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.connection-card h3{font-size:18px;margin:0 0 4px;line-height:1.15}
+.connection-card .sub{font-family:var(--mono);font-size:11px;color:var(--txt3);letter-spacing:.02em}
+.status-chip{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.status-pending{background:rgba(255,212,139,.09);color:var(--warn);border:1px solid rgba(255,212,139,.22)}
+.status-accepted{background:rgba(143,230,182,.09);color:var(--ok);border:1px solid rgba(143,230,182,.22)}
+.status-declined{background:rgba(255,154,168,.08);color:#ffb2bd;border:1px solid rgba(255,154,168,.18)}
+.connection-card p{font-size:13px;color:var(--txt2);line-height:1.5;margin:14px 0}
+.connection-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.empty-state{grid-column:1/-1;padding:30px;border-radius:16px;text-align:center;color:var(--txt2);font-size:14px;background:var(--card);border:1px dashed var(--line2)}
+.contact-card{margin-top:14px;padding:16px;border-radius:12px;background:linear-gradient(150deg,#FDECEA,#FAD1F4);color:var(--plum)}
+.contact-card strong{font-size:15px}
+.contact-card .role{font-family:var(--mono);font-size:11px;color:rgba(98,22,90,.68);margin:3px 0 12px}
+.contact-links{display:flex;gap:7px;flex-wrap:wrap}
+.contact-links a{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--plum);padding:7px 11px;border-radius:9px;background:rgba(98,22,90,.08);border:1px solid rgba(98,22,90,.14)}
+.contact-links a:hover{background:rgba(98,22,90,.15)}
+.connections-loading{padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--txt2);font-size:14px}
+.loading-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mag2);animation:pulse 1s infinite alternate;margin-right:6px}
+@keyframes pulse{to{opacity:.25}}
+
+/* directory */
+.toolbar{display:grid;grid-template-columns:minmax(240px,1.5fr) repeat(3,minmax(160px,.7fr));gap:10px;margin:6px 0 22px}
+.search{position:relative}
+.search input,.toolbar select{width:100%;background:var(--card);border:1px solid var(--line);color:#fff;border-radius:12px;padding:13px 15px;outline:none;transition:border-color .2s}
+.search input:focus,.toolbar select:focus{border-color:rgba(238,70,221,.5)}
+.search input::placeholder{color:var(--txt3)}
+.toolbar select{cursor:pointer;font-size:14px}
+.toolbar option{background:var(--bg2)}
+.directory-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--txt3)}
+.directory-meta b{color:#F6A6EB;font-weight:500}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr));gap:12px;padding:2px 0 70px}
+.cards .empty{grid-column:1/-1;background:var(--card);border:1px dashed var(--line2);border-radius:16px;padding:28px;color:var(--txt2);text-align:center}
+.company{display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:18px;padding:16px 20px;border-radius:14px;text-align:left;color:#fff;background:var(--card);border:1px solid var(--line);border-left:2px solid rgba(238,70,221,.28);transition:border-color .35s var(--ease),background .35s var(--ease),transform .35s var(--ease);position:relative;overflow:hidden}
+.company:hover{border-color:rgba(238,70,221,.4);border-left-color:var(--mag2);background:var(--card2);transform:translateX(4px)}
+.company .company-logo{width:54px;height:54px}
+.company-main{min-width:0}
+.company-main .vertical{margin-bottom:7px}
+.company h3{font-size:16.5px;margin:0 0 4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.company p{font-size:12.5px;line-height:1.45;color:var(--txt2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.company-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:9px;text-align:right;flex-shrink:0;padding-left:6px;border-left:1px solid var(--line);height:100%;min-width:118px}
+.company-side .loc{font-family:var(--mono);font-size:10px;letter-spacing:.03em;color:var(--txt3);line-height:1.35}
+.company-side b{font-size:12.5px;color:#F6A6EB;font-weight:500;white-space:nowrap}
+.company.demo-target{border-color:rgba(255,212,139,.5);border-left-color:var(--warn)}
+.company.demo-target:after{content:'Demo';position:absolute;right:14px;top:14px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--warn);color:#43165c;border-radius:999px;padding:4px 8px;font-weight:600}
+
+/* ── MODALS ────────────────────────────────────────────── */
+.backdrop{position:fixed;inset:0;z-index:80;background:rgba(12,4,20,.8);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:18px}
+.backdrop.open{display:flex}
+.modal{width:min(920px,100%);max-height:92vh;overflow:auto;border-radius:22px;background:var(--bg2);border:1px solid var(--line2);color:var(--txt);box-shadow:0 50px 130px -40px #000;animation:modalin .3s var(--ease)}
+@keyframes modalin{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.modal-head{padding:34px 34px 30px;background:linear-gradient(150deg,#2a1040,#4b1854);position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.modal-head::before{content:"";position:absolute;right:30px;top:58px;width:148px;aspect-ratio:2048/1185;background:url('../assets/hero-bird-network.png') no-repeat center/contain;opacity:.9;pointer-events:none;z-index:0}
+.modal-head>*{position:relative;z-index:1}
+.modal-brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.modal-brand img{height:20px}
+.modal-brand span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);padding-left:11px;border-left:1px solid rgba(255,255,255,.2)}
+.modal-head .company-logo{width:56px;height:56px;border-radius:14px;font-size:16px;margin-bottom:16px}
+.modal-head h2{font-size:clamp(26px,3.2vw,40px);line-height:1.02;color:#fff;margin:0 0 12px;max-width:640px}
+.modal-head p{color:rgba(255,255,255,.72);line-height:1.55;max-width:660px;font-size:14.5px}
+.close{position:absolute;right:18px;top:18px;z-index:3;width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;font-size:20px;display:grid;place-items:center;transition:background .2s}
+.close:hover{background:rgba(255,255,255,.14)}
+.modal-body{padding:28px 34px 32px}
+.profile-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.light-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.light-card h4{margin:0 0 12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#F6A6EB;font-weight:500}
+.light-card p{font-size:14px;line-height:1.6;color:var(--txt);white-space:pre-line}
+.facts{display:grid;gap:12px}
+.fact{display:grid;gap:3px;padding-bottom:11px;border-bottom:1px solid var(--line)}
+.fact:last-child{border:0;padding-bottom:0}
+.fact span{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3)}
+.fact strong{font-size:13.5px;line-height:1.35;font-weight:600;color:var(--txt)}
+.privacy-note{margin-top:14px;border-radius:12px;padding:14px;background:rgba(238,70,221,.06);border:1px solid rgba(238,70,221,.18);color:var(--txt2);font-size:12.5px;line-height:1.55}
+.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+.confirm{width:min(540px,100%);border-radius:20px;background:var(--bg2);border:1px solid var(--line2);color:var(--txt);padding:32px;box-shadow:0 50px 130px -40px #000;position:relative;animation:modalin .3s var(--ease)}
+.confirm h3{font-size:26px;margin:16px 0 12px;color:#fff}
+.confirm p{color:var(--txt2);line-height:1.6;font-size:14.5px}
+.confirm p strong{color:var(--txt)}
+.confirm-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.success-icon{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(140deg,var(--plum),var(--mag3));color:#fff;font-size:24px}
+
+.toast{position:fixed;left:50%;bottom:26px;z-index:120;transform:translate(-50%,20px);opacity:0;padding:13px 18px;border-radius:12px;background:#FDECEA;color:#43165c;box-shadow:0 24px 60px rgba(0,0,0,.4);font-size:13px;font-weight:600;transition:.3s var(--ease);max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.tech{display:none}body.demo .tech{display:block;margin-top:16px;padding:12px;border-radius:10px;background:#160820;color:#f5dff2;font:11px/1.5 var(--mono);white-space:pre-wrap;word-break:break-word}
+
+@media(max-width:860px){.gate{grid-template-columns:1fr}.gate-visual{min-height:340px}.gate-side{border-left:0;border-top:1px solid var(--line)}.profile-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.connection-summary{grid-template-columns:1fr}.hero-bird{opacity:.08}}
+@media(max-width:560px){.hero-stats{gap:26px}.company{flex-basis:84vw}.toolbar{grid-template-columns:1fr}.modal-body,.modal-head{padding-left:22px;padding-right:22px}.brand-tag,.user-chip .u-co{display:none}.section-head{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
+
 <div id="gateView">
-  <section class="gate glass">
+  <section class="gate">
     <div class="gate-visual">
-      <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><div><small>Investment Readiness</small></div></div>
-      <div><span class="pill">Comunidad privada</span><h1>Conecta con quienes están construyendo la transición.</h1><p>Un espacio exclusivo para descubrir a las empresas participantes de Tángara, identificar posibles sinergias y manifestar interés en conectar.</p></div>
+      <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Investment Readiness</span></div>
+      <div>
+        <span class="chip chip-mag">Comunidad privada</span>
+        <h1>Conoce a las otras empresas de Tángara y encuentra con quién vale la pena hablar.</h1>
+        <p>Este es el directorio privado de la cohorte. Revisa perfiles, encuentra puntos en común y solicita una conexión cuando tenga sentido.</p>
+      </div>
     </div>
     <div class="gate-side">
-      <h2 id="gateTitle">Validando tu acceso…</h2>
-      <p id="gateCopy">Estamos verificando tu enlace privado de Comunidad Tángara.</p>
-      <div class="loader" id="gateLoader"><span class="spinner"></span><span>Conectando con Tángara</span></div>
+      <h2 id="gateTitle">Estamos verificando tu acceso</h2>
+      <p id="gateCopy">Un momento. Estamos comprobando tu enlace de acceso.</p>
+      <div class="loader" id="gateLoader"><span class="spinner"></span><span>Abriendo Comunidad Tángara</span></div>
       <div id="gateError" class="gate-error hidden"></div>
-      <p class="micro">El acceso se habilita únicamente mediante el enlace privado enviado por Tángara. Los datos personales de contacto permanecen protegidos.</p>
+      <p class="micro">Solo puedes entrar con el enlace personal enviado por Tángara. Los datos de contacto se muestran únicamente cuando ambas empresas aceptan conectar.</p>
     </div>
   </section>
 </div>
 
 <div id="appView" class="hidden">
-  <div class="demo-bar">MODO DEMOSTRACIÓN · Las notificaciones están redirigidas al buzón interno de prueba configurado en Power Automate.</div>
+  <div class="demo-bar">MODO DEMO · Los correos de esta prueba llegan al buzón interno configurado en Power Automate.</div>
   <header class="topbar">
-    <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><div><small>Comunidad</small></div></div>
-    <div class="top-actions">
-      <div class="user-chip"><div class="avatar" id="userAvatar">TC</div><div><strong id="userName">Participante</strong><span id="userCompany">Empresa Tángara</span></div></div>
-      <button class="btn btn-soft" id="logoutBtn">Salir</button>
+    <div class="topbar-inner">
+      <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Comunidad</span></div>
+      <div class="top-actions">
+        <div class="user-chip"><div class="avatar" id="userAvatar">TC</div><div><span class="u-name" id="userName">Participante</span><span class="u-co" id="userCompany">Empresa Tángara</span></div></div>
+        <button class="btn btn-soft btn-sm" id="logoutBtn">Salir</button>
+      </div>
     </div>
   </header>
 
   <main class="shell">
     <section class="hero">
-      <div class="hero-grid">
-        <div><span class="pill">46 empresas · comunidad Tángara</span><h1>Encuentra conexiones que pueden mover tu empresa.</h1><p>Explora las soluciones de la cohorte, identifica oportunidades de colaboración y manifiesta interés. Tángara notifica a la otra empresa y protege los datos personales hasta que exista consentimiento.</p></div>
-        <div class="hero-stats"><div class="stat glass"><strong>46</strong><span>empresas participantes</span></div><div class="stat glass"><strong>1 clic</strong><span>para manifestar interés</span></div></div>
+      <div class="hero-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <img class="hero-bird" src="../assets/hero-bird-network.png" alt="">
+      <div class="hero-inner">
+        <span class="chip chip-mag">46 empresas · cohorte Tángara</span>
+        <h1>Encuentra a quién vale la pena conocer dentro de Tángara.</h1>
+        <p class="lead">Revisa qué hace cada empresa y qué está buscando. Si ves una oportunidad, envía una solicitud. La otra empresa decide si acepta antes de que se compartan los datos de contacto.</p>
+        <div class="hero-stats">
+          <div class="stat"><strong>46</strong><span>empresas participantes</span></div>
+          <div class="stat"><strong>1 clic</strong><span>para enviar una solicitud</span></div>
+          <div class="stat"><strong>100%</strong><span>contactos bajo consentimiento</span></div>
+        </div>
+      </div>
+      <div class="demo-callout">
+        <div><strong>Prueba rápida para la demo</strong><br><span>Abre Amazoniko (TAN-04), envía una solicitud y revisa el correo de prueba. También puedes confirmar el registro en SharePoint.</span></div>
+        <span class="chip chip-mag" style="flex-shrink:0">Demo 09:30</span>
       </div>
     </section>
 
-    <section class="demo-callout">
-      <div><strong>Recorrido sugerido para la demostración</strong><br><span>Abre el perfil de Amazoniko (TAN-04), pulsa “Quiero conectar” y luego revisa el correo de prueba y el registro creado en SharePoint.</span></div>
-      <span class="pill" style="color:#62165A;border-color:rgba(98,22,90,.2);background:rgba(98,22,90,.06)">Demo 09:30</span>
-    </section>
-
-    <section class="carousel-section">
-      <div class="section-head">
-        <div><h2>Conoce la comunidad</h2><p>Empresas participantes en orden alfabético. El carrusel avanza automáticamente y puedes explorarlo manualmente.</p></div>
-        <div class="carousel-controls"><button class="carousel-arrow" id="carouselPrev" aria-label="Anterior">‹</button><button class="carousel-arrow" id="carouselNext" aria-label="Siguiente">›</button></div>
-      </div>
+    <section class="block">
+      <div class="section-head"><div><span class="eyebrow">La cohorte</span><h2>Empresas de la cohorte</h2><p>Recorre las empresas de la cohorte. Abre cualquier perfil para ver su solución y lo que está buscando.</p></div></div>
       <div class="carousel-wrap"><div class="carousel" id="companyCarousel"></div></div>
     </section>
 
-    <section class="connection-hub" id="solicitudes">
-      <div class="section-head"><div><h2>Mis conexiones</h2><p>Revisa solicitudes recibidas, solicitudes enviadas y contactos que ya autorizaron el intercambio.</p></div><button class="btn btn-soft" id="refreshConnectionsBtn">Actualizar</button></div>
-      <div class="connection-summary">
-        <div class="connection-stat glass"><strong id="incomingCount">–</strong><span>solicitudes recibidas pendientes</span></div>
-        <div class="connection-stat glass"><strong id="outgoingCount">–</strong><span>solicitudes enviadas pendientes</span></div>
-        <div class="connection-stat glass"><strong id="acceptedCount">–</strong><span>conexiones con contacto compartido</span></div>
+    <section class="block" id="solicitudes" style="scroll-margin-top:90px">
+      <div class="section-head">
+        <div><span class="eyebrow">Conexiones</span><h2>Mis conexiones</h2><p>Aquí aparecen las solicitudes que recibiste, las que enviaste y las conexiones que ya fueron aceptadas.</p></div>
+        <button class="btn btn-soft btn-sm" id="refreshConnectionsBtn">Actualizar</button>
       </div>
-      <div id="connectionsLoading" class="connections-loading glass"><span class="loading-dot"></span> Cargando solicitudes…</div>
+      <div class="connection-summary">
+        <div class="connection-stat"><strong id="incomingCount">–</strong><span>solicitudes nuevas</span></div>
+        <div class="connection-stat"><strong id="outgoingCount">–</strong><span>esperando respuesta</span></div>
+        <div class="connection-stat"><strong id="acceptedCount">–</strong><span>conexiones aceptadas</span></div>
+      </div>
+      <div id="connectionsLoading" class="connections-loading"><span class="loading-dot"></span>Cargando tus conexiones…</div>
       <div id="connectionsContent" class="hidden">
         <div class="connection-tabs">
           <button class="connection-tab active" data-tab="received">Recibidas <span class="badge-count" id="receivedBadge">0</span></button>
@@ -107,39 +322,46 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{d
       </div>
     </section>
 
-    <h2 class="directory-title">Directorio de empresas</h2>
-    <p class="directory-intro">Filtra la comunidad por vertical, ciudad o necesidad de conexión. Los datos personales permanecen protegidos hasta que ambas partes autoricen compartirlos.</p>
-    <section class="toolbar glass">
-      <div class="search"><input id="searchInput" placeholder="Buscar por empresa, solución, ciudad o necesidad…"></div>
-      <select id="verticalFilter"><option value="">Todas las verticales</option></select>
-      <select id="cityFilter"><option value="">Todas las ciudades</option></select>
-      <select id="needFilter"><option value="">Todas las necesidades</option></select>
+    <section class="block">
+      <div class="section-head"><div><span class="eyebrow">Directorio</span><h2>Directorio de empresas</h2><p>Busca por vertical, ciudad o por lo que cada empresa espera encontrar en la comunidad. Los datos personales solo se muestran cuando la conexión es aceptada.</p></div></div>
+      <div class="toolbar">
+        <div class="search"><input id="searchInput" placeholder="Buscar empresa, solución, ciudad o necesidad…"></div>
+        <select id="verticalFilter"><option value="">Todas las verticales</option></select>
+        <select id="cityFilter"><option value="">Todas las ciudades</option></select>
+        <select id="needFilter"><option value="">Todas las necesidades</option></select>
+      </div>
+      <div class="directory-meta"><span><b id="visibleCount">0</b> empresas</span><span>Abre una empresa para ver su perfil.</span></div>
+      <section class="cards" id="cards"></section>
     </section>
-    <div class="directory-meta"><span><b id="visibleCount">0</b> empresas visibles</span><span>Haz clic en una empresa para conocer su perfil.</span></div>
-    <section class="cards" id="cards"></section>
   </main>
 </div>
 
 <div class="backdrop" id="profileBackdrop" role="dialog" aria-modal="true">
   <article class="modal">
-    <header class="modal-head"><button class="close" data-close="profileBackdrop" aria-label="Cerrar">×</button><div class="company-logo" id="profileInitials">TG</div><h2 id="profileTitle"></h2><p id="profileSummary"></p></header>
+    <header class="modal-head">
+      <button class="close" data-close="profileBackdrop" aria-label="Cerrar">×</button>
+      <div class="modal-brand"><img src="../assets/logo-tangara-white.png" alt="Tángara"><span>Perfil de empresa</span></div>
+      <div class="company-logo" id="profileInitials">TG</div>
+      <h2 id="profileTitle"></h2>
+      <p id="profileSummary"></p>
+    </header>
     <div class="modal-body">
       <div class="profile-grid">
-        <section class="light-card"><h4>Solución</h4><p id="profileSolution"></p><div class="privacy-note">🔒 Correo, teléfono y nombre de contacto no se muestran. Tángara gestiona la primera aproximación y el intercambio posterior depende del consentimiento.</div></section>
+        <section class="light-card"><h4>Solución</h4><p id="profileSolution"></p><div class="privacy-note" id="profileContactState">Los datos de contacto están ocultos. Si ambas empresas aceptan conectar, se habilitan para las dos.</div></section>
         <section class="light-card"><h4>Datos clave</h4><div class="facts" id="profileFacts"></div></section>
       </div>
-      <section class="light-card" style="margin-top:14px"><h4>Busca conectar para</h4><p id="profileLooking"></p></section>
-      <div class="profile-actions"><button class="btn btn-primary" id="connectBtn">Quiero conectar →</button><a class="btn btn-soft website-btn hidden" id="websiteBtn" target="_blank" rel="noopener">Visitar sitio web ↗</a></div>
+      <section class="light-card" style="margin-top:14px"><h4>Quiere conectar para</h4><p id="profileLooking"></p></section>
+      <div class="profile-actions"><button class="btn btn-primary" id="connectBtn">Quiero conectar</button><a class="btn btn-soft website-btn hidden" id="websiteBtn" target="_blank" rel="noopener">Visitar sitio web</a></div>
     </div>
   </article>
 </div>
 
 <div class="backdrop" id="confirmBackdrop" role="dialog" aria-modal="true">
-  <section class="confirm"><button class="close" data-close="confirmBackdrop" aria-label="Cerrar">×</button><span class="pill" style="color:#8B2380;background:rgba(177,47,164,.08);border-color:rgba(177,47,164,.22)">Solicitud de conexión</span><h3 id="confirmTitle">¿Quieres conectar?</h3><p id="confirmCopy">Tángara notificará a la empresa. Tus datos personales no se compartirán automáticamente.</p><div class="confirm-actions"><button class="btn btn-primary" id="sendConnectBtn">Sí, manifestar interés</button><button class="btn btn-soft" data-close="confirmBackdrop">Cancelar</button></div></section>
+  <section class="confirm"><button class="close" data-close="confirmBackdrop" aria-label="Cerrar">×</button><span class="chip chip-mag">Nueva conexión</span><h3 id="confirmTitle">¿Quieres enviar una solicitud?</h3><p id="confirmCopy">Le enviaremos una solicitud a la empresa. Tus datos de contacto seguirán ocultos hasta que acepte.</p><div class="confirm-actions"><button class="btn btn-primary" id="sendConnectBtn">Enviar solicitud</button><button class="btn btn-soft" data-close="confirmBackdrop">Cancelar</button></div></section>
 </div>
 
 <div class="backdrop" id="successBackdrop" role="dialog" aria-modal="true">
-  <section class="confirm"><button class="close" data-close="successBackdrop" aria-label="Cerrar">×</button><div class="success-icon">✓</div><h3 id="successTitle">Solicitud enviada</h3><p id="successCopy">La solicitud quedó registrada y Tángara activó la notificación por correo.</p><div class="confirm-actions"><button class="btn btn-primary" data-close="successBackdrop">Continuar explorando</button></div></section>
+  <section class="confirm"><button class="close" data-close="successBackdrop" aria-label="Cerrar">×</button><div class="success-icon">✓</div><h3 id="successTitle">Solicitud enviada</h3><p id="successCopy">Listo. La empresa recibirá un correo para revisar tu solicitud.</p><div class="confirm-actions"><button class="btn btn-primary" data-close="successBackdrop">Volver al directorio</button></div></section>
 </div>
 <div class="toast" id="toast">Listo.</div>
 
@@ -177,10 +399,10 @@ function storeSession(s,token){session={...s,accessToken:token};sessionStorage.s
 async function boot(){
   const token=params.get('access');
   if(token){
-    try{const res=await apiPost(FLOW_VALIDATE_URL,{accessToken:token});if(!res?.ok) throw new Error('ACCESS_DENIED');return storeSession(res,token)}catch(err){console.error(err);return showGateError('No pudimos validar este enlace. Verifica que estés usando el acceso privado más reciente o solicita apoyo al equipo Tángara.')}
+    try{const res=await apiPost(FLOW_VALIDATE_URL,{accessToken:token});if(!res?.ok) throw new Error('ACCESS_DENIED');return storeSession(res,token)}catch(err){console.error(err);return showGateError('No pudimos validar este enlace. Revisa que sea el enlace personal más reciente que te envió Tángara.')}
   }
   try{const cached=JSON.parse(sessionStorage.getItem('tangara.session')||'null');if(cached?.accessToken){session=cached;return openApp()}}catch{}
-  return showGateError('Este espacio requiere un enlace privado de acceso. Abre la URL individual enviada por Tángara.');
+  return showGateError('Para entrar necesitas el enlace personal que te envió Tángara.');
 }
 function showGateError(msg){$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden')}
 function openApp(){$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();scrollTo(0,0)}
@@ -192,21 +414,22 @@ function buildFilters(){
 function renderCarousel(){const list=COMPANIES.filter(c=>c.id!==session.empresaId).slice().sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));const el=$('#companyCarousel');el.innerHTML=list.map(c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><div class="company-logo">${initials(c.name)}</div><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`).join('');el.querySelectorAll('.carousel-card').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));startCarousel()}
 function moveCarousel(dir=1){const el=$('#companyCarousel');const card=el.querySelector('.carousel-card');if(!card)return;const amount=card.getBoundingClientRect().width+12;if(dir>0&&el.scrollLeft+el.clientWidth>=el.scrollWidth-amount*.6)el.scrollTo({left:0,behavior:'smooth'});else if(dir<0&&el.scrollLeft<=5)el.scrollTo({left:el.scrollWidth,behavior:'smooth'});else el.scrollBy({left:amount*dir,behavior:'smooth'})}
 function startCarousel(){clearInterval(carouselTimer);carouselTimer=setInterval(()=>moveCarousel(1),3500)}
-function renderCards(){const q=$('#searchInput').value.trim().toLowerCase(),v=$('#verticalFilter').value,city=$('#cityFilter').value,need=$('#needFilter').value;const list=COMPANIES.filter(c=>c.id!==session.empresaId&&(!v||c.vertical===v)&&(!city||c.city===city)&&(!need||(c.looking||'').split(' · ').includes(need))&&(!q||[c.name,c.vertical,c.city,c.department,c.summary,c.solution,c.looking,c.clients].join(' ').toLowerCase().includes(q)));$('#visibleCount').textContent=list.length;$('#cards').innerHTML=list.map(c=>{const existing=connectionItems.find(x=>[x.originId,x.destId].includes(c.id)&&[x.originId,x.destId].includes(session.empresaId)&&x.status!=='NO_POR_AHORA');const sent=sentRequests.find(r=>r.id===c.id);const state=existing?.status||sent?.status||'';return `<button class="company glass ${DEMO_MODE&&c.id==='TAN-04'?'demo-target':''}" data-id="${c.id}"><div class="company-head"><div class="company-logo">${initials(c.name)}</div><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="company-foot"><span>${escapeHTML([c.city,c.department].filter(Boolean).join(' · '))}</span><b>${state==='ACEPTADA'?'Conectados ✓':state==='PENDIENTE'?'Solicitud pendiente':'Ver perfil →'}</b></div></button>`}).join('')||'<div class="glass" style="grid-column:1/-1;border-radius:22px;padding:28px;color:rgba(255,255,255,.62)">No encontramos perfiles con esos filtros.</div>';$$('.company').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)))}
-function openProfile(id){currentCompany=companyById(id);if(!currentCompany)return;$('#profileInitials').textContent=initials(currentCompany.name);$('#profileTitle').textContent=currentCompany.name;$('#profileSummary').textContent=currentCompany.summary;$('#profileSolution').textContent=currentCompany.solution||currentCompany.summary;$('#profileLooking').textContent=currentCompany.looking||'Explorar oportunidades de conexión dentro de la comunidad.';$('#profileFacts').innerHTML=`<div class="fact"><span>Vertical</span><strong>${escapeHTML(currentCompany.vertical)}</strong></div><div class="fact"><span>Ubicación</span><strong>${escapeHTML([currentCompany.city,currentCompany.department].filter(Boolean).join(' · '))}</strong></div><div class="fact"><span>Clientes objetivo</span><strong>${escapeHTML(currentCompany.clients||'No especificado')}</strong></div><div class="fact"><span>ID Tángara</span><strong>${currentCompany.id}</strong></div>`;const wb=$('#websiteBtn');if(currentCompany.website){wb.href=currentCompany.website;wb.classList.remove('hidden')}else wb.classList.add('hidden');const existing=connectionItems.find(x=>[x.originId,x.destId].includes(id)&&[x.originId,x.destId].includes(session.empresaId)&&x.status!=='NO_POR_AHORA');const sent=sentRequests.find(r=>r.id===id);const cb=$('#connectBtn');cb.disabled=!!existing||!!sent;cb.textContent=existing?.status==='ACEPTADA'?'Conexión aceptada ✓':(existing||sent)?'Solicitud enviada ✓':'Quiero conectar →';$('#profileBackdrop').classList.add('open')}
-function openConfirm(){if(!currentCompany)return;$('#profileBackdrop').classList.remove('open');$('#confirmTitle').textContent='Conectar con '+currentCompany.name;$('#confirmCopy').innerHTML=`Tángara registrará el interés de <strong>${escapeHTML(session.empresa)}</strong> y notificará a <strong>${escapeHTML(currentCompany.name)}</strong> por correo. Tus datos personales no se comparten automáticamente.`;$('#confirmBackdrop').classList.add('open')}
-async function sendConnection(){if(!currentCompany||!session?.accessToken)return;const btn=$('#sendConnectBtn');btn.disabled=true;btn.textContent='Registrando…';try{const res=await apiPost(FLOW_CONNECT_URL,{accessToken:session.accessToken,empresaDestinoId:currentCompany.id});$('#confirmBackdrop').classList.remove('open');if(res.status==='CREATED'||res.status==='ALREADY_EXISTS'){if(!sentRequests.some(r=>r.id===currentCompany.id)){sentRequests.unshift({id:currentCompany.id,name:currentCompany.name,status:'PENDIENTE',createdAt:new Date().toISOString()});sessionStorage.setItem('tangara.sent',JSON.stringify(sentRequests))}$('#successTitle').textContent=res.status==='CREATED'?'Solicitud enviada':'Esta conexión ya estaba registrada';$('#successCopy').textContent=res.status==='CREATED'?`Tángara registró el interés en conectar con ${currentCompany.name} y activó la notificación por correo.`:`Ya existe una solicitud de conexión con ${currentCompany.name}. No se creó un duplicado.`;$('#successBackdrop').classList.add('open');await loadConnections();renderCards()}else throw new Error(res?.error||'Respuesta inesperada')}catch(err){console.error(err);if(err.status===401){sessionStorage.removeItem('tangara.session');showGateError('Tu acceso ya no es válido. Abre nuevamente el enlace privado enviado por Tángara.');$('#appView').classList.add('hidden');$('#gateView').classList.remove('hidden')}else toast('No pudimos registrar la conexión. Intenta nuevamente.')}finally{btn.disabled=false;btn.textContent='Sí, manifestar interés'}}
+function renderCards(){const q=$('#searchInput').value.trim().toLowerCase(),v=$('#verticalFilter').value,city=$('#cityFilter').value,need=$('#needFilter').value;const list=COMPANIES.filter(c=>c.id!==session.empresaId&&(!v||c.vertical===v)&&(!city||c.city===city)&&(!need||(c.looking||'').split(' · ').includes(need))&&(!q||[c.name,c.vertical,c.city,c.department,c.summary,c.solution,c.looking,c.clients].join(' ').toLowerCase().includes(q)));$('#visibleCount').textContent=list.length;$('#cards').innerHTML=list.map(c=>{const existing=connectionItems.find(x=>[x.originId,x.destId].includes(c.id)&&[x.originId,x.destId].includes(session.empresaId)&&x.status!=='NO_POR_AHORA');const sent=sentRequests.find(r=>r.id===c.id);const state=existing?.status||sent?.status||'';return `<button class="company ${DEMO_MODE&&c.id==='TAN-04'?'demo-target':''}" data-id="${c.id}"><div class="company-logo">${initials(c.name)}</div><div class="company-main"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span class="loc">${escapeHTML([c.city,c.department].filter(Boolean).join(' · '))}</span><b>${state==='ACEPTADA'?'Conectados ✓':state==='PENDIENTE'?'Solicitud pendiente':'Ver perfil'}</b></div></button>`}).join('')||'<div class="empty">No encontramos empresas con esos filtros.</div>';$$('.company').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)))}
+function openProfile(id){currentCompany=companyById(id);if(!currentCompany)return;$('#profileInitials').textContent=initials(currentCompany.name);$('#profileTitle').textContent=currentCompany.name;$('#profileSummary').textContent=currentCompany.summary;$('#profileSolution').textContent=currentCompany.solution||currentCompany.summary;$('#profileLooking').textContent=currentCompany.looking||'Conocer empresas de la comunidad.';$('#profileFacts').innerHTML=`<div class="fact"><span>Vertical</span><strong>${escapeHTML(currentCompany.vertical)}</strong></div><div class="fact"><span>Ubicación</span><strong>${escapeHTML([currentCompany.city,currentCompany.department].filter(Boolean).join(' · '))}</strong></div><div class="fact"><span>Clientes objetivo</span><strong>${escapeHTML(currentCompany.clients||'No indicado')}</strong></div><div class="fact"><span>ID Tángara</span><strong>${currentCompany.id}</strong></div>`;const wb=$('#websiteBtn');if(currentCompany.website){wb.href=currentCompany.website;wb.classList.remove('hidden')}else wb.classList.add('hidden');const existing=connectionItems.find(x=>[x.originId,x.destId].includes(id)&&[x.originId,x.destId].includes(session.empresaId)&&x.status!=='NO_POR_AHORA');const sent=sentRequests.find(r=>r.id===id);const contactState=$('#profileContactState');if(existing?.status==='ACEPTADA'){const card=existing.originId===session.empresaId?existing.destCard:existing.originCard;contactState.innerHTML=`<div style="font-weight:800;margin-bottom:10px">Conexión aceptada. Estos son los datos de contacto:</div>${contactCardHTML(card)}`;}else if(existing?.status==='PENDIENTE'||sent){contactState.innerHTML='Tu solicitud está pendiente. Si la otra empresa acepta, aquí aparecerán sus datos de contacto.';}else{contactState.innerHTML='Los datos de contacto están ocultos. Si ambas empresas aceptan conectar, se habilitan para las dos.';}const cb=$('#connectBtn');cb.disabled=!!existing||!!sent;cb.textContent=existing?.status==='ACEPTADA'?'Conectados ✓':(existing||sent)?'Solicitud enviada':'Quiero conectar';$('#profileBackdrop').classList.add('open')}
+function openConfirm(){if(!currentCompany)return;$('#profileBackdrop').classList.remove('open');$('#confirmTitle').textContent='Conectar con '+currentCompany.name;$('#confirmCopy').innerHTML=`Vamos a avisarle a <strong>${escapeHTML(currentCompany.name)}</strong> que <strong>${escapeHTML(session.empresa)}</strong> quiere conectar. Tus datos de contacto no se comparten hasta que la empresa acepte.`;$('#confirmBackdrop').classList.add('open')}
+async function sendConnection(){if(!currentCompany||!session?.accessToken)return;const btn=$('#sendConnectBtn');btn.disabled=true;btn.textContent='Enviando…';try{const res=await apiPost(FLOW_CONNECT_URL,{accessToken:session.accessToken,empresaDestinoId:currentCompany.id});$('#confirmBackdrop').classList.remove('open');if(res.status==='CREATED'||res.status==='ALREADY_EXISTS'){if(!sentRequests.some(r=>r.id===currentCompany.id)){sentRequests.unshift({id:currentCompany.id,name:currentCompany.name,status:'PENDIENTE',createdAt:new Date().toISOString()});sessionStorage.setItem('tangara.sent',JSON.stringify(sentRequests))}$('#successTitle').textContent=res.status==='CREATED'?'Solicitud enviada':'Ya habías enviado esta solicitud';$('#successCopy').textContent=res.status==='CREATED'?`La solicitud para conectar con ${currentCompany.name} quedó registrada. La empresa recibirá un correo para revisarla.`:`Ya habías enviado una solicitud a ${currentCompany.name}. No creamos otra.`;$('#successBackdrop').classList.add('open');await loadConnections();renderCards()}else throw new Error(res?.error||'Respuesta inesperada')}catch(err){console.error(err);if(err.status===401){sessionStorage.removeItem('tangara.session');showGateError('Este enlace ya no está habilitado. Abre el enlace personal más reciente que te envió Tángara.');$('#appView').classList.add('hidden');$('#gateView').classList.remove('hidden')}else toast('No pudimos enviar la solicitud. Intenta de nuevo.')}finally{btn.disabled=false;btn.textContent='Enviar solicitud'}}
 function otherCompany(conn){return companyById(conn.originId===session.empresaId?conn.destId:conn.originId)}
-function contactCardHTML(card){if(!card)return '<p style="margin:8px 0 0">Los datos de contacto aún no están disponibles.</p>';const phone=String(card.telefonoWhatsApp||card.telefono||'').replace(/\D/g,'');return `<div class="contact-card"><strong>${escapeHTML(card.nombre||'Contacto')}</strong><div class="role">${escapeHTML([card.cargo,card.empresa].filter(Boolean).join(' · '))}</div><div class="contact-links">${card.email?`<a href="mailto:${escapeHTML(card.email)}">Correo</a>`:''}${phone?`<a href="https://wa.me/${phone}" target="_blank" rel="noopener">WhatsApp</a>`:''}${card.linkedin?`<a href="${escapeHTML(card.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>`:''}${card.redSocial?`<a href="${escapeHTML(card.redSocial)}" target="_blank" rel="noopener">Red social</a>`:''}</div></div>`}
-async function loadConnections(){if(!session?.accessToken||FLOW_LIST_URL.startsWith('__')){$('#connectionsLoading').innerHTML='Las solicitudes se habilitarán al conectar el flujo de consulta.';return}$('#connectionsLoading').classList.remove('hidden');$('#connectionsContent').classList.add('hidden');try{const res=await apiPost(FLOW_LIST_URL,{accessToken:session.accessToken});connectionItems=(res.conexiones||res.items||res.connections||[]).map(normalizeConnection);renderConnectionCenter();$('#connectionsLoading').classList.add('hidden');$('#connectionsContent').classList.remove('hidden');renderCards();if(location.hash==='#solicitudes')setTimeout(()=>$('#solicitudes').scrollIntoView({behavior:'smooth',block:'start'}),180)}catch(err){console.error(err);$('#connectionsLoading').innerHTML='No pudimos cargar las solicitudes. <button class="btn btn-soft" onclick="loadConnections()">Reintentar</button>'}}
+function contactCardHTML(card){if(!card)return '<p style="margin:8px 0 0">Todavía no hay datos de contacto para mostrar.</p>';const phone=String(card.telefonoWhatsApp||card.telefono||'').replace(/\D/g,'');return `<div class="contact-card"><strong>${escapeHTML(card.nombre||'Contacto')}</strong><div class="role">${escapeHTML([card.cargo,card.empresa].filter(Boolean).join(' · '))}</div><div class="contact-links">${card.email?`<a href="mailto:${escapeHTML(card.email)}">Correo</a>`:''}${phone?`<a href="https://wa.me/${phone}" target="_blank" rel="noopener">WhatsApp</a>`:''}${card.linkedin?`<a href="${escapeHTML(card.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>`:''}${card.redSocial?`<a href="${escapeHTML(card.redSocial)}" target="_blank" rel="noopener">Red social</a>`:''}</div></div>`}
+async function loadConnections(){if(!session?.accessToken||FLOW_LIST_URL.startsWith('__')){$('#connectionsLoading').innerHTML='Aquí aparecerán tus solicitudes cuando el flujo de consulta esté disponible.';return}$('#connectionsLoading').classList.remove('hidden');$('#connectionsContent').classList.add('hidden');try{const res=await apiPost(FLOW_LIST_URL,{accessToken:session.accessToken});connectionItems=(res.conexiones||res.items||res.connections||[]).map(normalizeConnection);renderConnectionCenter();$('#connectionsLoading').classList.add('hidden');$('#connectionsContent').classList.remove('hidden');renderCards();if(location.hash==='#solicitudes')setTimeout(()=>$('#solicitudes').scrollIntoView({behavior:'smooth',block:'start'}),180)}catch(err){console.error(err);$('#connectionsLoading').innerHTML='No pudimos cargar tus conexiones. <button class="btn btn-soft" onclick="loadConnections()">Reintentar</button>'}}
 function renderConnectionCenter(){const incoming=connectionItems.filter(x=>x.destId===session.empresaId&&x.status==='PENDIENTE');const outgoing=connectionItems.filter(x=>x.originId===session.empresaId&&x.status==='PENDIENTE');const accepted=connectionItems.filter(x=>x.status==='ACEPTADA'&&(x.originId===session.empresaId||x.destId===session.empresaId));$('#incomingCount').textContent=incoming.length;$('#outgoingCount').textContent=outgoing.length;$('#acceptedCount').textContent=accepted.length;$('#receivedBadge').textContent=incoming.length;$('#sentBadge').textContent=outgoing.length;$('#acceptedBadge').textContent=accepted.length;
-  $('#panelReceived').innerHTML=incoming.length?incoming.map(x=>{const c=companyById(x.originId)||{name:x.originId,summary:''};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-pending">Pendiente</span></div><p>${escapeHTML(c.summary||'Esta empresa quiere conectar contigo.')}</p><div class="connection-actions"><button class="btn btn-primary" data-respond="ACEPTAR" data-request="${escapeHTML(x.solicitudId)}">Aceptar y compartir tarjeta</button><button class="btn btn-soft" data-respond="NO_POR_AHORA" data-request="${escapeHTML(x.solicitudId)}">No por ahora</button><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.originId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">No tienes solicitudes pendientes de aprobación.</div>';
-  $('#panelSent').innerHTML=outgoing.length?outgoing.map(x=>{const c=companyById(x.destId)||{name:x.destId};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-pending">Esperando respuesta</span></div><p>Tu interés quedó registrado. Los datos de contacto se habilitarán cuando la otra empresa acepte.</p><div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.destId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">No tienes solicitudes enviadas pendientes.</div>';
-  $('#panelAccepted').innerHTML=accepted.length?accepted.map(x=>{const c=otherCompany(x)||{name:'Empresa Tángara'};const card=x.originId===session.empresaId?x.destCard:x.originCard;return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-accepted">Conectados</span></div><p>Ambas partes autorizaron compartir sus tarjetas de contacto.</p>${contactCardHTML(card)}<div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||'')}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">Todavía no tienes conexiones aceptadas.</div>';
+  $('#panelReceived').innerHTML=incoming.length?incoming.map(x=>{const c=companyById(x.originId)||{name:x.originId,summary:''};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-pending">Pendiente</span></div><p>${escapeHTML(c.summary||'Esta empresa te envió una solicitud para conectar.')}</p><div class="connection-actions"><button class="btn btn-primary" data-respond="ACEPTAR" data-request="${escapeHTML(x.solicitudId)}">Aceptar y compartir datos</button><button class="btn btn-soft" data-respond="NO_POR_AHORA" data-request="${escapeHTML(x.solicitudId)}">Ahora no</button><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.originId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">No tienes solicitudes nuevas.</div>';
+  $('#panelSent').innerHTML=outgoing.length?outgoing.map(x=>{const c=companyById(x.destId)||{name:x.destId};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-pending">Esperando respuesta</span></div><p>Tu solicitud ya fue enviada. Si la otra empresa acepta, aquí verás sus datos de contacto.</p><div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.destId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">No tienes solicitudes enviadas pendientes.</div>';
+  $('#panelAccepted').innerHTML=accepted.length?accepted.map(x=>{const c=otherCompany(x)||{name:'Empresa Tángara'};const card=x.originId===session.empresaId?x.destCard:x.originCard;return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-accepted">Conectados</span></div><p>La conexión fue aceptada. Ya puedes ver el contacto de la otra empresa.</p>${contactCardHTML(card)}<div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||'')}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">Todavía no tienes conexiones aceptadas.</div>';
   $$('[data-respond]').forEach(b=>b.addEventListener('click',()=>respondRequest(b.dataset.request,b.dataset.respond,b)));$$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)))}
-async function respondRequest(solicitudId,decision,btn){if(!solicitudId||!session?.accessToken||FLOW_RESPOND_URL.startsWith('__'))return toast('El flujo de respuesta aún no está conectado.');const original=btn.textContent;btn.disabled=true;btn.textContent=decision==='ACEPTAR'?'Aceptando…':'Guardando…';try{const res=await apiPost(FLOW_RESPOND_URL,{accessToken:session.accessToken,solicitudId,decision});if(res.status==='ACEPTADA')toast('Conexión aceptada. Ya pueden ver sus datos de contacto.');else if(res.status==='NO_POR_AHORA')toast('La solicitud quedó marcada como “No por ahora”.');else toast('Respuesta registrada.');await loadConnections()}catch(err){console.error(err);toast('No pudimos registrar tu respuesta.')}finally{btn.disabled=false;btn.textContent=original}}
+async function respondRequest(solicitudId,decision,btn){if(!solicitudId||!session?.accessToken||FLOW_RESPOND_URL.startsWith('__'))return toast('La respuesta todavía no está disponible.');const original=btn.textContent;btn.disabled=true;btn.textContent=decision==='ACEPTAR'?'Aceptando…':'Guardando…';try{const res=await apiPost(FLOW_RESPOND_URL,{accessToken:session.accessToken,solicitudId,decision});if(res.status==='ACEPTADA')toast('Conexión aceptada. Ya puedes ver los datos de contacto.');else if(res.status==='NO_POR_AHORA')toast('Listo. Dejamos esta solicitud como "Ahora no".');else toast('Respuesta guardada.');await loadConnections()}catch(err){console.error(err);toast('No pudimos guardar tu respuesta. Intenta de nuevo.')}finally{btn.disabled=false;btn.textContent=original}}
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2600)}
-$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#needFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openConfirm);$('#sendConnectBtn').addEventListener('click',sendConnection);$('#refreshConnectionsBtn').addEventListener('click',loadConnections);$('#carouselPrev').addEventListener('click',()=>{moveCarousel(-1);startCarousel()});$('#carouselNext').addEventListener('click',()=>{moveCarousel(1);startCarousel()});$('#companyCarousel').addEventListener('mouseenter',()=>clearInterval(carouselTimer));$('#companyCarousel').addEventListener('mouseleave',startCarousel);$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
+$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#needFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openConfirm);$('#sendConnectBtn').addEventListener('click',sendConnection);$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>{moveCarousel(-1);startCarousel()});if(carouselNext)carouselNext.addEventListener('click',()=>{moveCarousel(1);startCarousel()});$('#companyCarousel').addEventListener('mouseenter',()=>clearInterval(carouselTimer));$('#companyCarousel').addEventListener('mouseleave',startCarousel);$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
 boot();
 </script>
-</body></html>
+</body>
+</html>
