@@ -124,7 +124,7 @@ section.block{padding:clamp(40px,5vw,66px) 0 0}
 .carousel-wrap{position:relative}
 .carousel{display:flex;overflow:hidden;padding:4px 2px 12px;-webkit-mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .marquee-track{display:flex;gap:14px;width:max-content;animation:marquee var(--dur,60s) linear infinite;will-change:transform}
-.carousel:focus-within .marquee-track{animation-play-state:paused}
+.carousel:focus-within .marquee-track{animation-play-state:running}
 @keyframes marquee{to{transform:translateX(calc(-50% - 7px))}}
 .carousel::-webkit-scrollbar{display:none}
 .carousel-card{flex:0 0 min(322px,80vw);scroll-snap-align:center;border-radius:16px;padding:20px;text-align:left;color:#fff;background:var(--card);border:1px solid var(--line);min-height:196px;transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
@@ -310,7 +310,7 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 .carousel-card h3{font-size:21px;line-height:1.12;margin-top:18px}
 .modal-head h2{font-size:clamp(36px,4.5vw,54px);max-width:760px}
 .modal-head p{font-size:14px;color:rgba(255,255,255,.62);margin-top:8px}
-.carousel-wrap:hover .marquee-track{animation-play-state:paused}
+.carousel-wrap:hover .marquee-track{animation-play-state:running}
 @media(max-width:760px){.toolbar{grid-template-columns:1fr}.company{grid-template-columns:1fr}.company-side{align-items:flex-start;text-align:left;border-left:0;border-top:1px solid var(--line);padding:10px 0 0;min-width:0}}
 
 
@@ -401,6 +401,25 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}.reveal{opacity:1!important;transform:none!important}}
 </style>
 
+
+<style id="tangara-channel-activity">
+/* Actividad registrada por canal */
+.channel-activity-summary{margin:0 0 22px;padding:18px 20px;border-radius:16px;background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));border:1px solid rgba(242,123,227,.24)}
+.channel-activity-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:13px}
+.channel-activity-head strong{font-size:14px;color:#fff}
+.channel-activity-head span{font-family:var(--mono);font-size:10px;color:var(--txt3);letter-spacing:.04em;text-align:right}
+.channel-activity-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.channel-activity-stat{padding:12px;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid var(--line);min-width:0}
+.channel-activity-stat strong{display:block;font-size:22px;line-height:1;color:#FF78EA;margin-bottom:6px}
+.channel-activity-stat span{display:block;font-family:var(--mono);font-size:9px;line-height:1.25;letter-spacing:.05em;text-transform:uppercase;color:rgba(250,209,244,.62);overflow:hidden;text-overflow:ellipsis}
+.channel-used{margin:14px 0 2px;padding:13px 14px;border-radius:12px;background:rgba(143,230,182,.055);border:1px solid rgba(143,230,182,.18)}
+.channel-used-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#9DEBC0;margin-bottom:9px}
+.channel-used-list{display:flex;gap:7px;flex-wrap:wrap}
+.channel-used-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(143,230,182,.09);border:1px solid rgba(143,230,182,.24);color:#B8F3D0;font-size:11px;font-weight:650}
+.channel-used-chip:before{content:"✓";font-size:10px;color:#8FE6B6}
+.channel-used-empty{font-size:12px;color:var(--txt3)}
+@media(max-width:760px){.channel-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.channel-activity-stat:last-child{grid-column:1/-1}.channel-activity-head{align-items:flex-start;flex-direction:column}.channel-activity-head span{text-align:left}}
+</style>
 
 <style id="tangara-feedback-float">
 .feedback-float{
@@ -531,6 +550,19 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
         <div class="connection-stat"><strong id="incomingCount">–</strong><span>empresas interesadas en ti</span></div>
         <div class="connection-stat"><strong id="outgoingCount">–</strong><span>contactos que consultaste</span></div>
         <div class="connection-stat"><strong id="acceptedCount">–</strong><span>conexiones registradas</span></div>
+      </div>
+      <div class="channel-activity-summary hidden" id="channelActivitySummary">
+        <div class="channel-activity-head">
+          <strong>Actividad por canal en tus conexiones</strong>
+          <span>Cuenta conexiones en las que se abrió cada canal de contacto.</span>
+        </div>
+        <div class="channel-activity-grid">
+          <div class="channel-activity-stat"><strong id="usageEmailCount">0</strong><span>Correo</span></div>
+          <div class="channel-activity-stat"><strong id="usageWhatsappCount">0</strong><span>WhatsApp</span></div>
+          <div class="channel-activity-stat"><strong id="usageLinkedinCount">0</strong><span>LinkedIn</span></div>
+          <div class="channel-activity-stat"><strong id="usageWebsiteCount">0</strong><span>Sitio web</span></div>
+          <div class="channel-activity-stat"><strong id="usageSocialCount">0</strong><span>Red social</span></div>
+        </div>
       </div>
       <div id="connectionsLoading" class="connections-loading"><span class="loading-dot"></span>Cargando tu actividad…</div>
       <div id="connectionsContent" class="hidden">
@@ -1120,7 +1152,8 @@ function parseMaybeJSON(v){
     return JSON.parse(new TextDecoder('utf-8').decode(bytes));
   }catch{return null}
 }
-function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),interestType:String(r.TipoInteres||''),interestReason:String(r.MotivoInteres||''),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
+function spBool(v){const s=String(v??'').trim().toLowerCase();return v===true||v===1||s==='1'||s==='true'||s==='sí'||s==='si'||s==='yes'}
+function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),interestType:String(r.TipoInteres||''),interestReason:String(r.MotivoInteres||''),useEmail:spBool(r.UsoCorreo),useWhatsapp:spBool(r.UsoWhatsApp),useLinkedin:spBool(r.UsoLinkedIn),useWebsite:spBool(r.UsoSitioWeb),useSocial:spBool(r.UsoRedSocial),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
 function isConnectedStatus(status){return ['CONECTADA','ACEPTADA'].includes(String(status||'').toUpperCase())}
 function storeSession(s,token){session={...s,accessToken:token};syncModeFromSession();sessionStorage.setItem('tangara.session',JSON.stringify(session));const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);openApp()}
 async function boot(){
@@ -1144,7 +1177,7 @@ function renderCarousel(){
   const card=c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`;
   const first=list.map(card).join('');
   const second=list.map(c=>card(c).replace('<button ','<button tabindex="-1" aria-hidden="true" ')).join('');
-  const duration=Math.max(48,Math.round(list.length*1.6));
+  const duration=240;
   el.innerHTML=`<div class="marquee-track" style="--dur:${duration}s">${first}${second}</div>`;
   el.querySelectorAll('.carousel-card').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));
 }
@@ -1226,6 +1259,18 @@ function interestDetailsHTML(conn,prefix='Motivo del interés'){
   if(!conn.interestType&&!conn.interestReason)return '';
   return `<div class="interest-note"><div class="interest-label">${escapeHTML(prefix)}</div>${conn.interestType?`<strong>${escapeHTML(conn.interestType)}</strong>`:''}${conn.interestReason?`<p>“${escapeHTML(conn.interestReason)}”</p>`:''}</div>`;
 }
+function channelActivityHTML(conn,mode){
+  const channels=[
+    ['useEmail','Correo'],
+    ['useWhatsapp','WhatsApp'],
+    ['useLinkedin','LinkedIn'],
+    ['useWebsite','Sitio web'],
+    ['useSocial','Red social']
+  ].filter(([key])=>conn[key]);
+  if(!channels.length)return '';
+  const label=mode==='received'?'Canales utilizados después de consultar tu contacto':'Canales que has abierto en esta conexión';
+  return `<div class="channel-used"><div class="channel-used-label">${escapeHTML(label)}</div><div class="channel-used-list">${channels.map(([,name])=>`<span class="channel-used-chip">${escapeHTML(name)}</span>`).join('')}</div></div>`;
+}
 function contactCardHTML(card,counterpartId=''){
   if(!card)return '<p style="margin:8px 0 0">Todavía no hay datos de contacto para mostrar.</p>';
   const rawPhone=String(card.telefonoWhatsApp||card.telefono||'').replace(/\D/g,'');const phone=(rawPhone.length===10&&rawPhone.startsWith('3'))?'57'+rawPhone:rawPhone;const email=String(card.email||'').trim();const outlook=email?'https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(email):'';const track=counterpartId?` data-track-company="${escapeHTML(counterpartId)}"`:'';
@@ -1236,7 +1281,7 @@ function renderConnectionCard(conn,mode){
   const profileButton=c.hasProfile?`<button class="btn btn-soft" data-profile="${escapeHTML(c.id)}">Ver perfil</button>`:'';
   const message=received?'Este participante consultó tus datos de contacto.':'Ya tienes disponibles los datos de contacto de esta empresa.';
   const card=received?conn.originCard:conn.destCard;
-  return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3>${loc?`<div class="connection-location">${escapeHTML(loc)}</div>`:''}</div><span class="status-chip status-accepted">${received?'Interés recibido':'Contacto consultado'}</span></div><p>${message}</p>${interestDetailsHTML(conn,received?'Motivo del interés':'Tu intención')}${contactCardHTML(card,counterpartId)}${profileButton?`<div class="connection-actions">${profileButton}</div>`:''}</article>`;
+  return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3>${loc?`<div class="connection-location">${escapeHTML(loc)}</div>`:''}</div><span class="status-chip status-accepted">${received?'Interés recibido':'Contacto consultado'}</span></div><p>${message}</p>${interestDetailsHTML(conn,received?'Motivo del interés':'Tu intención')}${channelActivityHTML(conn,mode)}${contactCardHTML(card,counterpartId)}${profileButton?`<div class="connection-actions">${profileButton}</div>`:''}</article>`;
 }
 function renderGroupedConnections(items,mode){
   const side=mode==='received'?'origin':'dest';
@@ -1248,7 +1293,7 @@ function renderGroupedConnections(items,mode){
 }
 function trackChannel(companyId,canal){
   if(!session?.accessToken||!companyId||!canal||FLOW_TRACK_URL.startsWith('__'))return;
-  fetch(FLOW_TRACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({accessToken:session.accessToken,empresaContraparteId:companyId,canal})}).catch(()=>{});
+  fetch(FLOW_TRACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({accessToken:session.accessToken,empresaContraparteId:companyId,canal})}).then(()=>setTimeout(()=>loadConnections(),450)).catch(()=>{});
 }
 async function loadConnections(){if(!session?.accessToken||FLOW_LIST_URL.startsWith('__')){$('#connectionsLoading').innerHTML='Aquí aparecerá tu actividad cuando el flujo de consulta esté disponible.';return}$('#connectionsLoading').classList.remove('hidden');$('#connectionsContent').classList.add('hidden');try{const res=await apiPost(FLOW_LIST_URL,{accessToken:session.accessToken});connectionItems=(res.conexiones||res.items||res.connections||[]).map(normalizeConnection).filter(connectionAllowed);renderConnectionCenter();$('#connectionsLoading').classList.add('hidden');$('#connectionsContent').classList.remove('hidden');renderCards();if(location.hash==='#solicitudes')setTimeout(()=>$('#solicitudes').scrollIntoView({behavior:'smooth',block:'start'}),180)}catch(err){console.error(err);$('#connectionsLoading').innerHTML='No pudimos cargar tu actividad. <button class="btn btn-soft" onclick="loadConnections()">Reintentar</button>'}}
 function renderConnectionCenter(){
@@ -1256,6 +1301,9 @@ function renderConnectionCenter(){
   const incoming=active.filter(x=>x.destId===session.empresaId);
   const outgoing=active.filter(x=>x.originId===session.empresaId);
   $('#incomingCount').textContent=incoming.length;$('#outgoingCount').textContent=outgoing.length;$('#acceptedCount').textContent=active.length;$('#receivedBadge').textContent=incoming.length;$('#sentBadge').textContent=outgoing.length;
+  const usageCounts={email:active.filter(x=>x.useEmail).length,whatsapp:active.filter(x=>x.useWhatsapp).length,linkedin:active.filter(x=>x.useLinkedin).length,website:active.filter(x=>x.useWebsite).length,social:active.filter(x=>x.useSocial).length};
+  $('#usageEmailCount').textContent=usageCounts.email;$('#usageWhatsappCount').textContent=usageCounts.whatsapp;$('#usageLinkedinCount').textContent=usageCounts.linkedin;$('#usageWebsiteCount').textContent=usageCounts.website;$('#usageSocialCount').textContent=usageCounts.social;
+  const usageTotal=Object.values(usageCounts).reduce((a,b)=>a+b,0);$('#channelActivitySummary').classList.toggle('hidden',usageTotal===0);
   $('#panelReceived').innerHTML=incoming.length?renderGroupedConnections(incoming,'received'):'<div class="empty-state glass">Todavía nadie ha consultado tu contacto.</div>';
   $('#panelSent').innerHTML=outgoing.length?renderGroupedConnections(outgoing,'sent'):'<div class="empty-state glass">Todavía no has consultado ningún contacto.</div>';
   $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)));scanReveals($('#connectionsContent'));$$('.connection-stat strong').forEach(animCount)
