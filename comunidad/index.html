@@ -412,6 +412,7 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 .channel-activity-stat{padding:12px;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid var(--line);min-width:0}
 .channel-activity-stat strong{display:block;font-size:22px;line-height:1;color:#FF78EA;margin-bottom:6px}
 .channel-activity-stat span{display:block;font-family:var(--mono);font-size:9px;line-height:1.25;letter-spacing:.05em;text-transform:uppercase;color:rgba(250,209,244,.62);overflow:hidden;text-overflow:ellipsis}
+.channel-activity-stat small{display:block;margin-top:6px;font-size:10px;line-height:1.3;color:rgba(250,209,244,.78);font-weight:550}.channel-activity-stat strong{font-size:28px}.channel-activity-stat .metric-word{font-size:10px;text-transform:none;letter-spacing:0;color:rgba(250,209,244,.58);margin-top:4px}
 .channel-used{margin:14px 0 2px;padding:13px 14px;border-radius:12px;background:rgba(143,230,182,.055);border:1px solid rgba(143,230,182,.18)}
 .channel-used-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#9DEBC0;margin-bottom:9px}
 .channel-used-list{display:flex;gap:7px;flex-wrap:wrap}
@@ -478,6 +479,41 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
   }
   .feedback-float-icon{width:24px;height:24px;flex-basis:24px;font-size:14px}
 }
+</style>
+
+
+<style id="tangara-font-lock">
+/* Mantener Bricolage Grotesque en toda la experiencia, incluidos controles y métricas añadidas */
+:root{--font:'Bricolage Grotesque',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--mono:'Bricolage Grotesque',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+html,body,button,input,select,textarea,a,
+.feedback-float,.channel-activity-summary,.channel-activity-summary *,
+.channel-used,.channel-used *,.connection-card,.connection-card *{
+  font-family:'Bricolage Grotesque',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;
+  font-optical-sizing:auto;
+}
+</style>
+
+
+<style id="tangara-motion-force">
+/* Movimiento continuo solicitado para la experiencia Tángara. */
+.marquee-track{
+  animation-name:marquee !important;
+  animation-duration:var(--dur,74s) !important;
+  animation-timing-function:linear !important;
+  animation-iteration-count:infinite !important;
+  animation-direction:normal !important;
+  animation-play-state:running !important;
+  will-change:transform;
+}
+.carousel:hover .marquee-track,
+.carousel:focus-within .marquee-track,
+.carousel-wrap:hover .marquee-track{animation-play-state:running !important;}
+.hero-rings i:nth-child(1){animation:spin-cw 32s linear infinite !important;}
+.hero-rings i:nth-child(2){animation:spin-ccw 24s linear infinite !important;}
+.hero-rings i:nth-child(3){animation:spin-cw 18s linear infinite !important;}
+.hero-bird{animation:tg-float 7s ease-in-out infinite !important;}
+.chip-mag{animation:tg-glow 3.6s ease-in-out infinite !important;}
+.company-logo{animation:tg-breathe 5s ease-in-out infinite !important;}
 </style>
 
 </head>
@@ -553,15 +589,15 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
       </div>
       <div class="channel-activity-summary hidden" id="channelActivitySummary">
         <div class="channel-activity-head">
-          <strong>Actividad por canal en tus conexiones</strong>
-          <span>Cuenta conexiones en las que se abrió cada canal de contacto.</span>
+          <strong>Interacciones por canal recibidas</strong>
+          <span>Cada cifra representa empresas o aliados distintos que abrieron ese canal al menos una vez.</span>
         </div>
         <div class="channel-activity-grid">
-          <div class="channel-activity-stat"><strong id="usageEmailCount">0</strong><span>Correo</span></div>
-          <div class="channel-activity-stat"><strong id="usageWhatsappCount">0</strong><span>WhatsApp</span></div>
-          <div class="channel-activity-stat"><strong id="usageLinkedinCount">0</strong><span>LinkedIn</span></div>
-          <div class="channel-activity-stat"><strong id="usageWebsiteCount">0</strong><span>Sitio web</span></div>
-          <div class="channel-activity-stat"><strong id="usageSocialCount">0</strong><span>Red social</span></div>
+          <div class="channel-activity-stat"><strong id="usageEmailCount">0</strong><span>Correo</span><small id="usageEmailMeta">0 participantes distintos</small></div>
+          <div class="channel-activity-stat"><strong id="usageWhatsappCount">0</strong><span>WhatsApp</span><small id="usageWhatsappMeta">0 participantes distintos</small></div>
+          <div class="channel-activity-stat"><strong id="usageLinkedinCount">0</strong><span>LinkedIn</span><small id="usageLinkedinMeta">0 participantes distintos</small></div>
+          <div class="channel-activity-stat"><strong id="usageWebsiteCount">0</strong><span>Sitio web</span><small id="usageWebsiteMeta">0 participantes distintos</small></div>
+          <div class="channel-activity-stat"><strong id="usageSocialCount">0</strong><span>Red social</span><small id="usageSocialMeta">0 participantes distintos</small></div>
         </div>
       </div>
       <div id="connectionsLoading" class="connections-loading"><span class="loading-dot"></span>Cargando tu actividad…</div>
@@ -1177,7 +1213,7 @@ function renderCarousel(){
   const card=c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`;
   const first=list.map(card).join('');
   const second=list.map(c=>card(c).replace('<button ','<button tabindex="-1" aria-hidden="true" ')).join('');
-  const duration=240;
+  const duration=Math.max(48,Math.round(list.length*1.6));
   el.innerHTML=`<div class="marquee-track" style="--dur:${duration}s">${first}${second}</div>`;
   el.querySelectorAll('.carousel-card').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));
 }
@@ -1301,9 +1337,13 @@ function renderConnectionCenter(){
   const incoming=active.filter(x=>x.destId===session.empresaId);
   const outgoing=active.filter(x=>x.originId===session.empresaId);
   $('#incomingCount').textContent=incoming.length;$('#outgoingCount').textContent=outgoing.length;$('#acceptedCount').textContent=active.length;$('#receivedBadge').textContent=incoming.length;$('#sentBadge').textContent=outgoing.length;
-  const usageCounts={email:active.filter(x=>x.useEmail).length,whatsapp:active.filter(x=>x.useWhatsapp).length,linkedin:active.filter(x=>x.useLinkedin).length,website:active.filter(x=>x.useWebsite).length,social:active.filter(x=>x.useSocial).length};
+  const distinctCount=(key)=>new Set(incoming.filter(x=>x[key]).map(x=>x.originId).filter(Boolean)).size;
+  const usageCounts={email:distinctCount('useEmail'),whatsapp:distinctCount('useWhatsapp'),linkedin:distinctCount('useLinkedin'),website:distinctCount('useWebsite'),social:distinctCount('useSocial')};
+  const distinctIncoming=new Set(incoming.map(x=>x.originId).filter(Boolean)).size;
   $('#usageEmailCount').textContent=usageCounts.email;$('#usageWhatsappCount').textContent=usageCounts.whatsapp;$('#usageLinkedinCount').textContent=usageCounts.linkedin;$('#usageWebsiteCount').textContent=usageCounts.website;$('#usageSocialCount').textContent=usageCounts.social;
-  const usageTotal=Object.values(usageCounts).reduce((a,b)=>a+b,0);$('#channelActivitySummary').classList.toggle('hidden',usageTotal===0);
+  const meta=(n)=>`${n} ${n===1?'participante distinto':'participantes distintos'} de ${distinctIncoming} ${distinctIncoming===1?'interesado':'interesados'}`;
+  $('#usageEmailMeta').textContent=meta(usageCounts.email);$('#usageWhatsappMeta').textContent=meta(usageCounts.whatsapp);$('#usageLinkedinMeta').textContent=meta(usageCounts.linkedin);$('#usageWebsiteMeta').textContent=meta(usageCounts.website);$('#usageSocialMeta').textContent=meta(usageCounts.social);
+  const usageTotal=Object.values(usageCounts).reduce((a,b)=>a+b,0);$('#channelActivitySummary').classList.toggle('hidden',incoming.length===0);
   $('#panelReceived').innerHTML=incoming.length?renderGroupedConnections(incoming,'received'):'<div class="empty-state glass">Todavía nadie ha consultado tu contacto.</div>';
   $('#panelSent').innerHTML=outgoing.length?renderGroupedConnections(outgoing,'sent'):'<div class="empty-state glass">Todavía no has consultado ningún contacto.</div>';
   $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)));scanReveals($('#connectionsContent'));$$('.connection-stat strong').forEach(animCount)
