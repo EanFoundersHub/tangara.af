@@ -348,6 +348,119 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 
 </style>
 
+<style id="tangara-premium">
+/* ── Animaciones premium Tángara ─────────────────────────── */
+@keyframes tg-up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes tg-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes tg-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes tg-bar{0%{left:-45%}100%{left:100%}}
+/* Gate */
+#gateView .gate{animation:tg-up .7s var(--ease) both}
+.gate-visual .chip,.gate-visual h1,.gate-visual p{animation:tg-up .75s var(--ease) both}
+.gate-visual h1{animation-delay:.12s}.gate-visual p{animation-delay:.22s}
+.gate-visual::after{animation:tg-float 7s ease-in-out infinite}
+.gate-shimmer{font-size:17px;line-height:1.5;font-weight:600;background:linear-gradient(90deg,rgba(244,236,246,.55) 25%,#FF91ED 50%,rgba(244,236,246,.55) 75%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:tg-shimmer 3.4s linear infinite}
+.gate-progress{position:relative;height:3px;border-radius:999px;overflow:hidden;background:rgba(238,70,221,.14);margin-top:18px}
+.gate-progress:before{content:"";position:absolute;top:0;height:100%;width:45%;border-radius:inherit;background:linear-gradient(90deg,transparent,var(--mag),#FAD1F4,var(--mag),transparent);animation:tg-bar 1.5s var(--ease) infinite}
+/* Hero entrada escalonada */
+.hero-inner .chip{animation:tg-up .7s var(--ease) both;animation-delay:.05s}
+.hero-inner h1{animation:tg-up .85s var(--ease) both;animation-delay:.16s}
+.hero-inner .lead{animation:tg-up .85s var(--ease) both;animation-delay:.28s}
+.hero-inner .hero-stats{animation:tg-up .85s var(--ease) both;animation-delay:.4s}
+.hero-bird{animation:tg-float 9s ease-in-out infinite}
+/* Reveal al hacer scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+/* Brillo premium en botón primario */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary:after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);transition:left .6s var(--ease);pointer-events:none}
+.btn-primary:hover:not(:disabled):after{left:140%}
+/* Micro-interacciones */
+.carousel-card b,.company .company-side b{transition:color .25s var(--ease),transform .25s var(--ease)}
+.carousel-card:hover b{transform:translateX(3px)}
+.company:hover .company-side b{transform:translateX(2px)}
+/* Titular del gate con acento */
+.gate-visual h1 em{font-style:normal;display:inline-block;background:linear-gradient(120deg,#fff 0%,#FAD1F4 55%,#F27BE3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+/* Mas blancos: mas luz y contraste */
+.section-head h2,.carousel-card h3,.company h3,.connection-card h3{color:#fff}
+.hero .lead,.section-head p{color:rgba(255,255,255,.74)}
+.stat span,.connection-stat span,.carousel-meta{color:rgba(255,255,255,.68)}
+.carousel-card{position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.14)}
+.carousel-card:hover{box-shadow:0 16px 44px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.14),0 0 34px -6px rgba(238,70,221,.5)}
+/* Barrido de brillo blanco en tarjetas de la cohorte */
+.carousel-card:after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-18deg);transition:left .7s var(--ease);pointer-events:none}
+.carousel-card:hover:after{left:150%}
+/* Pulso suave de luz en el chip de estado */
+@keyframes tg-glow{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 0 22px -4px rgba(250,209,244,.55)}}
+.chip-mag{animation:tg-glow 3.6s ease-in-out infinite}
+/* Anillos del hero con destello blanco extra */
+.hero-rings i:nth-child(2)::after{content:"";position:absolute;bottom:-4px;left:50%;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 16px 4px rgba(255,255,255,.7);transform:translateX(-50%)}
+/* Avatares y logos con leve latido */
+@keyframes tg-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.company-logo{animation:tg-breathe 5s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}.reveal{opacity:1!important;transform:none!important}}
+</style>
+
+
+<style id="tangara-feedback-float">
+.feedback-float{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:75;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:48px;
+  padding:13px 18px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#FDECEA,#FAD1F4);
+  color:#62165A;
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 16px 42px rgba(33,4,43,.34),0 0 0 1px rgba(238,70,221,.16);
+  font-family:var(--font);
+  font-size:13.5px;
+  font-weight:750;
+  letter-spacing:-.01em;
+  text-decoration:none;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+}
+.feedback-float:hover{
+  color:#62165A;
+  transform:translateY(-3px);
+  background:#fff;
+  box-shadow:0 20px 50px rgba(33,4,43,.40),0 0 0 2px rgba(238,70,221,.18);
+}
+.feedback-float:focus-visible{
+  outline:3px solid rgba(242,123,227,.62);
+  outline-offset:3px;
+}
+.feedback-float-icon{
+  width:26px;
+  height:26px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  flex:0 0 26px;
+  background:#B12FA4;
+  color:#fff;
+  font-size:15px;
+  line-height:1;
+}
+@media(max-width:560px){
+  .feedback-float{
+    right:14px;
+    bottom:14px;
+    min-height:44px;
+    padding:11px 14px;
+    border-radius:12px;
+    font-size:12.5px;
+  }
+  .feedback-float-icon{width:24px;height:24px;flex-basis:24px;font-size:14px}
+}
+</style>
+
 </head>
 <body>
 
@@ -357,14 +470,15 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
       <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Investment Readiness</span></div>
       <div>
         <span class="chip chip-mag">Comunidad privada</span>
-        <h1>Conoce a las otras empresas de Tángara y encuentra con quién vale la pena hablar.</h1>
+        <h1>Estás a punto de conocer las Empresas mas Innovadoras. <em>Bienvenido a Tángara.</em></h1>
         <p>Este es el directorio privado de la cohorte. Revisa los perfiles y abre los datos de contacto cuando encuentres una empresa con la que quieras hablar.</p>
       </div>
     </div>
     <div class="gate-side">
       <h2 id="gateTitle">Estamos verificando tu acceso</h2>
-      <p id="gateCopy">Un momento. Estamos comprobando tu enlace de acceso.</p>
-      <div class="loader" id="gateLoader"><span class="spinner"></span><span>Abriendo Comunidad Tángara</span></div>
+      <p id="gateCopy" class="gate-shimmer">Estás a punto de conocer las Empresas mas Innovadoras.</p>
+      <div class="loader" id="gateLoader"><span class="spinner"></span><span>Conectando con la Comunidad Tángara…</span></div>
+      <div class="gate-progress" id="gateProgress"></div>
       <div id="gateError" class="gate-error hidden"></div>
       <p class="micro">Solo puedes entrar con el enlace personal enviado por Tángara. Los datos de contacto están disponibles para las empresas que hacen parte de la comunidad y cada consulta queda registrada.</p>
     </div>
@@ -486,13 +600,19 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
   </article>
 </div>
 
+
+<a class="feedback-float" href="https://forms.cloud.microsoft/r/5HKf5K3ZAf" target="_blank" rel="noopener" aria-label="Compartir feedback sobre Comunidad Tángara">
+  <span class="feedback-float-icon" aria-hidden="true">✦</span>
+  <span>Comparte tu feedback</span>
+</a>
+
 <div class="toast" id="toast">Listo.</div>
 
 <script>
 const FLOW_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/21/workflows/2aae2fd4bfbc4867a244439b805a0941/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_-0tZ1CvlN76uvJ2PsTuUaef6YL_bb8EtXoqVyb5LlQ";
 const FLOW_LIST_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/e7ad98987675464f8d0d080f1ce13b89/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lVPH9s3X79gn7g4iXjBP8vukiFySMQDsBKVVT3NqZys";
 const FLOW_CONNECT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/27/workflows/5f0d1baa910e46bc89cd023b86a3d012/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WusETK5DZZSgkIliaTAsX8Q464TzvpOZw-7ue0MLMl4";
-const FLOW_TRACK_URL="__PENDIENTE_TRACKING__";
+const FLOW_TRACK_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/40c0e55b948943c88cc1c5f122128ede/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BkaZf5dPktMKC-2SL0CWzLlyWTg-A-opXdj9w98vo3Y";
 const COMPANIES=[
   {
     "id": "TAN-01",
@@ -1011,8 +1131,8 @@ async function boot(){
   try{const cached=JSON.parse(sessionStorage.getItem('tangara.session')||'null');if(cached?.accessToken){session=cached;return openApp()}}catch{}
   return showGateError('Para entrar necesitas el enlace personal que te envió Tángara.');
 }
-function showGateError(msg){$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden')}
-function openApp(){syncModeFromSession();const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();scrollTo(0,0)}
+function showGateError(msg){$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');const gp=$('#gateProgress');if(gp)gp.classList.add('hidden');$('#gateCopy').classList.remove('gate-shimmer');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden')}
+function openApp(){syncModeFromSession();const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();scanReveals();$$('.hero-stats .stat strong').forEach(animCount);scrollTo(0,0)}
 function buildFilters(){
   const pool=visibleCompanies();
   const vs=[...new Set(pool.map(c=>c.vertical).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));$('#verticalFilter').innerHTML='<option value="">Todas las verticales</option>'+vs.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
@@ -1024,7 +1144,7 @@ function renderCarousel(){
   const card=c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`;
   const first=list.map(card).join('');
   const second=list.map(c=>card(c).replace('<button ','<button tabindex="-1" aria-hidden="true" ')).join('');
-  const duration=Math.max(240,Math.round(list.length*5.5));
+  const duration=Math.max(48,Math.round(list.length*1.6));
   el.innerHTML=`<div class="marquee-track" style="--dur:${duration}s">${first}${second}</div>`;
   el.querySelectorAll('.carousel-card').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));
 }
@@ -1041,7 +1161,7 @@ function renderCards(){
   const list=source.filter(c=>c.id!==session.empresaId&&(!v||c.vertical===v)&&(!city||c.city===city)&&(!q||[c.name,c.vertical,c.city,c.department,c.summary,c.clients].join(' ').toLowerCase().includes(q)));
   $('#visibleCount').textContent=list.length;
   $('#cards').innerHTML=list.map(c=>{const existing=pairConnection(c.id);return `<button class="company ${DEMO_MODE&&DEMO_IDS.includes(c.id)?'demo-target':''}" data-id="${c.id}"><div class="company-main"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span class="loc">${escapeHTML([c.city,c.department].filter(Boolean).join(' · '))}</span><b>${existing?'Contacto disponible':'Ver perfil'}</b></div></button>`}).join('')||'<div class="empty">No encontramos empresas con esos filtros.</div>';
-  $$('.company').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)))
+  $$('.company').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));scanReveals($('#cards'))
 }
 function openProfile(id){
   currentCompany=companyById(id);if(!currentCompany)return;
@@ -1138,12 +1258,15 @@ function renderConnectionCenter(){
   $('#incomingCount').textContent=incoming.length;$('#outgoingCount').textContent=outgoing.length;$('#acceptedCount').textContent=active.length;$('#receivedBadge').textContent=incoming.length;$('#sentBadge').textContent=outgoing.length;
   $('#panelReceived').innerHTML=incoming.length?renderGroupedConnections(incoming,'received'):'<div class="empty-state glass">Todavía nadie ha consultado tu contacto.</div>';
   $('#panelSent').innerHTML=outgoing.length?renderGroupedConnections(outgoing,'sent'):'<div class="empty-state glass">Todavía no has consultado ningún contacto.</div>';
-  $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)))
+  $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)));scanReveals($('#connectionsContent'));$$('.connection-stat strong').forEach(animCount)
 }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2600)}
 document.addEventListener('click',async e=>{const btn=e.target.closest('[data-copy-email]');if(!btn)return;const email=btn.dataset.copyEmail||'';if(!email)return;try{await navigator.clipboard.writeText(email);toast('Correo copiado: '+email)}catch(_){const ta=document.createElement('textarea');ta.value=email;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Correo copiado: '+email)}});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-track-channel][data-track-company]');if(!a)return;trackChannel(a.dataset.trackCompany,a.dataset.trackChannel)});
 $('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openInterestModal);$('#interestSubmitBtn').addEventListener('click',revealContact);$('#interestReason').addEventListener('input',e=>$('#interestChars').textContent=String(e.target.value.length));$$('.interest-option').forEach(b=>b.addEventListener('click',()=>{selectedInterest=b.dataset.interestValue||'';$$('.interest-option').forEach(x=>x.classList.toggle('selected',x===b))}));$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
+const _revealIO=('IntersectionObserver'in window)?new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');_revealIO.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'}):null;
+function scanReveals(scope){scope=scope||document;if(!_revealIO)return;const sel='.company,.connection-stat,.connection-card,.connection-group,.section-head';let i=0;scope.querySelectorAll(sel).forEach(el=>{if(el.dataset.rev)return;el.dataset.rev='1';el.classList.add('reveal');el.style.transitionDelay=Math.min(i*45,300)+'ms';i++;_revealIO.observe(el)})}
+function animCount(el){const raw=(el.textContent||'').trim();if(!/^\d+$/.test(raw))return;const num=+raw;if(num<=0){el.textContent='0';return}const dur=900,t0=performance.now();el.textContent='0';requestAnimationFrame(function s(now){const p=Math.min(1,(now-t0)/dur);el.textContent=Math.round(num*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(s)})}
 boot();
 </script>
 </body>
