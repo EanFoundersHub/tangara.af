@@ -98,7 +98,7 @@ body.demo .demo-bar{display:block}
 .hero-rings i:nth-child(3)::after{background:#FAD1F4;box-shadow:0 0 14px 3px rgba(250,209,244,.7)}
 @keyframes spin-cw{to{transform:rotate(360deg)}}
 @keyframes spin-ccw{to{transform:rotate(-360deg)}}
-.hero-bird{position:absolute;right:-40px;top:-10px;width:min(46%,560px);opacity:.13;pointer-events:none;z-index:0}
+.hero-bird{position:absolute;right:-24px;top:52px;width:min(46%,560px);opacity:.13;pointer-events:none;z-index:0}
 .hero-inner{position:relative;z-index:1;max-width:880px}
 .hero h1{font-size:clamp(40px,5.4vw,76px);line-height:.94;margin:20px 0 22px;color:#fff}
 .hero h1 em{font-style:normal;background:linear-gradient(120deg,#FAD1F4,#F27BE3 55%,#B12FA4);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -498,7 +498,7 @@ html,body,button,input,select,textarea,a,
 /* Movimiento continuo solicitado para la experiencia Tángara. */
 .marquee-track{
   animation-name:marquee !important;
-  animation-duration:var(--dur,74s) !important;
+  animation-duration:var(--dur,148s) !important;
   animation-timing-function:linear !important;
   animation-iteration-count:infinite !important;
   animation-direction:normal !important;
@@ -508,10 +508,10 @@ html,body,button,input,select,textarea,a,
 .carousel:hover .marquee-track,
 .carousel:focus-within .marquee-track,
 .carousel-wrap:hover .marquee-track{animation-play-state:running !important;}
-.hero-rings i:nth-child(1){animation:spin-cw 32s linear infinite !important;}
-.hero-rings i:nth-child(2){animation:spin-ccw 24s linear infinite !important;}
-.hero-rings i:nth-child(3){animation:spin-cw 18s linear infinite !important;}
-.hero-bird{animation:tg-float 7s ease-in-out infinite !important;}
+.hero-rings i:nth-child(1){animation:spin-cw 64s linear infinite !important;}
+.hero-rings i:nth-child(2){animation:spin-ccw 48s linear infinite !important;}
+.hero-rings i:nth-child(3){animation:spin-cw 36s linear infinite !important;}
+.hero-bird{animation:tg-float 14s ease-in-out infinite !important;}
 .chip-mag{animation:tg-glow 3.6s ease-in-out infinite !important;}
 .company-logo{animation:tg-breathe 5s ease-in-out infinite !important;}
 </style>
@@ -1213,7 +1213,7 @@ function renderCarousel(){
   const card=c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`;
   const first=list.map(card).join('');
   const second=list.map(c=>card(c).replace('<button ','<button tabindex="-1" aria-hidden="true" ')).join('');
-  const duration=Math.max(48,Math.round(list.length*1.6));
+  const duration=Math.max(96,Math.round(list.length*3.2));
   el.innerHTML=`<div class="marquee-track" style="--dur:${duration}s">${first}${second}</div>`;
   el.querySelectorAll('.carousel-card').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));
 }
