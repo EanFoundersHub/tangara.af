@@ -313,6 +313,39 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 .carousel-wrap:hover .marquee-track{animation-play-state:paused}
 @media(max-width:760px){.toolbar{grid-template-columns:1fr}.company{grid-template-columns:1fr}.company-side{align-items:flex-start;text-align:left;border-left:0;border-top:1px solid var(--line);padding:10px 0 0;min-width:0}}
 
+
+/* Agrupación de conexiones + modal de intención */
+.connection-group{grid-column:1/-1;display:block;margin:4px 0 18px}
+.connection-group-title{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:0 2px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#F6A6EB}
+.connection-group-title:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(238,70,221,.34),transparent)}
+.connection-group-count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:rgba(238,70,221,.12);border:1px solid rgba(242,123,227,.25);color:#fff;font-size:10px;letter-spacing:0}
+.connection-group-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:13px}
+.connection-location{display:flex;align-items:center;gap:6px;margin-top:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:rgba(250,209,244,.62)}
+.connection-location:before{content:"•";color:#EE46DD;font-size:16px;line-height:.7}
+.interest-note{margin:14px 0 0;padding:13px 14px;border-radius:12px;background:rgba(238,70,221,.08);border:1px solid rgba(242,123,227,.22)}
+.interest-note .interest-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#F6A6EB;margin-bottom:5px}
+.interest-note strong{display:block;font-size:13px;line-height:1.4;color:#fff}
+.interest-note p{margin:8px 0 0;font-size:12.5px;line-height:1.5;color:var(--txt2)}
+#interestBackdrop{z-index:100}
+.interest-modal{width:min(650px,100%);border-radius:22px;background:var(--bg2);border:1px solid var(--line2);box-shadow:0 50px 130px -40px #000;overflow:hidden;animation:modalin .3s var(--ease)}
+.interest-modal-head{position:relative;padding:28px 30px 22px;background:linear-gradient(145deg,#32103f,#65185c);border-bottom:1px solid var(--line)}
+.interest-modal-head .eyebrow{display:block;margin-bottom:10px}
+.interest-modal-head h3{font-size:27px;line-height:1.08;color:#fff;margin:0 42px 8px 0}
+.interest-modal-head p{margin:0;color:rgba(255,255,255,.68);font-size:13.5px;line-height:1.5}
+.interest-modal-body{padding:24px 30px 28px}
+.interest-question{font-size:15px;font-weight:700;color:#fff;margin:0 0 12px}
+.interest-options{display:grid;gap:9px;margin-bottom:20px}
+.interest-option{appearance:none;width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--txt);font-size:13.5px;line-height:1.35;transition:.18s var(--ease)}
+.interest-option:hover{border-color:rgba(238,70,221,.6);background:rgba(238,70,221,.08)}
+.interest-option.selected{border-color:#EE46DD;background:rgba(238,70,221,.16);box-shadow:0 0 0 2px rgba(238,70,221,.08)}
+.interest-text-label{display:flex;justify-content:space-between;gap:12px;align-items:end;margin:0 0 8px;font-size:13px;font-weight:700;color:#fff}
+.interest-text-label span{font-family:var(--mono);font-size:9.5px;font-weight:500;color:var(--txt3)}
+#interestReason{width:100%;min-height:96px;resize:vertical;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.035);color:#fff;padding:12px 14px;outline:none;font:13.5px/1.5 var(--font)}
+#interestReason:focus{border-color:rgba(238,70,221,.65);box-shadow:0 0 0 2px rgba(238,70,221,.08)}
+#interestReason::placeholder{color:var(--txt3)}
+.interest-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:560px){.interest-modal-head,.interest-modal-body{padding-left:20px;padding-right:20px}.connection-group-grid{grid-template-columns:1fr}}
+
 </style>
 
 </head>
@@ -339,7 +372,7 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 </div>
 
 <div id="appView" class="hidden">
-  <div class="demo-bar">MODO DEMO · Los datos de contacto solo están habilitados entre los tres perfiles de prueba. Los correos llegan únicamente a Laura, Lina y Juan Felipe.</div>
+  <div class="demo-bar">MODO DEMO · Este acceso está aislado de las empresas reales y solo permite conexiones entre perfiles de prueba.</div>
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Comunidad</span></div>
@@ -365,7 +398,7 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
         </div>
       </div>
       <div class="demo-callout">
-        <div><strong>Prueba rápida para la demo</strong><br><span>Los tres perfiles DEMO aparecen primero en el directorio. Abre los datos de contacto de otra persona y revisa el correo de aviso que recibe.</span></div>
+        <div><strong>Prueba rápida para la demo</strong><br><span>Los perfiles DEMO aparecen primero en el directorio y están aislados de las empresas reales.</span></div>
         <span class="chip chip-mag" style="flex-shrink:0">Demo 09:30</span>
       </div>
     </section>
@@ -422,7 +455,33 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
         <section class="light-card"><h4>Sobre la empresa</h4><p id="profileSolution"></p><div class="privacy-note" id="profileContactState">Puedes consultar los datos de contacto desde este perfil. Al hacerlo, Tángara registra el interés y avisa a la empresa.</div></section>
         <section class="light-card"><h4>Datos clave</h4><div class="facts" id="profileFacts"></div></section>
       </div>
-      <div class="profile-actions"><button class="btn btn-primary" id="connectBtn">Ver datos de contacto</button><a class="btn btn-soft website-btn hidden" id="websiteBtn" target="_blank" rel="noopener">Visitar sitio web</a></div>
+      <div class="profile-actions"><button class="btn btn-primary" id="connectBtn">Quiero contactar</button><a class="btn btn-soft website-btn hidden" id="websiteBtn" target="_blank" rel="noopener">Visitar sitio web</a></div>
+    </div>
+  </article>
+</div>
+
+
+<div class="backdrop" id="interestBackdrop" role="dialog" aria-modal="true" aria-labelledby="interestTitle">
+  <article class="interest-modal">
+    <header class="interest-modal-head">
+      <button class="close" data-close="interestBackdrop" aria-label="Cerrar">×</button>
+      <span class="eyebrow">Conectar</span>
+      <h3 id="interestTitle">¿Qué te llamó la atención de esta empresa?</h3>
+      <p id="interestCompanyName">Cuéntale brevemente por qué quieres conectar.</p>
+    </header>
+    <div class="interest-modal-body">
+      <p class="interest-question">Selecciona la intención principal de este contacto</p>
+      <div class="interest-options" id="interestOptions">
+        <button type="button" class="interest-option" data-interest-value="Quiero conocer más acerca de esta tecnología">Quiero conocer más acerca de esta tecnología</button>
+        <button type="button" class="interest-option" data-interest-value="Creo que podemos generar sinergias entre empresas">Creo que podemos generar sinergias entre empresas</button>
+        <button type="button" class="interest-option" data-interest-value="Puedo conectarla con un tercero interesado">Puedo conectarla con un tercero interesado</button>
+      </div>
+      <label class="interest-text-label" for="interestReason">¿Qué te llamó la atención? <span><b id="interestChars">0</b>/300</span></label>
+      <textarea id="interestReason" maxlength="300" placeholder="Escribe un comentario corto para dar contexto a la empresa..."></textarea>
+      <div class="interest-actions">
+        <button type="button" class="btn btn-soft" data-close="interestBackdrop">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="interestSubmitBtn">Ver datos de contacto</button>
+      </div>
     </div>
   </article>
 </div>
@@ -433,6 +492,7 @@ section.block:before{content:"";position:absolute;left:-3vw;right:-3vw;top:18px;
 const FLOW_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/21/workflows/2aae2fd4bfbc4867a244439b805a0941/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_-0tZ1CvlN76uvJ2PsTuUaef6YL_bb8EtXoqVyb5LlQ";
 const FLOW_LIST_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/e7ad98987675464f8d0d080f1ce13b89/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lVPH9s3X79gn7g4iXjBP8vukiFySMQDsBKVVT3NqZys";
 const FLOW_CONNECT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/27/workflows/5f0d1baa910e46bc89cd023b86a3d012/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WusETK5DZZSgkIliaTAsX8Q464TzvpOZw-7ue0MLMl4";
+const FLOW_TRACK_URL="__PENDIENTE_TRACKING__";
 const COMPANIES=[
   {
     "id": "TAN-01",
@@ -940,7 +1000,7 @@ function parseMaybeJSON(v){
     return JSON.parse(new TextDecoder('utf-8').decode(bytes));
   }catch{return null}
 }
-function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
+function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),interestType:String(r.TipoInteres||''),interestReason:String(r.MotivoInteres||''),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
 function isConnectedStatus(status){return ['CONECTADA','ACEPTADA'].includes(String(status||'').toUpperCase())}
 function storeSession(s,token){session={...s,accessToken:token};syncModeFromSession();sessionStorage.setItem('tangara.session',JSON.stringify(session));const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);openApp()}
 async function boot(){
@@ -986,50 +1046,104 @@ function renderCards(){
 function openProfile(id){
   currentCompany=companyById(id);if(!currentCompany)return;
   $('#profileTitle').textContent=currentCompany.name;
-  $('#profileSummary').textContent=[currentCompany.vertical,currentCompany.city].filter(Boolean).join(' · ');
+  $('#profileSummary').textContent=[currentCompany.vertical,locationLabel(currentCompany)].filter(Boolean).join(' · ');
   $('#profileSolution').textContent=currentCompany.summary||'Sin descripción disponible.';
-  $('#profileFacts').innerHTML=`<div class="fact"><span>Vertical</span><strong>${escapeHTML(currentCompany.vertical)}</strong></div><div class="fact"><span>Ubicación</span><strong>${escapeHTML([currentCompany.city,currentCompany.department].filter(Boolean).join(' · '))}</strong></div><div class="fact"><span>Clientes objetivo</span><strong>${escapeHTML(currentCompany.clients||'No indicado')}</strong></div>`;
-  const wb=$('#websiteBtn');if(currentCompany.website){wb.href=currentCompany.website;wb.classList.remove('hidden')}else wb.classList.add('hidden');
+  $('#profileFacts').innerHTML=`<div class="fact"><span>Vertical</span><strong>${escapeHTML(currentCompany.vertical)}</strong></div><div class="fact"><span>Ubicación</span><strong>${escapeHTML(locationLabel(currentCompany)||'No indicada')}</strong></div><div class="fact"><span>Clientes objetivo</span><strong>${escapeHTML(currentCompany.clients||'No indicado')}</strong></div>`;
+  const wb=$('#websiteBtn');if(currentCompany.website){wb.href=currentCompany.website;wb.dataset.trackChannel='SITIO_WEB';wb.dataset.trackCompany=currentCompany.id;wb.classList.remove('hidden')}else{wb.classList.add('hidden');delete wb.dataset.trackChannel;delete wb.dataset.trackCompany}
   const existing=pairConnection(id);const contactState=$('#profileContactState');
-  if(existing){const card=existing.originId===session.empresaId?existing.destCard:existing.originCard;contactState.innerHTML=`<div style="font-weight:800;margin-bottom:10px">Datos de contacto</div>${contactCardHTML(card)}`;}
-  else if(!canContactCompany(id)){contactState.innerHTML=DEMO_MODE?'Puedes recorrer este perfil durante la prueba. Para evitar correos a empresas reales, los datos de contacto solo están habilitados entre los tres perfiles DEMO.':'Este perfil de prueba no está disponible en la versión definitiva.';}
-  else{contactState.innerHTML='Puedes ver los datos de contacto desde este perfil. Al hacerlo, Tángara registra el interés y le avisa a la empresa que consultaste su contacto.';}
-  const cb=$('#connectBtn');const blockedByMode=!canContactCompany(id);cb.disabled=blockedByMode||!!existing;cb.textContent=blockedByMode?(DEMO_MODE?'Solo vista en demo':'No disponible'):existing?'Contacto visible ✓':'Ver datos de contacto';
+  if(existing){const card=existing.originId===session.empresaId?existing.destCard:existing.originCard;const counterpart=existing.originId===session.empresaId?existing.destId:existing.originId;contactState.innerHTML=`<div style="font-weight:800;margin-bottom:10px">Datos de contacto</div>${contactCardHTML(card,counterpart)}`;}
+  else if(!canContactCompany(id)){contactState.innerHTML=DEMO_MODE?'Puedes recorrer este perfil durante la prueba. Los datos de contacto solo están habilitados entre perfiles DEMO.':'Este perfil de prueba no está disponible en la versión definitiva.';}
+  else{contactState.innerHTML='Si quieres conectar, cuéntale brevemente a la empresa qué te interesa. Después podrás ver sus datos de contacto y Tángara registrará la conexión.';}
+  const cb=$('#connectBtn');const blockedByMode=!canContactCompany(id);cb.disabled=blockedByMode||!!existing;cb.textContent=blockedByMode?(DEMO_MODE?'Solo vista en demo':'No disponible'):existing?'Contacto visible ✓':'Quiero contactar';
   $('#profileBackdrop').classList.add('open')
+}
+let selectedInterest='';
+function openInterestModal(){
+  if(!currentCompany||!session?.accessToken)return;
+  if(!canContactCompany(currentCompany.id))return toast(DEMO_MODE?'En esta prueba ese contacto no está habilitado.':'Este perfil no está disponible para contacto.');
+  if(pairConnection(currentCompany.id)){openProfile(currentCompany.id);return;}
+  selectedInterest='';
+  $$('.interest-option').forEach(b=>b.classList.remove('selected'));
+  $('#interestReason').value='';$('#interestChars').textContent='0';
+  $('#interestCompanyName').textContent=`Vas a manifestar interés en ${currentCompany.name}.`;
+  $('#interestBackdrop').classList.add('open');
 }
 async function revealContact(){
   if(!currentCompany||!session?.accessToken)return;
-  if(!canContactCompany(currentCompany.id))return toast(DEMO_MODE?'En esta prueba los contactos solo están habilitados entre los tres perfiles DEMO.':'Este perfil de prueba no está disponible en la versión definitiva.');
-  const existing=pairConnection(currentCompany.id);if(existing){openProfile(currentCompany.id);return;}
-  const btn=$('#connectBtn');btn.disabled=true;btn.textContent='Cargando contacto…';
+  if(!selectedInterest)return toast('Selecciona una intención para continuar.');
+  if(!canContactCompany(currentCompany.id))return toast(DEMO_MODE?'En esta prueba ese contacto no está habilitado.':'Este perfil no está disponible para contacto.');
+  const existing=pairConnection(currentCompany.id);if(existing){$('#interestBackdrop').classList.remove('open');openProfile(currentCompany.id);return;}
+  const btn=$('#interestSubmitBtn');const originalText=btn.textContent;btn.disabled=true;btn.textContent='Conectando…';
+  const motivo=$('#interestReason').value.trim().slice(0,300);
   try{
-    const res=await apiPost(FLOW_CONNECT_URL,{accessToken:session.accessToken,empresaDestinoId:currentCompany.id});
+    const res=await apiPost(FLOW_CONNECT_URL,{accessToken:session.accessToken,empresaDestinoId:currentCompany.id,tipoInteres:selectedInterest,motivoInteres:motivo});
     if(!['CONNECTED','CREATED','ALREADY_EXISTS','CONECTADA','ACEPTADA'].includes(String(res?.status||'').toUpperCase()))throw new Error(res?.error||'Respuesta inesperada');
     await loadConnections();
     const refreshed=pairConnection(currentCompany.id);
-    if(refreshed){openProfile(currentCompany.id);toast(`${currentCompany.name} recibió un aviso de tu interés.`)}
+    if(refreshed){$('#interestBackdrop').classList.remove('open');openProfile(currentCompany.id);toast(`${currentCompany.name} recibió un aviso de tu interés.`)}
     else{toast('La conexión quedó registrada, pero el contacto todavía no está disponible. Revisa el flujo 02.')}
   }catch(err){
     console.error(err);
     if(err.status===401){sessionStorage.removeItem('tangara.session');showGateError('Este enlace ya no está habilitado. Abre el enlace personal más reciente que te envió Tángara.');$('#appView').classList.add('hidden');$('#gateView').classList.remove('hidden')}
     else toast('No pudimos cargar el contacto. Intenta de nuevo.')
-  }finally{if(document.body.contains(btn)){btn.disabled=false;btn.textContent=pairConnection(currentCompany?.id)?'Contacto visible ✓':'Ver datos de contacto'}}
+  }finally{if(document.body.contains(btn)){btn.disabled=false;btn.textContent=originalText}}
 }
 function otherCompany(conn){return companyById(conn.originId===session.empresaId?conn.destId:conn.originId)}
-function contactCardHTML(card){if(!card)return '<p style="margin:8px 0 0">Todavía no hay datos de contacto para mostrar.</p>';const rawPhone=String(card.telefonoWhatsApp||card.telefono||'').replace(/\D/g,'');const phone=(rawPhone.length===10&&rawPhone.startsWith('3'))?'57'+rawPhone:rawPhone;const email=String(card.email||'').trim();const outlook=email?'https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(email):'';return `<div class="contact-card"><strong>${escapeHTML(card.nombre||'Contacto')}</strong><div class="role">${escapeHTML([card.cargo,card.empresa].filter(Boolean).join(' · '))}</div>${email?`<div class="contact-email"><span>Correo</span>${escapeHTML(email)}</div>`:''}<div class="contact-links">${email?`<a class="email-action" href="${outlook}" target="_blank" rel="noopener">Escribir correo ↗</a><button type="button" data-copy-email="${escapeHTML(email)}">Copiar correo</button>`:''}${phone?`<a href="https://wa.me/${phone}" target="_blank" rel="noopener">WhatsApp ↗</a>`:''}${card.linkedin?`<a href="${escapeHTML(card.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>`:''}${card.redSocial?`<a href="${escapeHTML(card.redSocial)}" target="_blank" rel="noopener">Red social ↗</a>`:''}</div></div>`}
+function locationLabel(c){
+  if(!c)return '';
+  const city=String(c.city||'').trim(),dep=String(c.department||'').trim();
+  if(!city)return dep;if(!dep)return city;
+  if(city.toLocaleLowerCase('es')===dep.toLocaleLowerCase('es'))return city;
+  return `${city}, ${dep}`;
+}
+function connectionEntity(conn,side){
+  const origin=side==='origin';const id=origin?conn.originId:conn.destId;const card=origin?conn.originCard:conn.destCard;
+  const known=companyById(id);if(known)return {...known,hasProfile:true};
+  const ally=String(id||'').startsWith('ALIADO-');
+  return {id,name:card?.empresa||card?.nombre||id||'Participante',vertical:ally?'Aliados y equipo Tángara':'Otros participantes',city:'',department:'',summary:'',hasProfile:false};
+}
+function interestDetailsHTML(conn,prefix='Motivo del interés'){
+  if(!conn.interestType&&!conn.interestReason)return '';
+  return `<div class="interest-note"><div class="interest-label">${escapeHTML(prefix)}</div>${conn.interestType?`<strong>${escapeHTML(conn.interestType)}</strong>`:''}${conn.interestReason?`<p>“${escapeHTML(conn.interestReason)}”</p>`:''}</div>`;
+}
+function contactCardHTML(card,counterpartId=''){
+  if(!card)return '<p style="margin:8px 0 0">Todavía no hay datos de contacto para mostrar.</p>';
+  const rawPhone=String(card.telefonoWhatsApp||card.telefono||'').replace(/\D/g,'');const phone=(rawPhone.length===10&&rawPhone.startsWith('3'))?'57'+rawPhone:rawPhone;const email=String(card.email||'').trim();const outlook=email?'https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(email):'';const track=counterpartId?` data-track-company="${escapeHTML(counterpartId)}"`:'';
+  return `<div class="contact-card"><strong>${escapeHTML(card.nombre||'Contacto')}</strong><div class="role">${escapeHTML([card.cargo,card.empresa].filter(Boolean).join(' · '))}</div>${email?`<div class="contact-email"><span>Correo</span>${escapeHTML(email)}</div>`:''}<div class="contact-links">${email?`<a class="email-action" href="${outlook}" target="_blank" rel="noopener" data-track-channel="CORREO"${track}>Escribir correo ↗</a><button type="button" data-copy-email="${escapeHTML(email)}">Copiar correo</button>`:''}${phone?`<a href="https://wa.me/${phone}" target="_blank" rel="noopener" data-track-channel="WHATSAPP"${track}>WhatsApp ↗</a>`:''}${card.linkedin?`<a href="${escapeHTML(card.linkedin)}" target="_blank" rel="noopener" data-track-channel="LINKEDIN"${track}>LinkedIn ↗</a>`:''}${card.redSocial?`<a href="${escapeHTML(card.redSocial)}" target="_blank" rel="noopener" data-track-channel="RED_SOCIAL"${track}>Red social ↗</a>`:''}</div></div>`
+}
+function renderConnectionCard(conn,mode){
+  const received=mode==='received';const side=received?'origin':'dest';const c=connectionEntity(conn,side);const counterpartId=received?conn.originId:conn.destId;const loc=locationLabel(c);
+  const profileButton=c.hasProfile?`<button class="btn btn-soft" data-profile="${escapeHTML(c.id)}">Ver perfil</button>`:'';
+  const message=received?'Este participante consultó tus datos de contacto.':'Ya tienes disponibles los datos de contacto de esta empresa.';
+  const card=received?conn.originCard:conn.destCard;
+  return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3>${loc?`<div class="connection-location">${escapeHTML(loc)}</div>`:''}</div><span class="status-chip status-accepted">${received?'Interés recibido':'Contacto consultado'}</span></div><p>${message}</p>${interestDetailsHTML(conn,received?'Motivo del interés':'Tu intención')}${contactCardHTML(card,counterpartId)}${profileButton?`<div class="connection-actions">${profileButton}</div>`:''}</article>`;
+}
+function renderGroupedConnections(items,mode){
+  const side=mode==='received'?'origin':'dest';
+  const map=new Map();
+  for(const conn of items){const c=connectionEntity(conn,side);const key=c.vertical||'Otros participantes';if(!map.has(key))map.set(key,[]);map.get(key).push(conn)}
+  const preferred=['Agritech','Bioeconomía','Economía circular','Transición energética y descarbonización','Aliados y equipo Tángara','Otros participantes'];
+  const keys=[...map.keys()].sort((a,b)=>{const ia=preferred.indexOf(a),ib=preferred.indexOf(b);if(ia>=0||ib>=0)return (ia<0?999:ia)-(ib<0?999:ib);return a.localeCompare(b,'es')});
+  return keys.map(key=>{const list=map.get(key).slice().sort((a,b)=>connectionEntity(a,side).name.localeCompare(connectionEntity(b,side).name,'es',{sensitivity:'base'}));return `<section class="connection-group"><div class="connection-group-title"><span>${escapeHTML(key)}</span><span class="connection-group-count">${list.length}</span></div><div class="connection-group-grid">${list.map(x=>renderConnectionCard(x,mode)).join('')}</div></section>`}).join('');
+}
+function trackChannel(companyId,canal){
+  if(!session?.accessToken||!companyId||!canal||FLOW_TRACK_URL.startsWith('__'))return;
+  fetch(FLOW_TRACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({accessToken:session.accessToken,empresaContraparteId:companyId,canal})}).catch(()=>{});
+}
 async function loadConnections(){if(!session?.accessToken||FLOW_LIST_URL.startsWith('__')){$('#connectionsLoading').innerHTML='Aquí aparecerá tu actividad cuando el flujo de consulta esté disponible.';return}$('#connectionsLoading').classList.remove('hidden');$('#connectionsContent').classList.add('hidden');try{const res=await apiPost(FLOW_LIST_URL,{accessToken:session.accessToken});connectionItems=(res.conexiones||res.items||res.connections||[]).map(normalizeConnection).filter(connectionAllowed);renderConnectionCenter();$('#connectionsLoading').classList.add('hidden');$('#connectionsContent').classList.remove('hidden');renderCards();if(location.hash==='#solicitudes')setTimeout(()=>$('#solicitudes').scrollIntoView({behavior:'smooth',block:'start'}),180)}catch(err){console.error(err);$('#connectionsLoading').innerHTML='No pudimos cargar tu actividad. <button class="btn btn-soft" onclick="loadConnections()">Reintentar</button>'}}
 function renderConnectionCenter(){
   const active=connectionItems.filter(x=>isConnectedStatus(x.status)&&(x.originId===session.empresaId||x.destId===session.empresaId));
   const incoming=active.filter(x=>x.destId===session.empresaId);
   const outgoing=active.filter(x=>x.originId===session.empresaId);
   $('#incomingCount').textContent=incoming.length;$('#outgoingCount').textContent=outgoing.length;$('#acceptedCount').textContent=active.length;$('#receivedBadge').textContent=incoming.length;$('#sentBadge').textContent=outgoing.length;
-  $('#panelReceived').innerHTML=incoming.length?incoming.map(x=>{const c=companyById(x.originId)||{name:x.originId};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-accepted">Interés recibido</span></div><p>Esta empresa consultó tus datos de contacto.</p>${contactCardHTML(x.originCard)}<div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.originId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">Todavía ninguna empresa ha consultado tu contacto.</div>';
-  $('#panelSent').innerHTML=outgoing.length?outgoing.map(x=>{const c=companyById(x.destId)||{name:x.destId};return `<article class="connection-card glass"><div class="connection-card-head"><div><h3>${escapeHTML(c.name)}</h3><span class="sub">${escapeHTML([c.vertical,c.city].filter(Boolean).join(' · '))}</span></div><span class="status-chip status-accepted">Contacto consultado</span></div><p>Ya tienes disponibles los datos de contacto de esta empresa.</p>${contactCardHTML(x.destCard)}<div class="connection-actions"><button class="btn btn-soft" data-profile="${escapeHTML(c.id||x.destId)}">Ver perfil</button></div></article>`}).join(''):'<div class="empty-state glass">Todavía no has consultado ningún contacto.</div>';
+  $('#panelReceived').innerHTML=incoming.length?renderGroupedConnections(incoming,'received'):'<div class="empty-state glass">Todavía nadie ha consultado tu contacto.</div>';
+  $('#panelSent').innerHTML=outgoing.length?renderGroupedConnections(outgoing,'sent'):'<div class="empty-state glass">Todavía no has consultado ningún contacto.</div>';
   $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)))
 }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2600)}
 document.addEventListener('click',async e=>{const btn=e.target.closest('[data-copy-email]');if(!btn)return;const email=btn.dataset.copyEmail||'';if(!email)return;try{await navigator.clipboard.writeText(email);toast('Correo copiado: '+email)}catch(_){const ta=document.createElement('textarea');ta.value=email;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Correo copiado: '+email)}});
-$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',revealContact);$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-track-channel][data-track-company]');if(!a)return;trackChannel(a.dataset.trackCompany,a.dataset.trackChannel)});
+$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openInterestModal);$('#interestSubmitBtn').addEventListener('click',revealContact);$('#interestReason').addEventListener('input',e=>$('#interestChars').textContent=String(e.target.value.length));$$('.interest-option').forEach(b=>b.addEventListener('click',()=>{selectedInterest=b.dataset.interestValue||'';$$('.interest-option').forEach(x=>x.classList.toggle('selected',x===b))}));$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
 boot();
 </script>
 </body>
