@@ -516,6 +516,51 @@ html,body,button,input,select,textarea,a,
 .company-logo{animation:tg-breathe 5s ease-in-out infinite !important;}
 </style>
 
+
+<style id="tangara-public-entry">
+/* Entrada pública a Comunidad: registro 08, confirmación 09 y recuperación 10 */
+.gate{min-height:650px}
+.gate-side{max-height:calc(100svh - 48px);overflow:auto;justify-content:flex-start;padding-top:clamp(30px,4vw,52px);padding-bottom:clamp(30px,4vw,52px)}
+.public-panel{width:100%;margin:auto 0}
+.public-panel h2{font-size:clamp(25px,2.7vw,34px);margin:0 0 10px;color:#fff}
+.public-panel .public-lead{margin:0 0 22px;color:var(--txt2);font-size:14px;line-height:1.55}
+.public-actions{display:grid;gap:10px;margin-top:20px}
+.public-actions .btn{width:100%;min-height:46px}
+.public-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--txt3);font-size:11px}
+.public-divider:before,.public-divider:after{content:"";height:1px;background:var(--line);flex:1}
+.public-back{appearance:none;border:0;background:transparent;color:#F6A6EB;padding:0;margin:0 0 18px;font-size:12px;font-weight:650;cursor:pointer}
+.public-back:hover{color:#fff}
+.public-form{display:grid;gap:14px}
+.public-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.public-field{display:grid;gap:7px;min-width:0}
+.public-field.full{grid-column:1/-1}
+.public-field label{font-size:12px;font-weight:650;color:rgba(255,255,255,.84)}
+.public-field label span{color:#F27BE3}
+.public-field input,.public-field select,.public-field textarea{width:100%;border:1px solid var(--line2);background:rgba(255,255,255,.045);color:#fff;border-radius:11px;padding:11px 12px;outline:none;font:13.5px/1.35 var(--font);transition:border-color .18s,box-shadow .18s,background .18s}
+.public-field textarea{min-height:72px;resize:vertical}
+.public-field input:focus,.public-field select:focus,.public-field textarea:focus{border-color:rgba(238,70,221,.72);box-shadow:0 0 0 3px rgba(238,70,221,.09);background:rgba(255,255,255,.06)}
+.public-field input::placeholder,.public-field textarea::placeholder{color:var(--txt3)}
+.public-field select option{background:#251033;color:#fff}
+.public-help{font-size:10.5px;line-height:1.4;color:var(--txt3)}
+.public-consent{display:flex;gap:10px;align-items:flex-start;padding:13px;border-radius:11px;background:rgba(238,70,221,.055);border:1px solid rgba(242,123,227,.18);font-size:11.5px;line-height:1.45;color:var(--txt2)}
+.public-consent input{margin-top:2px;accent-color:#EE46DD;flex:0 0 auto}
+.public-error{padding:11px 12px;border-radius:10px;background:rgba(255,154,168,.07);border:1px solid rgba(255,154,168,.22);color:#ffb2bd;font-size:12px;line-height:1.45}
+.public-info{padding:14px;border-radius:12px;background:rgba(238,70,221,.07);border:1px solid rgba(242,123,227,.21);color:var(--txt2);font-size:12.5px;line-height:1.5}
+.public-info strong{color:#fff}
+.public-match{margin:18px 0;padding:16px;border-radius:14px;background:linear-gradient(145deg,rgba(238,70,221,.12),rgba(255,255,255,.035));border:1px solid rgba(242,123,227,.28)}
+.public-match .match-name{font-size:18px;font-weight:750;color:#fff}
+.public-match .match-company{font-size:12px;color:var(--txt2);margin-top:3px}
+.public-match .match-email{margin-top:13px;padding:10px 11px;border-radius:9px;background:rgba(255,255,255,.055);font-family:var(--mono);font-size:12px;color:#FAD1F4}
+.code-wrap{display:flex;justify-content:center;margin:18px 0}
+.code-wrap input{width:min(260px,100%);text-align:center;font-size:30px;font-weight:750;letter-spacing:.28em;padding:13px 8px 13px 16px;border-radius:13px;border:1px solid rgba(242,123,227,.34);background:rgba(255,255,255,.055);color:#fff;outline:none}
+.code-wrap input:focus{border-color:#EE46DD;box-shadow:0 0 0 4px rgba(238,70,221,.10)}
+.public-success-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(140deg,#7D1473,#EE46DD);font-size:23px;color:#fff;margin-bottom:17px}
+.public-security-note{margin-top:18px;font-size:10.5px;line-height:1.45;color:var(--txt3)}
+.public-security-note strong{color:rgba(250,209,244,.7)}
+@media(max-width:860px){.gate-side{max-height:none;overflow:visible}.gate{max-height:none}.public-panel{margin:0}}
+@media(max-width:560px){#gateView{padding:0}.gate{border-radius:0;border-left:0;border-right:0;min-height:100svh}.public-form-grid{grid-template-columns:1fr}.public-field.full{grid-column:auto}.gate-visual{min-height:300px}}
+</style>
+
 </head>
 <body>
 
@@ -530,12 +575,136 @@ html,body,button,input,select,textarea,a,
       </div>
     </div>
     <div class="gate-side">
-      <h2 id="gateTitle">Estamos verificando tu acceso</h2>
-      <p id="gateCopy" class="gate-shimmer">Estás a punto de conocer las Empresas mas Innovadoras.</p>
-      <div class="loader" id="gateLoader"><span class="spinner"></span><span>Conectando con la Comunidad Tángara…</span></div>
-      <div class="gate-progress" id="gateProgress"></div>
-      <div id="gateError" class="gate-error hidden"></div>
-      <p class="micro">Solo puedes entrar con el enlace personal enviado por Tángara. Los datos de contacto están disponibles para las empresas que hacen parte de la comunidad y cada consulta queda registrada.</p>
+      <div class="public-panel" id="accessCheckPanel">
+        <h2 id="gateTitle">Estamos verificando tu acceso</h2>
+        <p id="gateCopy" class="gate-shimmer">Estás a punto de conocer las empresas más innovadoras.</p>
+        <div class="loader" id="gateLoader"><span class="spinner"></span><span>Conectando con la Comunidad Tángara…</span></div>
+        <div class="gate-progress" id="gateProgress"></div>
+        <div id="gateError" class="gate-error hidden"></div>
+        <div class="public-actions hidden" id="accessFallbackActions">
+          <button type="button" class="btn btn-primary" id="accessRecoverBtn">Recuperar mi acceso</button>
+          <button type="button" class="btn btn-soft" id="accessEntryBtn">Ir al inicio de Comunidad</button>
+        </div>
+        <p class="micro">Los enlaces personales permiten validar tu acceso sin mostrar datos privados en la página.</p>
+      </div>
+
+      <div class="public-panel hidden" id="communityEntryPanel">
+        <span class="eyebrow">Comunidad Tángara</span>
+        <h2 style="margin-top:9px">Conoce, conecta y abre nuevas oportunidades</h2>
+        <p class="public-lead">Si ya haces parte de la comunidad, recupera tu enlace personal. Si eres un nuevo interesado, crea tu acceso en pocos pasos.</p>
+        <div class="public-actions">
+          <button type="button" class="btn btn-primary" id="startRegisterBtn">Quiero hacer parte de la comunidad</button>
+          <button type="button" class="btn btn-soft" id="startRecoverBtn">Ya estoy registrado · Recuperar acceso</button>
+        </div>
+        <div class="public-divider">Acceso privado</div>
+        <div class="public-info">Si ya recibiste tu enlace personal por correo, ábrelo directamente. El enlace valida tu identidad y te lleva al directorio.</div>
+        <p class="public-security-note"><strong>Privacidad:</strong> los datos de contacto solo se muestran dentro de la experiencia autenticada y las consultas quedan registradas.</p>
+      </div>
+
+      <div class="public-panel hidden" id="registerPanel">
+        <button type="button" class="public-back" data-public-back="communityEntryPanel">← Volver</button>
+        <span class="eyebrow">Nuevo acceso</span>
+        <h2 style="margin-top:9px">Únete a Comunidad Tángara</h2>
+        <p class="public-lead">Completa tus datos. Te enviaremos un código al correo para verificar tu identidad antes de crear el acceso.</p>
+        <form class="public-form" id="registrationForm" novalidate>
+          <div class="public-form-grid">
+            <div class="public-field"><label for="regNombre">Nombre <span>*</span></label><input id="regNombre" autocomplete="given-name" required></div>
+            <div class="public-field"><label for="regApellido">Apellido <span>*</span></label><input id="regApellido" autocomplete="family-name" required></div>
+            <div class="public-field full"><label for="regEmpresa">Empresa u organización <span>*</span></label><input id="regEmpresa" autocomplete="organization" required></div>
+            <div class="public-field"><label for="regCargo">Cargo</label><input id="regCargo" autocomplete="organization-title"></div>
+            <div class="public-field"><label for="regEmail">Correo <span>*</span></label><input id="regEmail" type="email" autocomplete="email" required></div>
+            <div class="public-field"><label for="regTelefono">WhatsApp</label><input id="regTelefono" type="tel" autocomplete="tel" placeholder="Ej. +57 300 000 0000"></div>
+            <div class="public-field"><label for="regLinkedin">LinkedIn</label><input id="regLinkedin" type="url" placeholder="https://linkedin.com/in/..."></div>
+            <div class="public-field"><label for="regRedSocial">Otra red social</label><input id="regRedSocial" type="url" placeholder="https://..."></div>
+            <div class="public-field full"><label for="regInteres">¿Cuál es tu interés principal para conocer el portafolio de Tángara? <span>*</span></label>
+              <select id="regInteres" required>
+                <option value="">Selecciona una opción</option>
+                <option>Conocer soluciones que puedan aplicar en mi organización</option>
+                <option>Explorar oportunidades de inversión</option>
+                <option>Identificar alianzas y posibles sinergias</option>
+                <option>Conectar empresas con clientes, aliados o terceros</option>
+                <option>Conocer tendencias y soluciones innovadoras</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="public-field full"><label for="regCategoria">¿A qué categoría perteneces? <span>*</span></label>
+              <select id="regCategoria" required>
+                <option value="">Selecciona una opción</option>
+                <option>Inversionista</option>
+                <option>Empresa del ecosistema</option>
+                <option>ESO (Entidad de Soporte)</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="public-field full hidden" id="regCategoriaOtroWrap"><label for="regCategoriaOtro">Especifica a qué tipo de organización perteneces <span>*</span></label><input id="regCategoriaOtro"></div>
+          </div>
+          <label class="public-consent"><input id="regAutoriza" type="checkbox" required><span>Autorizo que mis datos de contacto sean compartidos con participantes de Comunidad Tángara cuando exista una interacción de conexión registrada. <strong style="color:#fff">*</strong></span></label>
+          <div class="public-error hidden" id="registerError"></div>
+          <button class="btn btn-primary" id="registerSubmitBtn" type="submit">Enviar código de verificación</button>
+        </form>
+      </div>
+
+      <div class="public-panel hidden" id="verifyPanel">
+        <button type="button" class="public-back" data-public-back="registerPanel">← Volver</button>
+        <span class="eyebrow">Verifica tu correo</span>
+        <h2 style="margin-top:9px">Ingresa el código de 6 dígitos</h2>
+        <p class="public-lead">Enviamos un código a <strong id="verifyEmail" style="color:#fff"></strong>. El código tiene una vigencia limitada.</p>
+        <form id="verifyForm" class="public-form" novalidate>
+          <div class="code-wrap"><input id="verificationCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" aria-label="Código de verificación"></div>
+          <div class="public-info">El código vence aproximadamente <strong id="verifyExpires">15 minutos</strong> después del envío.</div>
+          <div class="public-error hidden" id="verifyError"></div>
+          <button class="btn btn-primary" id="verifySubmitBtn" type="submit">Confirmar y crear mi acceso</button>
+        </form>
+      </div>
+
+      <div class="public-panel hidden" id="possibleMatchPanel">
+        <button type="button" class="public-back" data-public-back="registerPanel">← Volver</button>
+        <span class="eyebrow">Protección de identidad</span>
+        <h2 style="margin-top:9px">Encontramos un perfil que podría ser tuyo</h2>
+        <p class="public-lead">Para evitar duplicados, no crearemos otro acceso hasta confirmar si reconoces este perfil.</p>
+        <div class="public-match">
+          <div class="match-name" id="matchName">Participante</div>
+          <div class="match-company" id="matchCompany">Empresa</div>
+          <div class="match-email" id="matchEmail">••••@••••</div>
+        </div>
+        <div class="public-error hidden" id="matchError"></div>
+        <div class="public-actions">
+          <button type="button" class="btn btn-primary" id="recoverMatchBtn">Sí, es mi perfil · Enviar acceso</button>
+          <button type="button" class="btn btn-soft" id="notMyMatchBtn">No soy esa persona</button>
+        </div>
+        <p class="public-security-note">El enlace de acceso se envía únicamente al correo original del perfil. El correo que acabas de ingresar no recibe credenciales.</p>
+      </div>
+
+      <div class="public-panel hidden" id="notMyMatchPanel">
+        <button type="button" class="public-back" data-public-back="possibleMatchPanel">← Volver</button>
+        <span class="eyebrow">Coincidencia de nombre</span>
+        <h2 style="margin-top:9px">No crearemos un acceso incorrecto</h2>
+        <p class="public-lead">La coincidencia requiere una validación adicional antes de crear un perfil distinto. Puedes revisar los datos del formulario o contactar al equipo Tángara.</p>
+        <div class="public-info">El backend todavía no habilita el bypass automático de coincidencias por nombre. Esto evita que un perfil nuevo pueda apropiarse accidentalmente de una identidad existente.</div>
+        <div class="public-actions"><button type="button" class="btn btn-primary" data-public-back="registerPanel">Revisar mis datos</button></div>
+      </div>
+
+      <div class="public-panel hidden" id="recoverPanel">
+        <button type="button" class="public-back" data-public-back="communityEntryPanel">← Volver</button>
+        <span class="eyebrow">Recuperación</span>
+        <h2 style="margin-top:9px">Recupera tu acceso</h2>
+        <p class="public-lead" id="recoverLead">Escribe el correo con el que estás registrado. Por seguridad, la respuesta será la misma exista o no un perfil asociado.</p>
+        <form id="recoverForm" class="public-form" novalidate>
+          <div class="public-field"><label for="recoverEmail">Correo <span>*</span></label><input id="recoverEmail" type="email" autocomplete="email" required></div>
+          <div class="public-error hidden" id="recoverError"></div>
+          <button class="btn btn-primary" id="recoverSubmitBtn" type="submit">Enviar instrucciones de acceso</button>
+        </form>
+      </div>
+
+      <div class="public-panel hidden" id="publicSuccessPanel">
+        <div class="public-success-icon">✓</div>
+        <span class="eyebrow">Solicitud recibida</span>
+        <h2 id="publicSuccessTitle" style="margin-top:9px">Revisa tu correo</h2>
+        <p class="public-lead" id="publicSuccessCopy">Si existe un acceso asociado a la información proporcionada, recibirás las instrucciones en el correo registrado.</p>
+        <div class="public-actions">
+          <button type="button" class="btn btn-soft" id="successHomeBtn">Volver al inicio de Comunidad</button>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -681,6 +850,10 @@ const FLOW_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.enviro
 const FLOW_LIST_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/e7ad98987675464f8d0d080f1ce13b89/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lVPH9s3X79gn7g4iXjBP8vukiFySMQDsBKVVT3NqZys";
 const FLOW_CONNECT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/27/workflows/5f0d1baa910e46bc89cd023b86a3d012/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WusETK5DZZSgkIliaTAsX8Q464TzvpOZw-7ue0MLMl4";
 const FLOW_TRACK_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/40c0e55b948943c88cc1c5f122128ede/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BkaZf5dPktMKC-2SL0CWzLlyWTg-A-opXdj9w98vo3Y";
+// Integración pública. VERSIÓN DE PRUEBA: las URLs firmadas no deben publicarse en un sitio estático definitivo.
+const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/fe3170dc9df64ce6886f6a29c89a714d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NUbZNCUniX-PMfPZfouz-WqGJmhmGOMFPV2M_tsK7ds";
+const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
+const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/d9807e57afab4ceb9ce236322a7e88f9/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=H45FqU2gHmFTMFws1PY8w5E7kdj4SccYI0kv0syNOEQ";
 const COMPANIES=[
   {
     "id": "TAN-01",
@@ -1156,6 +1329,8 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const params=new URLSearchParams(location.search);
 let DEMO_MODE=false;
 let session=null,currentCompany=null;
+let pendingRegistration=null,pendingMatch=null;
+
 
 function isDemoCompanyId(id){return DEMO_IDS.includes(String(id||''))||String(id||'').startsWith('DEMO-')}
 function syncModeFromSession(){
@@ -1163,7 +1338,7 @@ function syncModeFromSession(){
   document.body.classList.toggle('demo',DEMO_MODE);
 }
 function visibleCompanies(){return DEMO_MODE?[...DEMO_COMPANIES,...COMPANIES]:COMPANIES}
-function canContactCompany(id){return DEMO_MODE?isDemoCompanyId(id):!isDemoCompanyId(id)}
+function canContactCompany(id){if(String(id||'')===String(session?.empresaId||''))return false;return DEMO_MODE?isDemoCompanyId(id):!isDemoCompanyId(id)}
 function connectionAllowed(conn){
   if(!conn)return false;
   return DEMO_MODE
@@ -1202,15 +1377,40 @@ function spBool(v){const s=String(v??'').trim().toLowerCase();return v===true||v
 function normalizeConnection(r){return {raw:r,solicitudId:r.Title||r.SolicitudID||'',pairKey:r.PairKey||r.field_1||r.Title||'',originId:r.EmpresaOrigenID||r.field_2||'',originContactId:r.ContactoOrigenID||r.field_3||'',destId:r.EmpresaDestinoID||r.field_4||'',status:String(r.Estado||r.field_6||'PENDIENTE').toUpperCase(),originConsent:Number(r.OrigenAutorizaCompartir??r.field_7??0),destConsent:Number(r.DestinoAutorizaCompartir??r.field_8??0),shared:Number(r.TarjetasCompartidas??r.field_11??0),originCard:parseMaybeJSON(r.TarjetaOrigenJSON),destCard:parseMaybeJSON(r.TarjetaDestinoJSON),interestType:String(r.TipoInteres||''),interestReason:String(r.MotivoInteres||''),useEmail:spBool(r.UsoCorreo),useWhatsapp:spBool(r.UsoWhatsApp),useLinkedin:spBool(r.UsoLinkedIn),useWebsite:spBool(r.UsoSitioWeb),useSocial:spBool(r.UsoRedSocial),created:r.Created||r.Creado||null,modified:r.Modified||r.Modificado||null}}
 function isConnectedStatus(status){return ['CONECTADA','ACEPTADA'].includes(String(status||'').toUpperCase())}
 function storeSession(s,token){session={...s,accessToken:token};syncModeFromSession();sessionStorage.setItem('tangara.session',JSON.stringify(session));const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);openApp()}
+function showPublicPanel(id){
+  $$('.public-panel').forEach(p=>p.classList.add('hidden'));
+  const panel=$('#'+id);if(panel)panel.classList.remove('hidden');
+  const side=document.querySelector('.gate-side');if(side)side.scrollTop=0;
+}
+function setInlineError(id,msg=''){const el=$('#'+id);if(!el)return;el.textContent=msg;el.classList.toggle('hidden',!msg)}
+function setBusy(btn,busy,label){if(!btn)return;if(busy){btn.dataset.oldText=btn.textContent;btn.disabled=true;btn.textContent=label||'Procesando…'}else{btn.disabled=false;btn.textContent=btn.dataset.oldText||btn.textContent;delete btn.dataset.oldText}}
+function responseStatus(data){return String(data?.status||data?.Status||data?.error?.status||data?.error?.code||'').trim().toUpperCase()}
+function responseMessage(data){return data?.message||data?.Message||data?.error?.message||data?.error||''}
+function flowConfigured(url){return !!url&&!String(url).startsWith('__')}
+async function publicFlowPost(url,payload){
+  if(!flowConfigured(url)){const e=new Error('FLOW_NOT_CONFIGURED');e.code='FLOW_NOT_CONFIGURED';throw e}
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  let data={};try{data=await r.json()}catch{}
+  data=data&&typeof data==='object'?data:{};data._httpStatus=r.status;data._httpOk=r.ok;
+  if(!r.ok&&!responseStatus(data)){const e=new Error(responseMessage(data)||('HTTP '+r.status));e.status=r.status;e.data=data;throw e}
+  return data;
+}
+function showCommunityEntry(){
+  $('#gateError').classList.add('hidden');$('#accessFallbackActions').classList.add('hidden');
+  showPublicPanel('communityEntryPanel');
+}
 async function boot(){
   const token=params.get('accessToken')||params.get('access');
   if(token){
-    try{const res=await apiPost(FLOW_VALIDATE_URL,{accessToken:token});if(!res?.ok) throw new Error('ACCESS_DENIED');return storeSession(res,token)}catch(err){console.error(err);return showGateError('No pudimos validar este enlace. Revisa que sea el enlace personal más reciente que te envió Tángara.')}
+    showPublicPanel('accessCheckPanel');
+    try{const res=await apiPost(FLOW_VALIDATE_URL,{accessToken:token});if(!res?.ok) throw new Error('ACCESS_DENIED');return storeSession(res,token)}catch(err){console.error(err);return showGateError('No pudimos validar este enlace. Puedes recuperar tu acceso y recibir nuevamente tu enlace personal.')}
   }
   try{const cached=JSON.parse(sessionStorage.getItem('tangara.session')||'null');if(cached?.accessToken){session=cached;return openApp()}}catch{}
-  return showGateError('Para entrar necesitas el enlace personal que te envió Tángara.');
+  showCommunityEntry();
 }
-function showGateError(msg){$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');const gp=$('#gateProgress');if(gp)gp.classList.add('hidden');$('#gateCopy').classList.remove('gate-shimmer');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden')}
+function showGateError(msg){
+  showPublicPanel('accessCheckPanel');$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');const gp=$('#gateProgress');if(gp)gp.classList.add('hidden');$('#gateCopy').classList.remove('gate-shimmer');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden');$('#accessFallbackActions').classList.remove('hidden')
+}
 function openApp(){syncModeFromSession();const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();scanReveals();$$('.hero-stats .stat strong').forEach(animCount);scrollTo(0,0)}
 function buildFilters(){
   const pool=visibleCompanies();
@@ -1218,9 +1418,9 @@ function buildFilters(){
   const cs=[...new Set(pool.map(c=>c.city).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));$('#cityFilter').innerHTML='<option value="">Todas las ciudades</option>'+cs.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
 }
 function renderCarousel(){
-  const list=visibleCompanies().filter(c=>c.id!==session.empresaId).slice().sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+  const list=visibleCompanies().slice().sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
   const el=$('#companyCarousel');
-  const card=c=>`<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>Ver perfil →</b></div></button>`;
+  const card=c=>{const isOwn=String(c.id||'')===String(session?.empresaId||'');return `<button class="carousel-card glass" data-id="${c.id}"><div class="company-head"><span class="vertical">${escapeHTML(c.vertical)}</span></div><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||'')}</span><b>${isOwn?'Tu empresa':'Ver perfil →'}</b></div></button>`};
   const first=list.map(card).join('');
   const second=list.map(c=>card(c).replace('<button ','<button tabindex="-1" aria-hidden="true" ')).join('');
   const duration=Math.max(96,Math.round(list.length*3.2));
@@ -1237,9 +1437,9 @@ function pairConnection(companyId){return connectionItems.find(x=>connectionAllo
 function renderCards(){
   const q=$('#searchInput').value.trim().toLowerCase(),v=$('#verticalFilter').value,city=$('#cityFilter').value;
   const source=visibleCompanies();
-  const list=source.filter(c=>c.id!==session.empresaId&&(!v||c.vertical===v)&&(!city||c.city===city)&&(!q||[c.name,c.vertical,c.city,c.department,c.summary,c.clients].join(' ').toLowerCase().includes(q)));
+  const list=source.filter(c=>(!v||c.vertical===v)&&(!city||c.city===city)&&(!q||[c.name,c.vertical,c.city,c.department,c.summary,c.clients].join(' ').toLowerCase().includes(q)));
   $('#visibleCount').textContent=list.length;
-  $('#cards').innerHTML=list.map(c=>{const existing=pairConnection(c.id);return `<button class="company ${DEMO_MODE&&DEMO_IDS.includes(c.id)?'demo-target':''}" data-id="${c.id}"><div class="company-main"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span class="loc">${escapeHTML([c.city,c.department].filter(Boolean).join(' · '))}</span><b>${existing?'Contacto disponible':'Ver perfil'}</b></div></button>`}).join('')||'<div class="empty">No encontramos empresas con esos filtros.</div>';
+  $('#cards').innerHTML=list.map(c=>{const isOwn=String(c.id||'')===String(session?.empresaId||'');const existing=isOwn?null:pairConnection(c.id);return `<button class="company ${DEMO_MODE&&DEMO_IDS.includes(c.id)?'demo-target':''}" data-id="${c.id}"><div class="company-main"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span class="loc">${escapeHTML([c.city,c.department].filter(Boolean).join(' · '))}</span><b>${isOwn?'Tu empresa':existing?'Contacto disponible':'Ver perfil'}</b></div></button>`}).join('')||'<div class="empty">No encontramos empresas con esos filtros.</div>';
   $$('.company').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.id)));scanReveals($('#cards'))
 }
 function openProfile(id){
@@ -1248,7 +1448,8 @@ function openProfile(id){
   $('#profileSummary').textContent=[currentCompany.vertical,locationLabel(currentCompany)].filter(Boolean).join(' · ');
   $('#profileSolution').textContent=currentCompany.summary||'Sin descripción disponible.';
   $('#profileFacts').innerHTML=`<div class="fact"><span>Vertical</span><strong>${escapeHTML(currentCompany.vertical)}</strong></div><div class="fact"><span>Ubicación</span><strong>${escapeHTML(locationLabel(currentCompany)||'No indicada')}</strong></div><div class="fact"><span>Clientes objetivo</span><strong>${escapeHTML(currentCompany.clients||'No indicado')}</strong></div>`;
-  const existing=pairConnection(id);
+  const isOwn=String(id||'')===String(session?.empresaId||'');
+  const existing=isOwn?null:pairConnection(id);
   const wb=$('#websiteBtn');
   if(currentCompany.website){
     wb.href=currentCompany.website;
@@ -1266,10 +1467,11 @@ function openProfile(id){
     delete wb.dataset.trackCompany;
   }
   const contactState=$('#profileContactState');
-  if(existing){const card=existing.originId===session.empresaId?existing.destCard:existing.originCard;const counterpart=existing.originId===session.empresaId?existing.destId:existing.originId;contactState.innerHTML=`<div style="font-weight:800;margin-bottom:10px">Datos de contacto</div>${contactCardHTML(card,counterpart)}`;}
+  if(isOwn){contactState.innerHTML='Este es el perfil de tu empresa dentro de la Comunidad Tángara. Puedes verlo como parte del universo completo de la cohorte, pero no generar una conexión contigo mismo.';}
+  else if(existing){const card=existing.originId===session.empresaId?existing.destCard:existing.originCard;const counterpart=existing.originId===session.empresaId?existing.destId:existing.originId;contactState.innerHTML=`<div style="font-weight:800;margin-bottom:10px">Datos de contacto</div>${contactCardHTML(card,counterpart)}`;}
   else if(!canContactCompany(id)){contactState.innerHTML=DEMO_MODE?'Puedes recorrer este perfil durante la prueba. Los datos de contacto solo están habilitados entre perfiles DEMO.':'Este perfil de prueba no está disponible en la versión definitiva.';}
   else{contactState.innerHTML='Si quieres conectar, cuéntale brevemente a la empresa qué te interesa. Después podrás ver sus datos de contacto y Tángara registrará la conexión.';}
-  const cb=$('#connectBtn');const blockedByMode=!canContactCompany(id);cb.disabled=blockedByMode||!!existing;cb.textContent=blockedByMode?(DEMO_MODE?'Solo vista en demo':'No disponible'):existing?'Contacto visible ✓':'Quiero contactar';
+  const cb=$('#connectBtn');const blockedByMode=!canContactCompany(id);cb.disabled=isOwn||blockedByMode||!!existing;cb.textContent=isOwn?'Tu empresa':blockedByMode?(DEMO_MODE?'Solo vista en demo':'No disponible'):existing?'Contacto visible ✓':'Quiero contactar';
   $('#profileBackdrop').classList.add('open')
 }
 let selectedInterest='';
@@ -1390,8 +1592,118 @@ function renderConnectionCenter(){
   $$('[data-profile]').forEach(b=>b.addEventListener('click',()=>openProfile(b.dataset.profile)));scanReveals($('#connectionsContent'));$$('.connection-stat strong').forEach(animCount)
 }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2600)}
+
+function registrationPayload(){
+  return {
+    nombre:$('#regNombre').value.trim(),
+    apellido:$('#regApellido').value.trim(),
+    empresa:$('#regEmpresa').value.trim(),
+    cargo:$('#regCargo').value.trim(),
+    email:$('#regEmail').value.trim(),
+    telefonoWhatsApp:$('#regTelefono').value.trim(),
+    linkedin:$('#regLinkedin').value.trim(),
+    redSocial:$('#regRedSocial').value.trim(),
+    autorizaCompartir:$('#regAutoriza').checked,
+    interesPortafolio:$('#regInteres').value,
+    categoriaPerfil:$('#regCategoria').value,
+    categoriaOtro:$('#regCategoria').value==='Otro'?$('#regCategoriaOtro').value.trim():''
+  };
+}
+function validateRegistration(p){
+  if(!p.nombre||!p.apellido||!p.empresa||!p.email||!p.interesPortafolio||!p.categoriaPerfil)return 'Completa todos los campos obligatorios.';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return 'Escribe un correo válido.';
+  if(p.categoriaPerfil==='Otro'&&!p.categoriaOtro)return 'Especifica a qué tipo de organización perteneces.';
+  if(!p.autorizaCompartir)return 'Debes autorizar el uso de tus datos de contacto para participar en la comunidad.';
+  return '';
+}
+async function submitPublicRegistration(e){
+  e.preventDefault();setInlineError('registerError','');
+  const payload=registrationPayload(),err=validateRegistration(payload);if(err)return setInlineError('registerError',err);
+  const btn=$('#registerSubmitBtn');setBusy(btn,true,'Enviando…');
+  try{
+    const res=await publicFlowPost(FLOW_REGISTER_URL,payload),status=responseStatus(res);
+    if(status==='VERIFICATION_SENT'){
+      pendingRegistration={registroToken:res.registroToken,email:payload.email,expiresInMinutes:Number(res.expiresInMinutes||15)};
+      try{sessionStorage.setItem('tangara.pendingRegistration',JSON.stringify(pendingRegistration))}catch{}
+      $('#verifyEmail').textContent=payload.email;$('#verifyExpires').textContent=(pendingRegistration.expiresInMinutes||15)+' minutos';$('#verificationCode').value='';setInlineError('verifyError','');showPublicPanel('verifyPanel');setTimeout(()=>$('#verificationCode').focus(),100);return;
+    }
+    if(status==='POSSIBLE_MATCH'){
+      pendingMatch={registroToken:res.registroToken,emailIngresado:payload.email};
+      $('#matchName').textContent=res.nombre||[payload.nombre,payload.apellido].filter(Boolean).join(' ');
+      $('#matchCompany').textContent=res.empresa||payload.empresa;
+      $('#matchEmail').textContent=res.correoEnmascarado||'Correo registrado protegido';
+      setInlineError('matchError','');showPublicPanel('possibleMatchPanel');return;
+    }
+    if(status==='EMAIL_EXISTS'){
+      $('#recoverEmail').value=payload.email;
+      $('#recoverLead').textContent='Podemos enviar las instrucciones al correo registrado. Por seguridad, la respuesta no confirma públicamente si existe un perfil.';
+      showPublicPanel('recoverPanel');return;
+    }
+    setInlineError('registerError',responseMessage(res)||'No pudimos completar el registro. Revisa los datos e intenta nuevamente.');
+  }catch(err){console.error(err);setInlineError('registerError','No pudimos conectar con el registro en este momento. Intenta nuevamente.')}finally{setBusy(btn,false)}
+}
+async function submitVerification(e){
+  e.preventDefault();setInlineError('verifyError','');
+  const code=$('#verificationCode').value.replace(/\D/g,'').slice(0,6);if(code.length!==6)return setInlineError('verifyError','Ingresa los 6 dígitos del código.');
+  if(!pendingRegistration){try{pendingRegistration=JSON.parse(sessionStorage.getItem('tangara.pendingRegistration')||'null')}catch{}}
+  if(!pendingRegistration?.registroToken)return setInlineError('verifyError','La sesión de registro ya no está disponible. Vuelve al formulario y solicita un nuevo código.');
+  if(!flowConfigured(FLOW_CONFIRM_URL))return setInlineError('verifyError','La interfaz ya está preparada, pero falta configurar la URL del Flujo 09 antes de probar esta confirmación.');
+  const btn=$('#verifySubmitBtn');setBusy(btn,true,'Verificando…');
+  try{
+    let res=await publicFlowPost(FLOW_CONFIRM_URL,{registroToken:pendingRegistration.registroToken,codigo:code});
+    let status=responseStatus(res);
+    if(status==='TRIGGERINPUTSCHEMAMISMATCH'&&/number|integer|double/i.test(responseMessage(res))){
+      res=await publicFlowPost(FLOW_CONFIRM_URL,{registroToken:pendingRegistration.registroToken,codigo:Number(code)});
+      status=responseStatus(res);
+    }
+    if(status==='ACCESS_CREATED'){
+      try{sessionStorage.removeItem('tangara.pendingRegistration')}catch{}pendingRegistration=null;
+      $('#publicSuccessTitle').textContent='Tu acceso fue creado';
+      $('#publicSuccessCopy').textContent='Revisa tu correo. Te enviamos tu enlace personal para entrar a Comunidad Tángara. Por seguridad, el enlace no se muestra en esta página.';
+      showPublicPanel('publicSuccessPanel');return;
+    }
+    const messages={INVALID_CODE:'El código no coincide. Revísalo e intenta nuevamente.',CODE_EXPIRED:'El código venció. Vuelve al formulario para iniciar un nuevo registro.',TOO_MANY_ATTEMPTS:'Se alcanzó el máximo de intentos. Inicia nuevamente el registro.',INVALID_TOKEN:'La solicitud de registro ya no es válida. Inicia nuevamente.',REGISTRATION_ALREADY_PROCESSED:'Este registro ya fue procesado. Si no encuentras tu enlace, usa Recuperar acceso.'};
+    setInlineError('verifyError',messages[status]||responseMessage(res)||'No pudimos confirmar el código.');
+  }catch(err){console.error(err);setInlineError('verifyError',err.code==='FLOW_NOT_CONFIGURED'?'Falta configurar la URL del Flujo 09.':'No pudimos verificar el código en este momento.')}finally{setBusy(btn,false)}
+}
+async function submitRecovery(e){
+  e.preventDefault();setInlineError('recoverError','');const email=$('#recoverEmail').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setInlineError('recoverError','Escribe un correo válido.');
+  const btn=$('#recoverSubmitBtn');setBusy(btn,true,'Enviando…');
+  try{
+    const res=await publicFlowPost(FLOW_RECOVER_URL,{accion:'RECOVER_EMAIL',email}),status=responseStatus(res);
+    if(status==='RECOVERY_REQUEST_RECEIVED'||res?.ok){
+      $('#publicSuccessTitle').textContent='Revisa tu correo';$('#publicSuccessCopy').textContent='Si existe un acceso asociado a la información proporcionada, enviaremos las instrucciones al correo registrado.';showPublicPanel('publicSuccessPanel');return;
+    }
+    setInlineError('recoverError','No pudimos procesar la solicitud en este momento.');
+  }catch(err){console.error(err);setInlineError('recoverError','No pudimos procesar la solicitud en este momento. Intenta nuevamente.')}finally{setBusy(btn,false)}
+}
+async function recoverPossibleMatch(){
+  setInlineError('matchError','');if(!pendingMatch?.registroToken)return setInlineError('matchError','La referencia de coincidencia ya no está disponible. Vuelve al registro.');
+  const btn=$('#recoverMatchBtn');setBusy(btn,true,'Enviando…');
+  try{
+    const res=await publicFlowPost(FLOW_RECOVER_URL,{accion:'RECOVER_MATCH',registroToken:pendingMatch.registroToken}),status=responseStatus(res);
+    if(status==='RECOVERY_REQUEST_RECEIVED'||res?.ok){
+      $('#publicSuccessTitle').textContent='Solicitud recibida';$('#publicSuccessCopy').textContent='Si el perfil corresponde a un acceso existente, enviaremos las instrucciones únicamente al correo original registrado.';showPublicPanel('publicSuccessPanel');return;
+    }
+    setInlineError('matchError','No pudimos procesar la recuperación en este momento.');
+  }catch(err){console.error(err);setInlineError('matchError','No pudimos procesar la recuperación en este momento. Intenta nuevamente.')}finally{setBusy(btn,false)}
+}
 document.addEventListener('click',async e=>{const btn=e.target.closest('[data-copy-email]');if(!btn)return;const email=btn.dataset.copyEmail||'';if(!email)return;try{await navigator.clipboard.writeText(email);toast('Correo copiado: '+email)}catch(_){const ta=document.createElement('textarea');ta.value=email;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Correo copiado: '+email)}});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-track-channel][data-track-company]');if(!a)return;trackChannel(a.dataset.trackCompany,a.dataset.trackChannel)});
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-public-back]');if(!b)return;showPublicPanel(b.dataset.publicBack)});
+$('#startRegisterBtn').addEventListener('click',()=>{setInlineError('registerError','');showPublicPanel('registerPanel')});
+$('#startRecoverBtn').addEventListener('click',()=>{$('#recoverLead').textContent='Escribe el correo con el que estás registrado. Por seguridad, la respuesta será la misma exista o no un perfil asociado.';setInlineError('recoverError','');showPublicPanel('recoverPanel')});
+$('#accessRecoverBtn').addEventListener('click',()=>{setInlineError('recoverError','');showPublicPanel('recoverPanel')});
+$('#accessEntryBtn').addEventListener('click',showCommunityEntry);
+$('#successHomeBtn').addEventListener('click',showCommunityEntry);
+$('#notMyMatchBtn').addEventListener('click',()=>showPublicPanel('notMyMatchPanel'));
+$('#regCategoria').addEventListener('change',e=>{$('#regCategoriaOtroWrap').classList.toggle('hidden',e.target.value!=='Otro')});
+$('#registrationForm').addEventListener('submit',submitPublicRegistration);
+$('#verifyForm').addEventListener('submit',submitVerification);
+$('#recoverForm').addEventListener('submit',submitRecovery);
+$('#recoverMatchBtn').addEventListener('click',recoverPossibleMatch);
+$('#verificationCode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6)});
 $('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openInterestModal);$('#interestSubmitBtn').addEventListener('click',revealContact);$('#interestReason').addEventListener('input',e=>$('#interestChars').textContent=String(e.target.value.length));$$('.interest-option').forEach(b=>b.addEventListener('click',()=>{selectedInterest=b.dataset.interestValue||'';$$('.interest-option').forEach(x=>x.classList.toggle('selected',x===b))}));$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
 const _revealIO=('IntersectionObserver'in window)?new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');_revealIO.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'}):null;
 function scanReveals(scope){scope=scope||document;if(!_revealIO)return;const sel='.company,.connection-stat,.connection-card,.connection-group,.section-head';let i=0;scope.querySelectorAll(sel).forEach(el=>{if(el.dataset.rev)return;el.dataset.rev='1';el.classList.add('reveal');el.style.transitionDelay=Math.min(i*45,300)+'ms';i++;_revealIO.observe(el)})}
