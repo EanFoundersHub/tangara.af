@@ -561,6 +561,41 @@ html,body,button,input,select,textarea,a,
 @media(max-width:560px){#gateView{padding:0}.gate{border-radius:0;border-left:0;border-right:0;min-height:100svh}.public-form-grid{grid-template-columns:1fr}.public-field.full{grid-column:auto}.gate-visual{min-height:300px}}
 </style>
 
+
+<style>
+/* Dashboard administrativo · v5 */
+#adminNavBtn{border-color:rgba(255,145,237,.45);background:rgba(238,70,221,.10)}
+#adminNavBtn:hover{background:rgba(238,70,221,.18);border-color:rgba(255,145,237,.72)}
+.admin-dashboard{scroll-margin-top:90px}
+.admin-shell{display:grid;gap:16px}
+.admin-status{display:flex;align-items:center;gap:9px;min-height:22px;font-size:12px;color:var(--txt2)}
+.admin-status-dot{width:8px;height:8px;border-radius:50%;background:#8fe6b6;box-shadow:0 0 0 4px rgba(143,230,182,.08)}
+.admin-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.admin-metric{position:relative;overflow:hidden;min-width:0;padding:18px 18px 16px;border-radius:16px;background:linear-gradient(145deg,rgba(238,70,221,.13),rgba(255,255,255,.028));border:1px solid rgba(242,123,227,.24)}
+.admin-metric:after{content:"";position:absolute;right:-28px;top:-38px;width:100px;height:100px;border-radius:50%;background:rgba(238,70,221,.06);pointer-events:none}
+.admin-metric strong{display:block;position:relative;z-index:1;font-size:31px;line-height:1;color:#fff;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.admin-metric span{display:block;position:relative;z-index:1;margin-top:8px;font-size:12px;line-height:1.35;color:rgba(250,209,244,.68)}
+.admin-metric small{display:block;position:relative;z-index:1;margin-top:5px;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:#F6A6EB}
+.admin-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:14px}
+.admin-panel{padding:19px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid rgba(242,123,227,.20)}
+.admin-panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}
+.admin-panel-head strong{font-size:15px;color:#fff}
+.admin-panel-head span{display:block;margin-top:4px;font-size:11.5px;line-height:1.4;color:var(--txt2)}
+.admin-rate{font-size:34px;font-weight:800;line-height:1;color:#FF91ED;font-variant-numeric:tabular-nums}
+.admin-progress{height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(242,123,227,.15)}
+.admin-progress>i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#B12FA4,#EE46DD);transition:width .45s var(--ease)}
+.admin-progress-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;font-size:11px;color:var(--txt2)}
+.admin-list{display:grid;gap:10px}
+.admin-list-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(242,123,227,.12)}
+.admin-list-row:last-child{border-bottom:0;padding-bottom:0}
+.admin-list-row span{font-size:12px;color:var(--txt2)}
+.admin-list-row strong{font-size:18px;color:#fff;font-variant-numeric:tabular-nums}
+.admin-note{padding:12px 14px;border-radius:12px;background:rgba(238,70,221,.07);border:1px solid rgba(242,123,227,.18);font-size:11.5px;line-height:1.5;color:var(--txt2)}
+.admin-error{padding:12px 14px;border-radius:12px;background:rgba(255,110,110,.08);border:1px solid rgba(255,130,130,.22);font-size:12px;color:#ffd2d2}
+@media(max-width:900px){.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-metric{padding:15px}.admin-metric strong{font-size:27px}.admin-panel{padding:16px}.top-actions{gap:7px}#adminNavBtn{padding-left:10px;padding-right:10px}}
+</style>
+
 </head>
 <body>
 
@@ -627,16 +662,20 @@ html,body,button,input,select,textarea,a,
                 <option>Otro</option>
               </select>
             </div>
+            <div class="public-field full hidden" id="regInteresOtroWrap"><label for="regInteresOtro">Cuéntanos cuál es tu interés principal <span>*</span></label><input id="regInteresOtro" placeholder="Escribe brevemente tu interés"></div>
             <div class="public-field full"><label for="regCategoria">¿A qué categoría perteneces? <span>*</span></label>
               <select id="regCategoria" required>
                 <option value="">Selecciona una opción</option>
                 <option>Inversionista</option>
                 <option>Empresa del ecosistema</option>
+                <option>Mentor/a Tángara</option>
+                <option>Aliado/a de Tángara</option>
+                <option>Equipo Tángara</option>
                 <option>ESO (Entidad de Soporte)</option>
                 <option>Otro</option>
               </select>
             </div>
-            <div class="public-field full hidden" id="regCategoriaOtroWrap"><label for="regCategoriaOtro">Especifica a qué tipo de organización perteneces <span>*</span></label><input id="regCategoriaOtro"></div>
+            <div class="public-field full hidden" id="regCategoriaOtroWrap"><label for="regCategoriaOtro">Cuéntanos a qué categoría perteneces <span>*</span></label><input id="regCategoriaOtro"></div>
           </div>
           <label class="public-consent"><input id="regAutoriza" type="checkbox" required><span>Autorizo que mis datos de contacto sean compartidos con participantes de Comunidad Tángara cuando exista una interacción de conexión registrada. <strong style="color:#fff">*</strong></span></label>
           <div class="public-error hidden" id="registerError"></div>
@@ -716,6 +755,7 @@ html,body,button,input,select,textarea,a,
       <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Comunidad</span></div>
       <div class="top-actions">
         <div class="user-chip"><div class="avatar" id="userAvatar">TC</div><div><span class="u-name" id="userName">Participante</span><span class="u-co" id="userCompany">Empresa Tángara</span></div></div>
+        <button class="btn btn-soft btn-sm hidden" id="adminNavBtn" type="button">Administración</button>
         <button class="btn btn-soft btn-sm" id="logoutBtn">Salir</button>
       </div>
     </div>
@@ -777,6 +817,44 @@ html,body,button,input,select,textarea,a,
         </div>
         <div class="connection-panel active" id="panelReceived"></div>
         <div class="connection-panel" id="panelSent"></div>
+      </div>
+    </section>
+
+
+    <section class="block admin-dashboard hidden" id="adminDashboard">
+      <div class="section-head">
+        <div><span class="eyebrow">Vista privada</span><h2>Administración de Comunidad Tángara</h2><p>Indicadores consolidados de acceso, adopción y actividad. Esta sección solo se habilita cuando el Flujo 12 valida un administrador.</p></div>
+        <button class="btn btn-soft btn-sm" id="refreshAdminBtn" type="button">Actualizar dashboard</button>
+      </div>
+      <div class="admin-shell">
+        <div class="admin-status" id="adminStatus"><span class="admin-status-dot"></span><span id="adminStatusText">Dashboard autorizado</span></div>
+        <div class="admin-error hidden" id="adminError"></div>
+        <div class="admin-metrics">
+          <div class="admin-metric"><strong id="adminTotalUsuarios">–</strong><span>Usuarios con acceso</span><small>Contactos_Acceso</small></div>
+          <div class="admin-metric"><strong id="adminIngresaron">–</strong><span>Ya ingresaron</span><small id="adminIngresaronMeta">–</small></div>
+          <div class="admin-metric"><strong id="adminNunca">–</strong><span>Nunca han ingresado</span><small id="adminNuncaMeta">–</small></div>
+          <div class="admin-metric"><strong id="adminActivos">–</strong><span>Usuarios activos</span><small>Abrieron ≥ 1 perfil</small></div>
+          <div class="admin-metric"><strong id="adminRegistros">–</strong><span>Registros recibidos</span><small>Registros_Comunidad</small></div>
+          <div class="admin-metric"><strong id="adminConexiones">–</strong><span>Conexiones registradas</span><small>Conexiones</small></div>
+          <div class="admin-metric"><strong id="adminPerfiles">–</strong><span>Perfiles abiertos</span><small>Actividad_Comunidad</small></div>
+          <div class="admin-metric"><strong id="adminAdopcionCard">–</strong><span>Tasa de adopción</span><small>Ingresaron / acceso</small></div>
+        </div>
+        <div class="admin-grid">
+          <div class="admin-panel">
+            <div class="admin-panel-head"><div><strong>Adopción de la Comunidad</strong><span>Personas con acceso que ya han ingresado al menos una vez.</span></div><div class="admin-rate" id="adminAdoptionRate">–</div></div>
+            <div class="admin-progress" aria-label="Tasa de adopción"><i id="adminAdoptionBar"></i></div>
+            <div class="admin-progress-meta"><span id="adminAdoptionLeft">– ingresaron</span><span id="adminAdoptionRight">– pendientes</span></div>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel-head"><div><strong>Actividad acumulada</strong><span>Eventos que ya están alimentando el tablero.</span></div></div>
+            <div class="admin-list">
+              <div class="admin-list-row"><span>Conexiones / solicitudes</span><strong id="adminConexionesMini">–</strong></div>
+              <div class="admin-list-row"><span>Aperturas de perfiles</span><strong id="adminPerfilesMini">–</strong></div>
+              <div class="admin-list-row"><span>Usuarios que exploran perfiles</span><strong id="adminActivosMini">–</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-note">Los indicadores de actividad crecerán a medida que el INDEX registre aperturas reales de perfiles. Los rankings por empresa, categoría y periodo se agregarán cuando el Flujo 12 devuelva el detalle necesario, sin mezclar estas métricas con los contadores de canales ya existentes en <strong>Conexiones</strong>.</div>
       </div>
     </section>
 
@@ -850,6 +928,8 @@ const FLOW_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.enviro
 const FLOW_LIST_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/e7ad98987675464f8d0d080f1ce13b89/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lVPH9s3X79gn7g4iXjBP8vukiFySMQDsBKVVT3NqZys";
 const FLOW_CONNECT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/27/workflows/5f0d1baa910e46bc89cd023b86a3d012/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WusETK5DZZSgkIliaTAsX8Q464TzvpOZw-7ue0MLMl4";
 const FLOW_TRACK_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/40c0e55b948943c88cc1c5f122128ede/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BkaZf5dPktMKC-2SL0CWzLlyWTg-A-opXdj9w98vo3Y";
+const FLOW_ACTIVITY_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/0ed09b855af34219a085cb403c6cd1b5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-m9DYEkIKHB0vTbP0ulwQQoeQ6HiAmhhO-MTAWptI1M";
+const FLOW_ADMIN_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/af1e3fdcdacd4755aa91de9367d50163/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=CjMR7WdSzs77l9yRfJQ2eLj8whrt5GmvATagY6lIMxI";
 // Integración pública. VERSIÓN DE PRUEBA: las URLs firmadas no deben publicarse en un sitio estático definitivo.
 const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/fe3170dc9df64ce6886f6a29c89a714d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NUbZNCUniX-PMfPZfouz-WqGJmhmGOMFPV2M_tsK7ds";
 const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
@@ -1348,7 +1428,105 @@ function connectionAllowed(conn){
 let sentRequests=[];
 let connectionItems=[];
 let carouselTimer=null;
+let activityPending=new Set();
+let activitySeen=new Set();
 try{sentRequests=JSON.parse(sessionStorage.getItem('tangara.sent')||'[]')}catch{sentRequests=[]}
+try{activitySeen=new Set(JSON.parse(sessionStorage.getItem('tangara.activityProfiles')||'[]'))}catch{activitySeen=new Set()}
+function getActivitySessionId(){
+  let id='';
+  try{id=sessionStorage.getItem('tangara.activitySessionId')||''}catch{}
+  if(!id){
+    id='SES-'+((globalThis.crypto&&crypto.randomUUID)?crypto.randomUUID().replace(/-/g,''):Date.now().toString(36)+Math.random().toString(36).slice(2));
+    try{sessionStorage.setItem('tangara.activitySessionId',id)}catch{}
+  }
+  return id;
+}
+function saveActivitySeen(){try{sessionStorage.setItem('tangara.activityProfiles',JSON.stringify([...activitySeen]))}catch{}}
+function trackProfileOpen(company){
+  if(!company||!session?.accessToken||!FLOW_ACTIVITY_URL||FLOW_ACTIVITY_URL.startsWith('__'))return;
+  if(DEMO_MODE)return;
+  if(String(company.id||'')===String(session?.empresaId||''))return;
+  const key=String(company.id||'');
+  if(!key||activitySeen.has(key)||activityPending.has(key))return;
+  activityPending.add(key);
+  fetch(FLOW_ACTIVITY_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      accessToken:session.accessToken,
+      empresaDestinoId:key,
+      empresaDestinoNombre:company.name||key,
+      tipoEvento:'PERFIL_ABIERTO',
+      sesionId:getActivitySessionId()
+    })
+  }).then(r=>{
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    activitySeen.add(key);
+    saveActivitySeen();
+  }).catch(err=>console.warn('No se pudo registrar PERFIL_ABIERTO',err)).finally(()=>activityPending.delete(key));
+}
+
+let adminData=null;
+let adminAuthorized=false;
+function finiteNumber(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function percentOf(part,total){return total>0?Math.max(0,Math.min(100,(part/total)*100)):0}
+function setAdminVisible(show){
+  adminAuthorized=!!show;
+  const btn=$('#adminNavBtn'),section=$('#adminDashboard');
+  if(btn)btn.classList.toggle('hidden',!show);
+  if(section)section.classList.toggle('hidden',!show);
+}
+function renderAdminDashboard(data){
+  adminData=data||{};
+  const total=finiteNumber(data?.totalUsuariosAcceso);
+  const entered=finiteNumber(data?.usuariosQueIngresaron);
+  const never=finiteNumber(data?.usuariosNuncaIngresaron);
+  const active=finiteNumber(data?.usuariosActivos);
+  const regs=finiteNumber(data?.totalRegistrosRecibidos);
+  const conns=finiteNumber(data?.totalConexiones);
+  const opens=finiteNumber(data?.totalPerfilesAbiertos);
+  const adoption=percentOf(entered,total);
+  const activeEntered=percentOf(active,entered);
+  const put=(id,v)=>{const el=$(id);if(el)el.textContent=String(v)};
+  put('#adminTotalUsuarios',total);
+  put('#adminIngresaron',entered);
+  put('#adminNunca',never);
+  put('#adminActivos',active);
+  put('#adminRegistros',regs);
+  put('#adminConexiones',conns);
+  put('#adminPerfiles',opens);
+  put('#adminConexionesMini',conns);
+  put('#adminPerfilesMini',opens);
+  put('#adminActivosMini',active);
+  put('#adminAdopcionCard',adoption.toFixed(1).replace('.',',')+'%');
+  put('#adminAdoptionRate',adoption.toFixed(1).replace('.',',')+'%');
+  put('#adminIngresaronMeta',adoption.toFixed(1).replace('.',',')+'% del total');
+  put('#adminNuncaMeta',(100-adoption).toFixed(1).replace('.',',')+'% del total');
+  put('#adminAdoptionLeft',entered+' ingresaron');
+  put('#adminAdoptionRight',never+' pendientes');
+  const bar=$('#adminAdoptionBar');if(bar)bar.style.width=adoption.toFixed(2)+'%';
+  const status=$('#adminStatusText');if(status){
+    const now=new Date();
+    status.textContent='Actualizado '+now.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+' · '+activeEntered.toFixed(1).replace('.',',')+'% de quienes ingresaron ya exploraron perfiles';
+  }
+  $$('#adminDashboard .admin-metric strong').forEach(animCount);
+}
+async function loadAdminDashboard(scrollAfter=false){
+  if(DEMO_MODE||!session?.accessToken||!flowConfigured(FLOW_ADMIN_URL)){setAdminVisible(false);return}
+  const error=$('#adminError');if(error){error.textContent='';error.classList.add('hidden')}
+  const refresh=$('#refreshAdminBtn');setBusy(refresh,true,'Actualizando…');
+  try{
+    const data=await apiPost(FLOW_ADMIN_URL,{accessToken:session.accessToken});
+    if(!data?.ok||String(data?.status||'').toUpperCase()!=='ADMIN_AUTHORIZED'){setAdminVisible(false);return}
+    setAdminVisible(true);renderAdminDashboard(data);
+    if(scrollAfter)setTimeout(()=>$('#adminDashboard')?.scrollIntoView({behavior:'smooth',block:'start'}),30);
+  }catch(err){
+    if(Number(err?.status)===401){setAdminVisible(false);return}
+    console.warn('No se pudo cargar el dashboard administrativo',err);
+    if(adminAuthorized&&error){error.textContent='No pudimos actualizar el dashboard en este momento. Los datos anteriores permanecen visibles.';error.classList.remove('hidden')}
+  }finally{setBusy(refresh,false)}
+}
+
 function initials(name){return (name||'TG').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()}
 function escapeHTML(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function apiPost(url,payload){return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(async r=>{let data={};try{data=await r.json()}catch{}if(!r.ok){const e=new Error(data?.error||('HTTP '+r.status));e.status=r.status;e.data=data;throw e}return data})}
@@ -1411,7 +1589,7 @@ async function boot(){
 function showGateError(msg){
   showPublicPanel('accessCheckPanel');$('#gateTitle').textContent='Acceso no disponible';$('#gateCopy').textContent='La Comunidad Tángara es un espacio privado.';$('#gateLoader').classList.add('hidden');const gp=$('#gateProgress');if(gp)gp.classList.add('hidden');$('#gateCopy').classList.remove('gate-shimmer');$('#gateError').textContent=msg;$('#gateError').classList.remove('hidden');$('#accessFallbackActions').classList.remove('hidden')
 }
-function openApp(){syncModeFromSession();const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();scanReveals();$$('.hero-stats .stat strong').forEach(animCount);scrollTo(0,0)}
+function openApp(){syncModeFromSession();const hash=location.hash||'';history.replaceState({},'',location.pathname+(DEMO_MODE?'?demo=1':'')+hash);$('#gateView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#userName').textContent=session.nombre||'Participante';$('#userCompany').textContent=session.empresa||session.empresaId;$('#userAvatar').textContent=initials(session.nombre||session.empresa);buildFilters();renderCarousel();renderCards();loadConnections();loadAdminDashboard(false);scanReveals();$$('.hero-stats .stat strong').forEach(animCount);scrollTo(0,0)}
 function buildFilters(){
   const pool=visibleCompanies();
   const vs=[...new Set(pool.map(c=>c.vertical).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));$('#verticalFilter').innerHTML='<option value="">Todas las verticales</option>'+vs.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
@@ -1444,6 +1622,7 @@ function renderCards(){
 }
 function openProfile(id){
   currentCompany=companyById(id);if(!currentCompany)return;
+  trackProfileOpen(currentCompany);
   $('#profileTitle').textContent=currentCompany.name;
   $('#profileSummary').textContent=[currentCompany.vertical,locationLabel(currentCompany)].filter(Boolean).join(' · ');
   $('#profileSolution').textContent=currentCompany.summary||'Sin descripción disponible.';
@@ -1604,7 +1783,11 @@ function registrationPayload(){
     linkedin:$('#regLinkedin').value.trim(),
     redSocial:$('#regRedSocial').value.trim(),
     autorizaCompartir:$('#regAutoriza').checked,
-    interesPortafolio:$('#regInteres').value,
+    interesPortafolio:$('#regInteres').value==='Otro'
+      ? `Otro: ${$('#regInteresOtro').value.trim()}`
+      : $('#regInteres').value,
+    interesPortafolioEsOtro:$('#regInteres').value==='Otro',
+    interesPortafolioOtro:$('#regInteresOtro').value.trim(),
     categoriaPerfil:$('#regCategoria').value,
     categoriaOtro:$('#regCategoria').value==='Otro'?$('#regCategoriaOtro').value.trim():''
   };
@@ -1612,6 +1795,7 @@ function registrationPayload(){
 function validateRegistration(p){
   if(!p.nombre||!p.apellido||!p.empresa||!p.email||!p.interesPortafolio||!p.categoriaPerfil)return 'Completa todos los campos obligatorios.';
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return 'Escribe un correo válido.';
+  if(p.interesPortafolioEsOtro&&!p.interesPortafolioOtro)return 'Cuéntanos cuál es tu interés principal para conocer el portafolio de Tángara.';
   if(p.categoriaPerfil==='Otro'&&!p.categoriaOtro)return 'Especifica a qué tipo de organización perteneces.';
   if(!p.autorizaCompartir)return 'Debes autorizar el uso de tus datos de contacto para participar en la comunidad.';
   return '';
@@ -1698,13 +1882,19 @@ $('#accessRecoverBtn').addEventListener('click',()=>{setInlineError('recoverErro
 $('#accessEntryBtn').addEventListener('click',showCommunityEntry);
 $('#successHomeBtn').addEventListener('click',showCommunityEntry);
 $('#notMyMatchBtn').addEventListener('click',()=>showPublicPanel('notMyMatchPanel'));
+$('#regInteres').addEventListener('change',e=>{
+  const isOtro=e.target.value==='Otro';
+  $('#regInteresOtroWrap').classList.toggle('hidden',!isOtro);
+  $('#regInteresOtro').required=isOtro;
+  if(!isOtro)$('#regInteresOtro').value='';
+});
 $('#regCategoria').addEventListener('change',e=>{$('#regCategoriaOtroWrap').classList.toggle('hidden',e.target.value!=='Otro')});
 $('#registrationForm').addEventListener('submit',submitPublicRegistration);
 $('#verifyForm').addEventListener('submit',submitVerification);
 $('#recoverForm').addEventListener('submit',submitRecovery);
 $('#recoverMatchBtn').addEventListener('click',recoverPossibleMatch);
 $('#verificationCode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6)});
-$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openInterestModal);$('#interestSubmitBtn').addEventListener('click',revealContact);$('#interestReason').addEventListener('input',e=>$('#interestChars').textContent=String(e.target.value.length));$$('.interest-option').forEach(b=>b.addEventListener('click',()=>{selectedInterest=b.dataset.interestValue||'';$$('.interest-option').forEach(x=>x.classList.toggle('selected',x===b))}));$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
+$('#adminNavBtn').addEventListener('click',()=>loadAdminDashboard(true));$('#refreshAdminBtn').addEventListener('click',()=>loadAdminDashboard(false));$('#searchInput').addEventListener('input',renderCards);$('#verticalFilter').addEventListener('change',renderCards);$('#cityFilter').addEventListener('change',renderCards);$('#connectBtn').addEventListener('click',openInterestModal);$('#interestSubmitBtn').addEventListener('click',revealContact);$('#interestReason').addEventListener('input',e=>$('#interestChars').textContent=String(e.target.value.length));$$('.interest-option').forEach(b=>b.addEventListener('click',()=>{selectedInterest=b.dataset.interestValue||'';$$('.interest-option').forEach(x=>x.classList.toggle('selected',x===b))}));$('#refreshConnectionsBtn').addEventListener('click',loadConnections);const carouselPrev=$('#carouselPrev'),carouselNext=$('#carouselNext');if(carouselPrev)carouselPrev.addEventListener('click',()=>moveCarousel(-1));if(carouselNext)carouselNext.addEventListener('click',()=>moveCarousel(1));$$('.connection-tab').forEach(b=>b.addEventListener('click',()=>{$$('.connection-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.connection-panel').forEach(x=>x.classList.remove('active'));$('#panel'+b.dataset.tab[0].toUpperCase()+b.dataset.tab.slice(1)).classList.add('active')}));$('#logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('tangara.session');sessionStorage.removeItem('tangara.sent');location.href=location.pathname+(DEMO_MODE?'?demo=1':'')});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.remove('open')));$$('.backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.backdrop').forEach(b=>b.classList.remove('open'))});
 const _revealIO=('IntersectionObserver'in window)?new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');_revealIO.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'}):null;
 function scanReveals(scope){scope=scope||document;if(!_revealIO)return;const sel='.company,.connection-stat,.connection-card,.connection-group,.section-head';let i=0;scope.querySelectorAll(sel).forEach(el=>{if(el.dataset.rev)return;el.dataset.rev='1';el.classList.add('reveal');el.style.transitionDelay=Math.min(i*45,300)+'ms';i++;_revealIO.observe(el)})}
 function animCount(el){const raw=(el.textContent||'').trim();if(!/^\d+$/.test(raw))return;const num=+raw;if(num<=0){el.textContent='0';return}const dur=900,t0=performance.now();el.textContent='0';requestAnimationFrame(function s(now){const p=Math.min(1,(now-t0)/dur);el.textContent=Math.round(num*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(s)})}
