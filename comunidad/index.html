@@ -1674,6 +1674,47 @@ textarea:focus-visible,summary:focus-visible,.pred-section-head:focus-visible{
   .block:after{width:70%;opacity:.05}
 }
 
+/* ============================================================
+   VENTANA CLARA · Acompañamiento (prediagnóstico y bitácoras)
+   Mismo bloque redondeado, en crema: lectura densa sin fatiga.
+   ============================================================ */
+#acompanamiento{
+  background:linear-gradient(180deg,#FDF5F2 0%,#FBEBF4 56%,#F7DFEF 100%);
+  border-color:rgba(255,255,255,.72);
+  color:rgba(22,0,32,.74);
+  box-shadow:0 40px 90px -50px rgba(98,22,90,.75),inset 0 1px 0 rgba(255,255,255,.7)
+}
+#acompanamiento:after{background-image:url('../assets/bird-plum.png');opacity:.10}
+#acompanamiento :is(h1,h2,h3,h4,strong,b){color:#160020}
+#acompanamiento :is(p,span,small,li,label,td){color:rgba(22,0,32,.74)}
+#acompanamiento :is(.eyebrow,.pred-value-caption,.pred-label,.pred-section-toggle,
+  .pred-history summary,.interest-label,.light-card h4){color:#8B2380!important}
+#acompanamiento :is(.pred-key,.pred-section-main small,.accomp-company span){color:rgba(22,0,32,.55)!important}
+#acompanamiento :is(.accomp-shell,.accomp-empty,.accomp-loading,.accomp-note,.pred-field,
+  .pred-section,.bita-card,.pred-section-intro,.accomp-tabs,.channel-used){
+  background:rgba(255,255,255,.66);border-color:rgba(22,0,32,.10);color:rgba(22,0,32,.74)
+}
+#acompanamiento .pred-section[open]{background:rgba(255,255,255,.84);border-color:rgba(177,47,164,.26)}
+#acompanamiento .pred-section-icon{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.26)}
+#acompanamiento .pred-section-toggle:after,#acompanamiento .pred-history summary:before{color:#8B2380}
+#acompanamiento .pred-field.corrected{background:rgba(23,120,74,.09);border-color:rgba(23,120,74,.24)}
+#acompanamiento .pred-current{background:rgba(23,120,74,.09);border-color:rgba(23,120,74,.20)}
+#acompanamiento .pred-current :is(.pred-value-caption,.pred-value-current){color:#0F5C39!important}
+#acompanamiento .pred-correction-meta{color:rgba(15,92,57,.78)}
+#acompanamiento .pred-edit{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.30);color:#8B2380}
+#acompanamiento .pred-edit:hover{background:rgba(177,47,164,.18)}
+#acompanamiento .pred-history{border-top-color:rgba(22,0,32,.10)}
+#acompanamiento .pred-history-item{background:rgba(255,255,255,.55);border-color:rgba(22,0,32,.08)}
+#acompanamiento .accomp-tab{color:rgba(22,0,32,.66)}
+#acompanamiento .accomp-tab.active{background:#160020;color:#fff}
+#acompanamiento .perm{border-color:rgba(22,0,32,.14);color:rgba(22,0,32,.55)}
+#acompanamiento .perm.on{color:#0F5C39;background:rgba(23,120,74,.10);border-color:rgba(23,120,74,.22)}
+#acompanamiento .btn-soft{background:rgba(255,255,255,.78);border-color:rgba(22,0,32,.16);color:#160020}
+#acompanamiento .btn-soft:hover:not(:disabled){background:#fff;border-color:rgba(22,0,32,.34)}
+#acompanamiento .accomp-error{background:rgba(200,30,60,.07);border-color:rgba(200,30,60,.22);color:#8E1030}
+#acompanamiento a{color:#8B2380}
+#acompanamiento a:hover{color:#B12FA4}
+
 </style>
 </head>
 <body>
