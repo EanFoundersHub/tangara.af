@@ -416,18 +416,28 @@ line-height:1.55;
 color:rgba(255,255,255,.74);
 max-width:670px}
 
-.hero-stats{display:flex;
-flex-wrap:wrap;
-gap:38px;
+.hero-stats{display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:10px;
 margin-top:38px;
 padding-top:30px;
 border-top:1px solid rgba(238,70,221,.20)}
 
-.stat strong{font-size:34px;
+.stat{min-width:0;
+padding:15px 16px;
+border-radius:13px;
+background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));
+border:1px solid rgba(242,123,227,.18)}
+
+.stat strong{font-size:clamp(23px,2.4vw,34px);
+line-height:1;
 color:#FBD6F5;
 display:block}
-.stat span{font-size:11px;
-letter-spacing:.1em;
+.stat span{display:block;
+margin-top:7px;
+font-size:9.5px;
+line-height:1.35;
+letter-spacing:.07em;
 text-transform:uppercase;
 color:var(--txt3)}
 
@@ -573,6 +583,48 @@ line-height:1.55}
 .accomp-actions{display:flex;
 gap:9px;
 flex-wrap:wrap}
+
+
+/* Prediagnóstico completo + trazabilidad de correcciones */
+.pred-field{position:relative;overflow:hidden}
+.pred-field.corrected{border-color:rgba(143,230,182,.30);background:linear-gradient(145deg,rgba(143,230,182,.055),rgba(255,255,255,.025))}
+.pred-label-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pred-label-row .pred-label{margin:0;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#F6A6EB;line-height:1.35}
+.pred-key{display:block;margin-top:3px;font-size:9px;color:var(--txt3);text-transform:none;letter-spacing:0}
+.pred-value-block{display:grid;gap:6px}
+.pred-value-caption{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--txt3)}
+.pred-value-original,.pred-value-current{display:block;font-size:13px;line-height:1.55;color:#fff;font-weight:550;white-space:pre-wrap;word-break:break-word}
+.pred-current{margin-top:10px;padding:11px 12px;border-radius:10px;background:rgba(143,230,182,.07);border:1px solid rgba(143,230,182,.18)}
+.pred-current .pred-value-caption{color:#9DEBC0}
+.pred-current .pred-value-current{color:#DDF9E9}
+.pred-correction-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:9.5px;color:rgba(184,243,208,.70)}
+.pred-edit{flex:0 0 auto;border:1px solid rgba(242,123,227,.28);background:rgba(238,70,221,.08);color:#FAD1F4;border-radius:9px;padding:7px 9px;font-size:10.5px;font-weight:700}
+.pred-edit:hover{background:rgba(238,70,221,.17);border-color:rgba(242,123,227,.55)}
+.pred-history{margin-top:10px;border-top:1px solid rgba(242,123,227,.12);padding-top:8px}
+.pred-history summary{cursor:pointer;color:#F6A6EB;font-size:10.5px;font-weight:650;list-style:none}
+.pred-history summary::-webkit-details-marker{display:none}
+.pred-history summary:before{content:'＋';margin-right:6px;color:#EE46DD}
+.pred-history[open] summary:before{content:'−'}
+.pred-history-list{display:grid;gap:7px;margin-top:9px}
+.pred-history-item{padding:9px 10px;border-radius:9px;background:rgba(255,255,255,.025);border:1px solid var(--line);font-size:11px;line-height:1.45;color:var(--txt2)}
+.pred-history-item b{color:#fff}
+.pred-history-item small{display:block;margin-top:4px;color:var(--txt3)}
+
+.correction-box{width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:22px;background:var(--bg2);border:1px solid var(--line2);padding:28px;position:relative;box-shadow:0 50px 130px -40px #000}
+.correction-box h3{font-size:clamp(24px,3vw,34px);margin:9px 48px 8px 0}
+.correction-help{margin:0 0 18px;color:var(--txt2);font-size:12.5px;line-height:1.55}
+.correction-context{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.correction-context-card{padding:13px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.correction-context-card span{display:block;margin-bottom:6px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
+.correction-context-card strong{display:block;color:#fff;font-size:12.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.correction-form{display:grid;gap:14px}
+.correction-field{display:grid;gap:7px}
+.correction-field label{font-size:12px;font-weight:700;color:#fff}
+.correction-field textarea{width:100%;min-height:110px;resize:vertical;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:#fff;padding:12px 13px;outline:none;line-height:1.5}
+.correction-field textarea:focus{border-color:rgba(238,70,221,.65);box-shadow:0 0 0 3px rgba(238,70,221,.08)}
+.correction-error{padding:11px 13px;border-radius:10px;background:rgba(255,154,168,.07);border:1px solid rgba(255,154,168,.22);color:#ffb2bd;font-size:12px}
+.correction-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:2px}
+.correction-trace{padding:11px 13px;border-radius:10px;background:rgba(143,230,182,.055);border:1px solid rgba(143,230,182,.18);color:var(--txt2);font-size:11.5px;line-height:1.5}
 
 
 /* Connections */
@@ -928,6 +980,7 @@ box-shadow:0 16px 42px rgba(33,4,43,.34)}
 
 
 @media(max-width:900px){.admin-metrics{grid-template-columns:repeat(2,1fr)}
+.hero-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 @media(max-width:860px){.gate{grid-template-columns:1fr}
@@ -939,6 +992,8 @@ border-top:1px solid var(--line)}
 }
 
 @media(max-width:760px){.toolbar{grid-template-columns:1fr}
+.hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.correction-context{grid-template-columns:1fr}
 .company{grid-template-columns:1fr}
 .company-side{align-items:flex-start;
 text-align:left;
@@ -1544,10 +1599,19 @@ flex-direction:column}
         <span class="chip chip-mag">46 empresas · cohorte Tángara</span>
         <h1>Conecta con empresas que están revolucionando la <em>innovación climática</em> en América Latina.</h1>
         <p class="lead">Directorio, conexiones y seguimiento del proceso de acompañamiento en un solo espacio privado.</p>
-        <div class="hero-stats">
-          <div class="stat"><strong>46</strong><span>empresas</span></div>
-          <div class="stat"><strong>1 clic</strong><span>para conectar</span></div>
-          <div class="stat"><strong>1 espacio</strong><span>para acompañamiento</span></div>
+        <div class="hero-stats" aria-label="Tángara en cifras">
+          <div class="stat"><strong>46</strong><span>empresas seleccionadas</span></div>
+          <div class="stat"><strong>4</strong><span>verticales climáticas</span></div>
+          <div class="stat"><strong>91,3%</strong><span>operación principal en Colombia</span></div>
+          <div class="stat"><strong>6,4 años</strong><span>mediana de constitución</span></div>
+          <div class="stat"><strong>USD 209k</strong><span>ventas medianas 2025</span></div>
+          <div class="stat"><strong>39%</strong><span>alcanzó break-even</span></div>
+          <div class="stat"><strong>82,6%</strong><span>orientación B2B</span></div>
+          <div class="stat"><strong>USD 5,25 M</strong><span>levantados en los últimos 24 meses</span></div>
+          <div class="stat"><strong>67%</strong><span>ya conversa con inversionistas</span></div>
+          <div class="stat"><strong>43%</strong><span>en ronda activa</span></div>
+          <div class="stat"><strong>29 h</strong><span>formación grupal</span></div>
+          <div class="stat"><strong>6 h</strong><span>mentoría individual por empresa</span></div>
         </div>
       </div>
     </section>
@@ -1700,6 +1764,35 @@ flex-direction:column}
   </article>
 </div>
 
+<div class="backdrop" id="correctionBackdrop" role="dialog" aria-modal="true" aria-labelledby="correctionTitle">
+  <article class="correction-box">
+    <button class="close" data-close="correctionBackdrop" aria-label="Cerrar">×</button>
+    <span class="eyebrow">Corrección con trazabilidad</span>
+    <h3 id="correctionTitle">Corregir información</h3>
+    <p class="correction-help">El valor original nunca se modifica. Cada cambio se guarda como una nueva versión en el historial del prediagnóstico.</p>
+    <div class="correction-context">
+      <div class="correction-context-card"><span>Valor original</span><strong id="correctionOriginal">—</strong></div>
+      <div class="correction-context-card"><span>Valor vigente</span><strong id="correctionCurrent">—</strong></div>
+    </div>
+    <form class="correction-form" id="correctionForm">
+      <div class="correction-field">
+        <label for="correctionValue">Nuevo valor corregido</label>
+        <textarea id="correctionValue" required></textarea>
+      </div>
+      <div class="correction-field">
+        <label for="correctionReason">Motivo de la corrección</label>
+        <textarea id="correctionReason" maxlength="700" required placeholder="Explica brevemente por qué debe cambiar este dato."></textarea>
+      </div>
+      <div class="correction-trace">La corrección registrará empresa, ResponseID, campo, valor original, valor anterior, nuevo valor, motivo, usuario, fecha y versión.</div>
+      <div class="correction-error hidden" id="correctionError"></div>
+      <div class="correction-actions">
+        <button class="btn btn-soft" type="button" data-close="correctionBackdrop">Cancelar</button>
+        <button class="btn btn-primary" id="correctionSubmitBtn" type="submit">Guardar nueva versión</button>
+      </div>
+    </form>
+  </article>
+</div>
+
 <a class="feedback-float" href="https://forms.cloud.microsoft/r/5HKf5K3ZAf" target="_blank" rel="noopener">✦ Comparte tu feedback</a>
 <div class="toast" id="toast">Listo.</div>
 
@@ -1714,6 +1807,7 @@ const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.enviro
 const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
 const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/d9807e57afab4ceb9ce236322a7e88f9/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=H45FqU2gHmFTMFws1PY8w5E7kdj4SccYI0kv0syNOEQ";
 const FLOW_ACCOMPANIMENT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/72f6f18eecea46edb8e3e08a71fa57d8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=B3wdmYw3Fcy4UMWJJnUqga8aP4O2EOb4b01dvCgF4VA";
+const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/a5aeb4b187054a2aadc0a1720b4b59f3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0hACaGgBVtA-hkKtMj4d53_4d0KZO23WRsRrFLat0oo";
 
 // Se mantiene vacío hasta confirmar la URL real del Microsoft Form de bitácoras.
 const BITACORA_FORM_URL="";
@@ -2235,6 +2329,7 @@ let accompanimentTargetId="";
 let activityPending=new Set();
 let activitySeen=new Set();
 let adminAuthorized=false;
+let correctionTarget=null;
 
 try{
   activitySeen=new Set(JSON.parse(sessionStorage.getItem("tangara.activityProfiles")||"[]"));
@@ -2632,10 +2727,105 @@ function permissionHTML(p){
 }
 
 function predWide(key,value){
-  return String(value??"").length>100||/describ|impact|tecnolog|fortalec|propuesta|avance|tarea/i.test(key);
+  return String(value??"").length>100||/describ|impact|tecnolog|fortalec|propuesta|avance|tarea|modelo|mercado|financ|compet|proyecc|sostenib|soluci/i.test(key);
 }
 
-function renderPred(items,permissions){
+function fixMojibake(value){
+  let s=String(value??"");
+  if(!/[ÃÂâ]/.test(s))return s;
+  try{
+    const fixed=decodeURIComponent(escape(s));
+    if(fixed&&!fixed.includes("�"))return fixed;
+  }catch{}
+  return s;
+}
+
+function stripHTMLText(value){
+  const raw=String(value??"");
+  if(!/<[^>]+>/.test(raw))return raw;
+  try{
+    const doc=new DOMParser().parseFromString(raw,"text/html");
+    return doc.body?.textContent||raw;
+  }catch{
+    return raw.replace(/<[^>]*>/g," ");
+  }
+}
+
+function displayText(value){
+  return fixMojibake(stripHTMLText(value)).replace(/\u0000/g,"").replace(/[ \t]+\n/g,"\n").trim();
+}
+
+function fieldLabel(key,corrections=[]){
+  const known={
+    ResponseID:"Response ID",
+    FechaInicio:"Fecha de inicio",
+    FechaRespuesta:"Fecha de respuesta",
+    Estado:"Estado de la respuesta",
+    ContactID:"Contact ID",
+    ComentariosLegacy:"Comentarios legacy",
+    Comentarios:"Comentarios",
+    Idioma:"Idioma",
+    Referer:"URL de origen",
+    SessionID:"Session ID",
+    UserAgent:"Navegador / dispositivo",
+    Tags:"Etiquetas",
+    IPAddress:"Dirección IP",
+    Longitud:"Longitud",
+    Latitud:"Latitud",
+    Pais:"País",
+    Ciudad:"Ciudad",
+    RegionEstado:"Región / estado",
+    CodigoPostal:"Código postal",
+    NombreEmpresa:"Nombre de la empresa",
+    EmailContacto:"Correo de contacto",
+    PaginaWeb:"Página web",
+    Departamento:"Departamento",
+    Vertical:"Vertical",
+    DescripcionEmprendimiento:"Descripción del emprendimiento",
+    Clientes:"Clientes activos"
+  };
+  if(known[key])return known[key];
+  const corr=(Array.isArray(corrections)?corrections:[]).find(c=>String(firstPresent(c,["CampoKey","field_3"]))===String(key));
+  const fromCorr=firstPresent(corr,["CampoNombre","field_4"]);
+  if(fromCorr&&String(fromCorr)!==String(key))return displayText(fromCorr);
+  if(/^Campo_\d+$/i.test(key))return key.replace("_"," ");
+  return key.replace(/_/g," ");
+}
+
+function normalizeCorrection(c){
+  return {
+    raw:c,
+    responseID:String(firstPresent(c,["RegistroPrediagnosticoID","ResponseID","field_2"])||""),
+    campoKey:String(firstPresent(c,["CampoKey","field_3"])||""),
+    campoNombre:displayText(firstPresent(c,["CampoNombre","field_4"])),
+    valorOriginal:displayText(firstPresent(c,["ValorOriginal","field_5"])),
+    valorAnterior:displayText(firstPresent(c,["ValorAnterior","field_6"])),
+    valorCorregido:displayText(firstPresent(c,["ValorCorregido","field_7"])),
+    motivo:displayText(firstPresent(c,["MotivoCorreccion","Motivo","field_8"])),
+    corregidoPor:displayText(firstPresent(c,["CorregidoPorNombre","field_10"])),
+    corregidoPorEmail:displayText(firstPresent(c,["CorregidoPorEmail","field_9","field_11"])),
+    fecha:firstPresent(c,["FechaCorreccion","field_12","Created","Modified"]),
+    version:finiteNumber(firstPresent(c,["Version","field_13"])),
+    activa:c?.Activa===undefined?true:bool(c.Activa)
+  };
+}
+
+function fieldCorrections(corrections,key){
+  return (Array.isArray(corrections)?corrections:[])
+    .map(normalizeCorrection)
+    .filter(c=>c.campoKey===String(key))
+    .sort((a,b)=>(a.version||0)-(b.version||0));
+}
+
+function correctionHistoryHTML(history){
+  if(!history.length)return "";
+  return `<details class="pred-history"><summary>Ver historial (${history.length})</summary><div class="pred-history-list">${history.map(c=>{
+    const meta=[c.version?`Versión ${c.version}`:"Versión",excelDate(c.fecha),c.corregidoPor].filter(Boolean).join(" · ");
+    return `<div class="pred-history-item"><b>${escapeHTML(c.valorCorregido||"Sin valor")}</b>${c.motivo?`<div>Motivo: ${escapeHTML(c.motivo)}</div>`:""}<small>${escapeHTML(meta)}</small></div>`;
+  }).join("")}</div></details>`;
+}
+
+function renderPred(items,permissions,corrections=[]){
   if(!bool(permissions?.viewPrediagnostico)){
     return '<div class="accomp-empty">No tienes permiso para consultar el prediagnóstico.</div>';
   }
@@ -2643,12 +2833,27 @@ function renderPred(items,permissions){
   if(!row){
     return '<div class="accomp-empty">No encontramos prediagnóstico para esta empresa.</div>';
   }
-  const skip=new Set(["@odata.etag","ItemInternalId","IdentificadorPrediagnostico","EstadoDato"]);
+  const skip=new Set(["@odata.etag","ItemInternalId"]);
   const fields=Object.entries(row).filter(([key,value])=>!skip.has(key)&&!key.startsWith("@")&&String(value??"").trim()!=="");
   if(!fields.length){
     return '<div class="accomp-empty">El registro existe, pero no contiene campos visibles.</div>';
   }
-  return `<div class="pred-grid">${fields.map(([key,value])=>`<div class="pred-field ${predWide(key,value)?"wide":""}"><span>${escapeHTML(key)}</span><strong>${escapeHTML(value)}</strong></div>`).join("")}</div>`;
+  return `<div class="pred-grid">${fields.map(([key,value])=>{
+    const original=displayText(value);
+    const history=fieldCorrections(corrections,key);
+    const active=history.filter(c=>c.activa);
+    const current=(active.length?active:history).slice(-1)[0]||null;
+    const corrected=!!current;
+    const label=fieldLabel(key,corrections);
+    const currentMeta=current?[current.version?`Versión ${current.version}`:"",excelDate(current.fecha),current.corregidoPor].filter(Boolean).join(" · "):"";
+    const edit=bool(permissions?.correctPrediagnostico)?`<button class="pred-edit" type="button" data-correct-key="${escapeHTML(key)}">Corregir</button>`:"";
+    return `<div class="pred-field ${predWide(key,original)?"wide":""} ${corrected?"corrected":""}">
+      <div class="pred-label-row"><div><span class="pred-label">${escapeHTML(label)}</span>${label!==key?`<small class="pred-key">${escapeHTML(key)}</small>`:""}</div>${edit}</div>
+      <div class="pred-value-block"><span class="pred-value-caption">Información original</span><strong class="pred-value-original">${escapeHTML(original)}</strong></div>
+      ${current?`<div class="pred-current"><span class="pred-value-caption">Información corregida · vigente</span><strong class="pred-value-current">${escapeHTML(current.valorCorregido)}</strong>${currentMeta?`<div class="pred-correction-meta"><span>${escapeHTML(currentMeta)}</span></div>`:""}</div>`:""}
+      ${correctionHistoryHTML(history)}
+    </div>`;
+  }).join("")}</div>`;
 }
 
 function excelDate(v){
@@ -2661,7 +2866,7 @@ function excelDate(v){
   }
   const d=new Date(raw);
   if(!Number.isNaN(d.getTime()))return d.toLocaleDateString("es-CO",{year:"numeric",month:"long",day:"numeric"});
-  return raw;
+  return displayText(raw);
 }
 
 function firstPresent(obj,keys){
@@ -2680,17 +2885,81 @@ function renderBitacoras(items,permissions){
   }
   return `<div class="bita-list">${items.map((b,i)=>{
     const fecha=excelDate(firstPresent(b,["Fecha de la sesión","Fecha","fecha"]));
-    const mentor=firstPresent(b,["Nombre del mentor","Nombre completo del mentor","Mentor","mentor"]);
-    const avances=firstPresent(b,["Avances de la sesión","Avances","avances"]);
-    const tareas=firstPresent(b,["Tareas y próximos pasos para la empresa","Tareas","tareas"]);
+    const mentor=displayText(firstPresent(b,["Nombre del mentor","Nombre completo del mentor","Mentor","mentor"]));
+    const avances=displayText(firstPresent(b,["Avances de la sesión","Avances","avances"]));
+    const tareas=displayText(firstPresent(b,["Tareas y próximos pasos para la empresa","Tareas","tareas"]));
     return `<article class="bita-card"><div class="bita-head"><strong>Sesión ${i+1}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${mentor?`<p><b>Mentor:</b> ${escapeHTML(mentor)}</p>`:""}${avances?`<p><b>Avances:</b> ${escapeHTML(avances)}</p>`:""}${tareas?`<p><b>Próximos pasos:</b> ${escapeHTML(tareas)}</p>`:""}</article>`;
   }).join("")}</div>`;
+}
+
+function openCorrectionModal(fieldKey){
+  const data=accompanimentData;
+  const p=data?.permissions||{};
+  if(!data||!bool(p.correctPrediagnostico))return toast("No tienes permiso para corregir este prediagnóstico.");
+  const row=Array.isArray(data.prediagnostico)?data.prediagnostico[0]:null;
+  if(!row||!(fieldKey in row))return toast("No pudimos localizar ese campo en el prediagnóstico original.");
+  const original=displayText(row[fieldKey]);
+  const history=fieldCorrections(data.correcciones,fieldKey);
+  const active=history.filter(c=>c.activa);
+  const current=(active.length?active:history).slice(-1)[0]||null;
+  correctionTarget={
+    key:fieldKey,
+    label:fieldLabel(fieldKey,data.correcciones),
+    original,
+    current:current?.valorCorregido||original,
+    history
+  };
+  $("#correctionTitle").textContent=`Corregir · ${correctionTarget.label}`;
+  $("#correctionOriginal").textContent=correctionTarget.original||"Sin valor";
+  $("#correctionCurrent").textContent=correctionTarget.current||"Sin valor";
+  $("#correctionValue").value=correctionTarget.current||"";
+  $("#correctionReason").value="";
+  setInlineError("correctionError","");
+  $("#correctionBackdrop").classList.add("open");
+  setTimeout(()=>$("#correctionValue")?.focus(),80);
+}
+
+async function submitCorrection(e){
+  e.preventDefault();
+  setInlineError("correctionError","");
+  if(!correctionTarget||!accompanimentData)return setInlineError("correctionError","No hay un campo seleccionado para corregir.");
+  if(!flowConfigured(FLOW_CORRECTION_URL))return setInlineError("correctionError","El flujo de correcciones no está configurado.");
+  const value=$("#correctionValue").value.trim();
+  const reason=$("#correctionReason").value.trim();
+  if(!value)return setInlineError("correctionError","Escribe el nuevo valor corregido.");
+  if(!reason)return setInlineError("correctionError","Escribe el motivo de la corrección.");
+  if(value===String(correctionTarget.current||"").trim())return setInlineError("correctionError","El nuevo valor es igual al valor vigente. Cambia el dato antes de guardar otra versión.");
+  const empresaId=String(accompanimentData?.empresaId||accompanimentTargetId||session?.empresaId||"");
+  if(!empresaId)return setInlineError("correctionError","No pudimos identificar la empresa que se está corrigiendo.");
+  const btn=$("#correctionSubmitBtn");
+  setBusy(btn,true,"Guardando…");
+  try{
+    const res=await apiPost(FLOW_CORRECTION_URL,{
+      accessToken:session.accessToken,
+      empresaId,
+      campoKey:correctionTarget.key,
+      valorCorregido:value,
+      motivo:reason
+    });
+    if(!res?.ok||String(res?.status||"").toUpperCase()!=="CORRECTION_CREATED")throw Object.assign(new Error(res?.message||"No se pudo registrar la corrección."),{data:res});
+    $("#correctionBackdrop").classList.remove("open");
+    toast(`Corrección guardada${res?.version?` · versión ${res.version}`:""}.`);
+    correctionTarget=null;
+    await loadAccompaniment(empresaId);
+  }catch(err){
+    console.error("Corrección de prediagnóstico",err);
+    const denied=Number(err?.status)===403||String(err?.data?.status||"").includes("NOT_AUTHORIZED");
+    setInlineError("correctionError",denied?"Tu usuario no tiene autorización para corregir este campo.":"No pudimos guardar la corrección. Revisa la ejecución del Flow 17.");
+  }finally{
+    setBusy(btn,false);
+  }
 }
 
 function renderAccompaniment(data){
   accompanimentData=data;
   accompanimentTargetId=String(data?.empresaId||accompanimentTargetId||"");
   const p=data?.permissions||{};
+  const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
   const shell=$("#accompShell");
   shell.innerHTML=`
     <div class="accomp-top">
@@ -2703,13 +2972,14 @@ function renderAccompaniment(data){
     <div class="accomp-actions">
       ${bool(p.createBitacora)?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Registrar bitácora</button>':""}
       ${bool(p.correctPrediagnostico)?'<span class="perm on">✓ Corrección autorizada</span>':""}
+      ${corrections.length?`<span class="perm on">${corrections.length} ${corrections.length===1?"corrección":"correcciones"} en historial</span>`:""}
     </div>
-    ${bool(p.correctPrediagnostico)?'<div class="accomp-note">El permiso de corrección ya está reconocido por el portal. La edición permanecerá bloqueada hasta conectar el flujo append-only de <strong>Prediagnostico_Correcciones</strong>, para no perder la trazabilidad del dato original.</div>':""}
+    ${bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
     <div class="accomp-tabs">
       <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
       <button class="accomp-tab" data-acctab="bita">Bitácoras (${Array.isArray(data?.bitacoras)?data.bitacoras.length:0})</button>
     </div>
-    <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p)}</div>
+    <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
     <div class="accomp-panel" id="accompBita">${renderBitacoras(data?.bitacoras,p)}</div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
@@ -2717,6 +2987,8 @@ function renderAccompaniment(data){
     $("#accompPred").classList.toggle("active",btn.dataset.acctab==="pred");
     $("#accompBita").classList.toggle("active",btn.dataset.acctab==="bita");
   }));
+
+  $$("#accompPred [data-correct-key]").forEach(btn=>btn.addEventListener("click",()=>openCorrectionModal(btn.dataset.correctKey)));
 
   $("#newBitacoraBtn")?.addEventListener("click",()=>{
     if(!BITACORA_FORM_URL){
@@ -2740,11 +3012,11 @@ async function loadAccompaniment(targetId=""){
   }
   $("#accompShell").innerHTML='<div class="accomp-loading"><span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:8px"></span>Cargando acompañamiento…</div>';
   const payload={accessToken:session.accessToken};
-  // Para la empresa propia no se envía empresaId. Para mentor se envía la empresa solicitada.
   if(requested&&requested!==own)payload.empresaId=requested;
   try{
     const data=await apiPost(FLOW_ACCOMPANIMENT_URL,payload);
     if(!data?.ok)throw Object.assign(new Error(data?.message||"Respuesta no autorizada"),{status:data?.status,data});
+    data.correcciones=Array.isArray(data?.correcciones)?data.correcciones:[];
     renderAccompaniment(data);
   }catch(err){
     console.error("Acompañamiento",err);
@@ -3252,7 +3524,7 @@ document.addEventListener("click",async e=>{
   if(tracked)trackChannel(tracked.dataset.trackCompany,tracked.dataset.trackChannel);
 
   const close=e.target.closest("[data-close]");
-  if(close)$("#"+close.dataset.close)?.classList.remove("open");
+  if(close){$("#"+close.dataset.close)?.classList.remove("open");if(close.dataset.close==="correctionBackdrop")correctionTarget=null;}
 
   const back=e.target.closest("[data-public-back]");
   if(back)showPublicPanel(back.dataset.publicBack);
@@ -3340,6 +3612,7 @@ $("#regCategoria").addEventListener("change",e=>{
 $("#registrationForm").addEventListener("submit",submitRegistration);
 $("#verifyForm").addEventListener("submit",submitVerification);
 $("#recoverForm").addEventListener("submit",submitRecovery);
+$("#correctionForm").addEventListener("submit",submitCorrection);
 $("#verificationCode").addEventListener("input",e=>{
   e.target.value=e.target.value.replace(/\D/g,"").slice(0,6);
 });
