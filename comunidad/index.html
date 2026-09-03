@@ -1457,6 +1457,214 @@ flex-direction:column}
 
 </style>
 
+<style id="tangara-ux-refresh">
+/* ============================================================
+   Comunidad Tángara · UX / legibilidad refresh (drop-in)
+   Pegar como último <link> o <style> del <head>.
+   No cambia HTML ni JS: solo tipografía, contraste, ritmo
+   y bandas claras al estilo de la landing.
+   ============================================================ */
+
+:root{
+  --txt:#F6EEF8;
+  --txt2:rgba(246,238,248,.80);
+  --txt3:rgba(246,238,248,.60);
+  --line:rgba(250,209,244,.14);
+  --line2:rgba(242,123,227,.26);
+  --ink-l:#160020;              /* texto sobre banda clara */
+  --ink-l2:rgba(22,0,32,.72);
+  --ink-l3:rgba(22,0,32,.55);
+  --mag-l:#8B2380;              /* magenta legible sobre claro */
+  --r:16px;
+}
+
+/* ---------- Fondo más calmado: una sola fuente de luz ---------- */
+body{
+  font-size:16px;
+  background:
+    radial-gradient(1200px 760px at 8% -6%,rgba(238,70,221,.18),transparent 62%),
+    linear-gradient(180deg,#1a0827 0%,#210c2f 46%,#150620 100%);
+}
+body:before{opacity:.05}
+::selection{background:rgba(238,70,221,.35);color:#fff}
+
+/* ---------- Tipografía y medida de lectura ---------- */
+h1,h2,h3,h4{text-wrap:balance}
+p,.lead,li,.pred-value-current,.pred-value-original{text-wrap:pretty}
+.section-head h2{font-size:clamp(25px,2.6vw,34px);line-height:1.06}
+.section-head p{font-size:15px;line-height:1.6;color:var(--txt2);max-width:62ch}
+.hero .lead{font-size:clamp(16px,1.2vw,19px);line-height:1.6;color:rgba(255,255,255,.8);max-width:58ch}
+.eyebrow{font-size:11px;letter-spacing:.16em}
+.chip{font-size:11px;letter-spacing:.1em;padding:7px 12px}
+.micro{font-size:12px!important;line-height:1.5;color:var(--txt3)!important}
+
+/* Etiquetas microscópicas del portal: piso de 11px */
+.stat span,.admin-metric small,.pred-field span,.pred-label-row .pred-label,
+.pred-value-caption,.channel-activity-stat span,.connection-stat span,
+.light-card h4,.fact span,.correction-context-card span,.interest-label,
+.vertical,.company-side span,.carousel-meta,.perm,.brand-tag{
+  font-size:11px!important;letter-spacing:.08em;line-height:1.4
+}
+.pred-key{font-size:10.5px}
+
+/* ---------- Foco visible y objetivos táctiles ---------- */
+a,button,input,select,textarea,summary,.pred-section-head{outline:none}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,summary:focus-visible,.pred-section-head:focus-visible{
+  box-shadow:0 0 0 3px rgba(238,70,221,.35);border-radius:10px
+}
+.btn{min-height:44px;padding:13px 22px;font-size:14.5px;border-radius:12px}
+.btn-sm{min-height:40px;padding:10px 15px;font-size:13px}
+.close{width:44px;height:44px;font-size:22px}
+.accomp-tab,.connection-tab{min-height:44px}
+
+/* ---------- Hero: 12 cifras que respiran ---------- */
+.hero{padding:clamp(44px,5vw,76px) 0 34px}
+.hero h1{font-size:clamp(36px,4.6vw,64px);line-height:.98;max-width:20ch}
+.hero-stats{grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:8px;margin-top:34px}
+.stat{padding:14px 15px;border-radius:12px;background:rgba(238,70,221,.07);border-color:rgba(242,123,227,.16)}
+.stat strong{font-size:clamp(21px,1.9vw,28px);color:#FBD6F5;letter-spacing:-.03em}
+.stat span{margin-top:6px;color:rgba(250,209,244,.66)!important;text-transform:none;letter-spacing:0}
+
+/* ---------- Carrusel: pausa al pasar el mouse ---------- */
+.carousel:hover .marquee-track,.carousel:focus-within .marquee-track{animation-play-state:paused}
+.carousel-card p{font-size:13.5px;line-height:1.55;height:auto;max-height:66px}
+.carousel-card h3{font-size:19px;margin:16px 0 8px}
+
+/* ============================================================
+   BANDAS CLARAS (estilo landing) — lectura densa sobre crema
+   Secciones: Acompañamiento · Directorio · Dashboard admin
+   ============================================================ */
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light){
+  width:100vw;margin-left:calc(50% - 50vw);
+  padding:clamp(40px,4.6vw,68px) clamp(18px,3.4vw,44px) clamp(40px,4.6vw,64px);
+  margin-top:clamp(26px,3vw,42px);
+  background:linear-gradient(180deg,#FDECEA 0%,#FBE0EE 62%,#FAD1F4 100%);
+  color:var(--ink-l2);scroll-margin-top:90px
+}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light)>*{width:min(1300px,100%);margin-inline:auto}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light)+:is(#acompanamiento,#directorio,#adminDashboard,.band-light){margin-top:0}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(h1,h2,h3,h4,strong,b){color:var(--ink-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(p,span,small,li,label,td){color:var(--ink-l2)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .eyebrow,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-value-caption,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-label,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .light-card h4,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .vertical,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .company-side b,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .admin-metric small,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .interest-label{color:var(--mag-l)!important}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .stat span,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-key,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .directory-meta,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-main small{color:var(--ink-l3)!important}
+
+/* Superficies dentro de la banda: blanco sobre crema, sin sombras duras */
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(
+  .accomp-shell,.accomp-empty,.accomp-loading,.pred-field,.pred-section,.bita-card,
+  .admin-panel,.admin-metric,.company,.connection-card,.light-card,.pred-section-intro,
+  .accomp-tabs,.admin-note,.channel-activity-summary){
+  background:rgba(255,255,255,.62);border-color:rgba(22,0,32,.10);box-shadow:none
+}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section[open]{background:rgba(255,255,255,.78);border-color:rgba(177,47,164,.24)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-icon{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.26)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-toggle{color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-toggle:after,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-history summary:before{color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-history summary{color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-field.corrected{background:rgba(143,230,182,.16);border-color:rgba(23,120,74,.24)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-current{background:rgba(23,120,74,.08);border-color:rgba(23,120,74,.20)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-current :is(.pred-value-caption,.pred-value-current){color:#0F5C39!important}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-correction-meta{color:rgba(15,92,57,.75)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-edit{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.30);color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-edit:hover{background:rgba(177,47,164,.18)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .accomp-tab{color:var(--ink-l2)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .accomp-tab.active{background:var(--ink-l);color:#fff}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .perm{border-color:rgba(22,0,32,.14);color:var(--ink-l3)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .perm.on{color:#0F5C39;background:rgba(23,120,74,.10);border-color:rgba(23,120,74,.22)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .btn-soft{background:rgba(255,255,255,.7);border-color:rgba(22,0,32,.16);color:var(--ink-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .btn-soft:hover:not(:disabled){background:#fff;border-color:rgba(22,0,32,.32)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .admin-progress{background:rgba(22,0,32,.08);border-color:rgba(22,0,32,.10)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .admin-rate,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .admin-metric strong,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .connection-stat strong,
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .channel-activity-stat strong{color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) .empty-state{border-color:rgba(22,0,32,.18);color:var(--ink-l2)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) a{color:var(--mag-l)}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) a:hover{color:#B12FA4}
+
+/* ---------- Prediagnóstico: bloques legibles, no formulario ---------- */
+.pred-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.pred-field{padding:15px 16px}
+.pred-field strong,.pred-value-current,.pred-value-original{font-size:14.5px;line-height:1.62;font-weight:450;max-width:70ch}
+.pred-section-main strong{font-size:16px}
+.pred-section-intro span{font-size:13px;line-height:1.6}
+.pred-section-body .pred-grid{padding-top:16px}
+.bita-card p{font-size:14px;line-height:1.62;max-width:72ch}
+
+/* ---------- Directorio: barra pegajosa y tarjetas más claras ---------- */
+#directorio .toolbar{
+  position:sticky;top:76px;z-index:20;
+  grid-template-columns:minmax(260px,1.8fr) repeat(2,minmax(170px,.6fr));
+  gap:10px;padding:12px;margin-bottom:18px;border-radius:14px;
+  background:rgba(255,255,255,.72);border:1px solid rgba(22,0,32,.08);
+  backdrop-filter:blur(10px)
+}
+#directorio .search input,#directorio .toolbar select{
+  min-height:46px;background:#fff;border-color:rgba(22,0,32,.14);color:var(--ink-l);font-size:14.5px
+}
+#directorio .search input::placeholder{color:rgba(22,0,32,.45)}
+#directorio .toolbar option{background:#fff;color:var(--ink-l)}
+.cards{grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:12px}
+.company{padding:20px;border-left-width:3px;border-left-color:#B12FA4;transition:transform .22s var(--ease),box-shadow .22s var(--ease)}
+.company:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(98,22,90,.5)}
+.company h3{font-size:19px;line-height:1.2}
+.company p{font-size:14px;line-height:1.55;-webkit-line-clamp:3}
+.company-side{min-width:140px}
+
+/* ---------- Contactos ---------- */
+.connection-summary{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.connection-card p{font-size:14px;line-height:1.6}
+.connection-card h3{font-size:19px}
+.channel-activity-stat strong{font-size:24px}
+.channel-activity-stat small{font-size:11.5px;line-height:1.4}
+.badge-count{min-width:22px;height:22px;font-size:11px}
+
+/* ---------- Dashboard ---------- */
+.admin-metrics{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.admin-metric strong{font-size:28px;letter-spacing:-.03em}
+.admin-metric span{font-size:13px;margin-top:6px}
+.admin-list-row{padding:12px 0}
+.admin-note{font-size:13px;line-height:1.6}
+
+/* ---------- Modales y formularios ---------- */
+.modal{border-radius:20px}
+.modal-head{padding:clamp(24px,3vw,34px)}
+.modal-head h2{font-size:clamp(26px,3.2vw,40px);line-height:1.04}
+.modal-head p{font-size:14.5px;line-height:1.55}
+.modal-body{padding:clamp(22px,2.6vw,30px)}
+.light-card p,.fact strong{font-size:14.5px;line-height:1.62}
+.public-field label{font-size:13px}
+.public-field input,.public-field select,.public-field textarea{min-height:46px;font-size:14.5px}
+.public-consent{font-size:12.5px;line-height:1.55}
+.public-lead{font-size:14.5px;line-height:1.6}
+.correction-field textarea,#interestReason{font-size:14.5px;line-height:1.6}
+.interest-option{min-height:48px;font-size:14px;line-height:1.4}
+.toast{font-size:14px}
+.feedback-float{min-height:44px;display:inline-flex;align-items:center;font-size:13px}
+
+/* ---------- Preferencia de movimiento reducido ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:760px){
+  #directorio .toolbar{position:static;grid-template-columns:1fr}
+  .hero-stats{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+}
+
+</style>
 </head>
 <body>
 
