@@ -1536,14 +1536,43 @@ textarea:focus-visible,summary:focus-visible,.pred-section-head:focus-visible{
    Secciones: Acompañamiento · Directorio · Dashboard admin
    ============================================================ */
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light){
-  width:100vw;margin-left:calc(50% - 50vw);
-  padding:clamp(40px,4.6vw,68px) clamp(18px,3.4vw,44px) clamp(40px,4.6vw,64px);
-  margin-top:clamp(26px,3vw,42px);
-  background:linear-gradient(180deg,#FDECEA 0%,#FBE0EE 62%,#FAD1F4 100%);
+  position:relative;isolation:isolate;
+  width:100vw;margin-left:calc(50% - 50vw);margin-top:0;
+  padding:clamp(84px,8vw,132px) clamp(18px,3.4vw,44px) clamp(84px,8vw,124px);
   color:var(--ink-l2);scroll-margin-top:90px
 }
-:is(#acompanamiento,#directorio,#adminDashboard,.band-light)>*{width:min(1300px,100%);margin-inline:auto}
-:is(#acompanamiento,#directorio,#adminDashboard,.band-light)+:is(#acompanamiento,#directorio,#adminDashboard,.band-light){margin-top:0}
+/* Lienzo claro con bordes difuminados: entra y sale del morado sin corte */
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light):before{
+  content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(70% 120% at 88% 6%,rgba(238,70,221,.14),transparent 62%),
+    radial-gradient(60% 100% at 4% 96%,rgba(177,47,164,.10),transparent 60%),
+    linear-gradient(180deg,#FDF5F2 0%,#FBEBF4 54%,#F7DFEF 100%);
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 clamp(70px,7vw,120px),#000 calc(100% - clamp(70px,7vw,120px)),transparent 100%);
+  mask:linear-gradient(180deg,transparent 0,#000 clamp(70px,7vw,120px),#000 calc(100% - clamp(70px,7vw,120px)),transparent 100%)
+}
+/* Ave Tángara como filigrana de la banda */
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light):after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  right:calc(50% - 50vw);top:clamp(40px,5vw,80px);
+  width:min(52vw,620px);aspect-ratio:760/440;opacity:.085;
+  background:url('../assets/bird-plum.png') right top/contain no-repeat;
+  -webkit-mask:radial-gradient(80% 80% at 70% 30%,#000 30%,transparent 78%);
+  mask:radial-gradient(80% 80% at 70% 30%,#000 30%,transparent 78%)
+}
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light)>*{position:relative;width:min(1300px,100%);margin-inline:auto}
+
+/* Ave también en las secciones oscuras, muy tenue */
+#solicitudes{position:relative;isolation:isolate}
+#solicitudes:after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  left:calc(50% - 50vw);bottom:-20px;
+  width:min(46vw,540px);aspect-ratio:760/440;opacity:.06;
+  background:url('../assets/hero-bird-network.png') left bottom/contain no-repeat;transform:scaleX(-1);
+  -webkit-mask:radial-gradient(80% 80% at 30% 70%,#000 28%,transparent 76%);
+  mask:radial-gradient(80% 80% at 30% 70%,#000 28%,transparent 76%)
+}
+#solicitudes>*{position:relative}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(h1,h2,h3,h4,strong,b){color:var(--ink-l)}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(p,span,small,li,label,td){color:var(--ink-l2)}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) .eyebrow,
@@ -1566,6 +1595,9 @@ textarea:focus-visible,summary:focus-visible,.pred-section-head:focus-visible{
   .accomp-tabs,.admin-note,.channel-activity-summary){
   background:rgba(255,255,255,.62);border-color:rgba(22,0,32,.10);box-shadow:none
 }
+:is(#acompanamiento,#directorio,#adminDashboard,.band-light) :is(.accomp-empty,.accomp-loading,.accomp-note,.admin-note,.connections-loading,
+  .directory-meta,.pred-section-intro,.channel-used,.interest-note,.privacy-note,
+  .correction-help,.bita-card,.pred-field,.connection-card,.light-card,.admin-panel){color:var(--ink-l2)}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section[open]{background:rgba(255,255,255,.78);border-color:rgba(177,47,164,.24)}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-icon{background:rgba(177,47,164,.10);border-color:rgba(177,47,164,.26)}
 :is(#acompanamiento,#directorio,#adminDashboard,.band-light) .pred-section-toggle{color:var(--mag-l)}
