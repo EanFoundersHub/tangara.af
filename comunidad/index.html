@@ -1866,8 +1866,8 @@ const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.envi
 // Formulario real para la primera bitácora.
 const BITACORA_FORM_URL="https://forms.cloud.microsoft/r/q05UhaBtjs";
 
-// Parche temporal de arquitectura: identifica a los mentores financieros y sus asignaciones.
-// IMPORTANTE: no altera autenticación, Flow 13, prediagnóstico, correcciones ni bitácoras históricas.
+// Configuración de mentores financieros y sus asignaciones para la experiencia de Comunidad.
+// La autorización de acompañamiento continúa validándose en Flow 13; esta capa controla navegación y presentación.
 let FINANCIAL_MENTOR_PROFILE=null;
 let FINANCIAL_DIRECTORY_FULL=false;
 const FINANCIAL_MENTORS=[
@@ -2700,7 +2700,7 @@ function syncMentorDirectoryUI(){
   }
   if(copy)copy.textContent=FINANCIAL_DIRECTORY_FULL
     ? "Explora las 46 empresas de la cohorte. El acompañamiento continúa disponible únicamente para tus asignaciones."
-    : "Estas son tus empresas asignadas. Puedes abrir el directorio completo cuando quieras.";
+    : "Estas son las empresas que acompañas como mentor. Puedes abrir el directorio completo cuando quieras.";
 }
 
 function buildFilters(){
@@ -2717,7 +2717,8 @@ function renderCarousel(){
   if(!el)return;
   const card=c=>{
     const isOwn=String(c.id||"")===String(session?.empresaId||"");
-    return `<button class="carousel-card" data-id="${escapeHTML(c.id)}"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||"")}</span><b>${isOwn?"Tu empresa":"Ver perfil →"}</b></div></button>`;
+    const mentorAssigned=!!FINANCIAL_MENTOR_PROFILE&&financialCanAccompany(c.id);
+    return `<button class="carousel-card" data-id="${escapeHTML(c.id)}"><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p><div class="carousel-meta"><span>${escapeHTML(c.city||"")}</span><b>${isOwn?"Tu empresa":mentorAssigned?"Soy Mentor →":"Ver perfil →"}</b></div></button>`;
   };
   const first=list.map(card).join("");
   const second=list.map(c=>card(c).replace("<button ",'<button tabindex="-1" aria-hidden="true" ')).join("");
@@ -2736,7 +2737,8 @@ function renderCards(){
   $("#cards").innerHTML=list.map(c=>{
     const own=String(c.id||"")===String(session?.empresaId||"");
     const existing=own?null:pairConnection(c.id);
-    return `<button class="company ${DEMO_MODE&&isDemoCompanyId(c.id)?"demo-target":""}" data-id="${escapeHTML(c.id)}"><div><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span>${escapeHTML(locationLabel(c))}</span><b>${own?"Tu empresa":existing?"Contacto disponible":"Ver perfil"}</b></div></button>`;
+    const mentorAssigned=!!FINANCIAL_MENTOR_PROFILE&&financialCanAccompany(c.id);
+    return `<button class="company ${DEMO_MODE&&isDemoCompanyId(c.id)?"demo-target":""}" data-id="${escapeHTML(c.id)}"><div><span class="vertical">${escapeHTML(c.vertical)}</span><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.summary)}</p></div><div class="company-side"><span>${escapeHTML(locationLabel(c))}</span><b>${own?"Tu empresa":mentorAssigned?"Soy Mentor":existing?"Contacto disponible":"Ver perfil"}</b></div></button>`;
   }).join("")||'<div class="empty-state">No encontramos empresas con esos filtros.</div>';
   $$(".company").forEach(b=>b.addEventListener("click",()=>openProfile(b.dataset.id)));
 }
@@ -2813,7 +2815,8 @@ function openProfile(id){
   const mentorUnassigned=!!FINANCIAL_MENTOR_PROFILE&&!financialCanAccompany(id);
   acomp.classList.toggle("hidden",DEMO_MODE||!realCompany);
   acomp.disabled=mentorUnassigned;
-  acomp.textContent=mentorUnassigned?"Empresa no asignada":(own?"Mi acompañamiento":"Abrir acompañamiento");
+  const mentorAssigned=!!FINANCIAL_MENTOR_PROFILE&&financialCanAccompany(id);
+  acomp.textContent=mentorUnassigned?"Empresa no asignada":(own?"Mi acompañamiento":mentorAssigned?"Soy Mentor · Ver acompañamiento":"Abrir acompañamiento");
 
   const wb=$("#websiteBtn");
   if(currentCompany.website){
