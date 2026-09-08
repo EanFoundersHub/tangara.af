@@ -2986,7 +2986,13 @@ function renderPred(items,permissions,corrections=[]){
   if(!row){
     return '<div class="accomp-empty">No encontramos prediagnóstico para esta empresa.</div>';
   }
-  const skip=new Set(["@odata.etag","ItemInternalId"]);
+  // Metadatos técnicos del formulario que no aportan al acompañamiento y no deben
+  // mostrarse ni ofrecer corrección desde el INDEX. Se conservan intactos en el backend.
+  const skip=new Set([
+    "@odata.etag","ItemInternalId",
+    "ResponseID","FechaInicio","FechaRespuesta","Estado","Idioma","Referer",
+    "SessionID","UserAgent","IPAddress","Longitud","Latitud"
+  ]);
   const fields=Object.entries(row)
     .filter(([key,value])=>!skip.has(key)&&!key.startsWith("@")&&String(value??"").trim()!=="")
     .map(([key,value])=>({key,value,meta:predFieldMeta(key,corrections)}));
