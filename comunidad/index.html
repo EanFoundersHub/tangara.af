@@ -1455,10 +1455,7 @@ flex-direction:column}
 .connection-group-grid{grid-template-columns:1fr}
 }
 
-
-
-/* Primera bitácora · demo mentor financiero */
-body.showcase .demo-bar{display:block}
+/* Primera bitácora · parche de arquitectura para mentores financieros */
 .firstlog-wrap{display:grid;gap:14px}
 .firstlog-hero{padding:18px;border-radius:14px;background:linear-gradient(145deg,rgba(238,70,221,.12),rgba(255,255,255,.03));border:1px solid rgba(242,123,227,.25)}
 .firstlog-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
@@ -1476,6 +1473,7 @@ body.showcase .demo-bar{display:block}
 .firstlog-scale b{color:#F6A6EB;font-weight:700}
 .firstlog-cta{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 15px;border-radius:12px;background:rgba(143,230,182,.055);border:1px solid rgba(143,230,182,.17)}
 .firstlog-cta p{margin:0;color:var(--txt2);font-size:11.5px;line-height:1.45;max-width:720px}
+.mentor-directory-note{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;color:var(--txt2);font-size:11.5px}
 @media(max-width:760px){.firstlog-grid{grid-template-columns:1fr}}
 
 </style>
@@ -1520,7 +1518,7 @@ body.showcase .demo-bar{display:block}
       <div class="public-panel hidden" id="communityEntryPanel">
         <span class="eyebrow">Comunidad Tángara</span>
         <h2 style="margin-top:9px">Conoce, conecta y abre nuevas oportunidades</h2>
-        <p class="public-lead">Recupera tu acceso si ya estás registrado o crea uno nuevo. Los mentores financieros deben ingresar con su perfil personal para ver únicamente las empresas que tienen asignadas.</p>
+        <p class="public-lead">Recupera tu acceso si ya estás registrado o crea uno nuevo.</p>
         <div class="public-actions">
           <button class="btn btn-primary" id="startRegisterBtn" type="button">Quiero hacer parte de la comunidad</button>
           <button class="btn btn-soft" id="startRecoverBtn" type="button">Ya estoy registrado · Recuperar acceso</button>
@@ -1634,7 +1632,7 @@ body.showcase .demo-bar{display:block}
 </div>
 
 <div id="appView" class="hidden">
-  <div class="demo-bar">VISTA PREVIA PRIVADA · Mentor financiero · Solo empresas asignadas · Primera bitácora</div>
+  <div class="demo-bar">MODO DEMO · Este acceso está aislado de las empresas reales y solo permite conexiones entre perfiles de prueba.</div>
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand"><img class="brand-logo" src="../assets/logo-tangara-white.png" alt="Tángara"><span class="brand-tag">Comunidad</span></div>
@@ -1769,7 +1767,8 @@ body.showcase .demo-bar{display:block}
     </section>
 
     <section class="block" id="directorio">
-      <div class="section-head"><div><span class="eyebrow">Directorio</span><h2>Directorio de empresas</h2><p>Busca por empresa, vertical o ciudad y abre cada perfil.</p></div></div>
+      <div class="section-head"><div><span class="eyebrow">Directorio</span><h2>Directorio de empresas</h2><p id="directoryIntroCopy">Busca por empresa, vertical o ciudad y abre cada perfil.</p></div><button class="btn btn-soft btn-sm hidden" id="mentorDirectoryToggleBtn" type="button">Ver directorio completo</button></div>
+      <div class="mentor-directory-note hidden" id="mentorDirectoryNote"></div>
       <div class="toolbar">
         <div class="search"><input id="searchInput" placeholder="Buscar empresa, descripción o ciudad…"></div>
         <select id="verticalFilter"><option value="">Todas las verticales</option></select>
@@ -1864,49 +1863,35 @@ const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environ
 const FLOW_ACCOMPANIMENT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/72f6f18eecea46edb8e3e08a71fa57d8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=B3wdmYw3Fcy4UMWJJnUqga8aP4O2EOb4b01dvCgF4VA";
 const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/a5aeb4b187054a2aadc0a1720b4b59f3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0hACaGgBVtA-hkKtMj4d53_4d0KZO23WRsRrFLat0oo";
 
-// Se mantiene vacío hasta confirmar la URL real del Microsoft Form de bitácoras.
+// Formulario real para la primera bitácora.
 const BITACORA_FORM_URL="https://forms.cloud.microsoft/r/q05UhaBtjs";
 
-let SHOWCASE_MENTOR_FINANCIERO=false;
-let SHOWCASE_MENTOR_PROFILE=null;
-// Vista previa temporal para los seis mentores financieros convocados.
-// Solo se activa DESPUÉS de validar un acceso personal real. Quien no tenga perfil
-// debe crearlo o recuperar su acceso desde la portada de Comunidad Tángara.
-const SHOWCASE_MENTORS=[
+// Parche temporal de arquitectura: identifica a los mentores financieros y sus asignaciones.
+// IMPORTANTE: no altera autenticación, Flow 13, prediagnóstico, correcciones ni bitácoras históricas.
+let FINANCIAL_MENTOR_PROFILE=null;
+let FINANCIAL_DIRECTORY_FULL=false;
+const FINANCIAL_MENTORS=[
   {key:"CAROLINA_LEON",label:"Carolina León",emails:["finanzas@carolinaleon.com"],names:["carolina leon"],companyIds:["TAN-46","TAN-43","TAN-28","TAN-24","TAN-31","TAN-30","TAN-06"]},
   {key:"ALEJANDRA_LOPEZ",label:"María Alejandra López Álvarez",emails:["mariaalejandralopezalvarez@gmail.com"],names:["maria alejandra lopez alvarez","alejandra lopez","maria alejandra lopez"],companyIds:["TAN-01","TAN-08","TAN-42","TAN-22","TAN-09","TAN-29","TAN-16","TAN-38"]},
   {key:"CARLOS_CASALLAS",label:"Carlos Casallas",emails:["carlos.casallas@gmail.com"],names:["carlos casallas"],companyIds:["TAN-18","TAN-10","TAN-05","TAN-17","TAN-23","TAN-39","TAN-11","TAN-36"]},
   {key:"FELIPE_MATALLANA",label:"Felipe Matallana",emails:["felipe@ioffi.co"],names:["felipe matallana"],companyIds:["TAN-34","TAN-02","TAN-21","TAN-14","TAN-03","TAN-41","TAN-32"]},
   {key:"JORGE_CONTRERAS",label:"Jorge Contreras",emails:["jorge@globali.tech"],names:["jorge contreras"],companyIds:["TAN-15","TAN-20","TAN-13","TAN-45","TAN-12","TAN-07","TAN-40","TAN-19"]},
-  // En Tutores.xlsx este grupo figura como "Juan Carlos". El correo suministrado
-  // para el sexto mentor es juanmbrinez@gmail.com; se aceptan ambas variantes de nombre.
   {key:"JUAN_CARLOS",label:"Juan Carlos",emails:["juanmbrinez@gmail.com"],names:["juan carlos","juan m brinez","juan manuel brinez","juan brinez"],companyIds:["TAN-27","TAN-25","TAN-33","TAN-44","TAN-26","TAN-04","TAN-35"]}
 ];
-function normalizeShowcaseName(value){
-  return String(value||"")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .trim()
-    .toLowerCase();
+function normalizeMentorIdentity(value){
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
 }
-function sessionShowcaseEmail(){
+function sessionMentorEmail(){
   return String(session?.email||session?.correo||session?.EmailUsuario||session?.emailUsuario||session?.field_6||session?.field_5||"").trim().toLowerCase();
 }
-function syncShowcaseAccess(){
-  const n=normalizeShowcaseName(session?.nombre);
-  const e=sessionShowcaseEmail();
-  SHOWCASE_MENTOR_PROFILE=SHOWCASE_MENTORS.find(m=>
-    (e&&m.emails.includes(e)) || m.names.some(name=>n===name||n.startsWith(name+" "))
-  )||null;
-  SHOWCASE_MENTOR_FINANCIERO=!!SHOWCASE_MENTOR_PROFILE;
-  document.body.classList.toggle("showcase",SHOWCASE_MENTOR_FINANCIERO);
+function syncFinancialMentorProfile(){
+  const n=normalizeMentorIdentity(session?.nombre);
+  const e=sessionMentorEmail();
+  FINANCIAL_MENTOR_PROFILE=FINANCIAL_MENTORS.find(m=>(e&&m.emails.includes(e))||m.names.some(name=>n===name||n.startsWith(name+" ")))||null;
+  if(!FINANCIAL_MENTOR_PROFILE)FINANCIAL_DIRECTORY_FULL=false;
 }
-function showcaseAssignedIds(){
-  return SHOWCASE_MENTOR_PROFILE?.companyIds||[];
-}
-function showcaseCanAccessCompany(id){
-  return showcaseAssignedIds().includes(String(id||""));
-}
+function financialAssignedIds(){return FINANCIAL_MENTOR_PROFILE?.companyIds||[];}
+function financialCanAccompany(id){return financialAssignedIds().includes(String(id||""));}
 const FIRST_BITACORA_FINANCIAL_FIELDS=[
   {code:"FIN01",title:"¿Cuenta con estado de resultados, balance y flujo de caja actualizados, conciliados y trazables?",evidence:"Estados financieros, auxiliares, facturación, extractos y conciliaciones."},
   {code:"FIN02",title:"¿Calcula y monitorea margen bruto o de contribución por la unidad relevante del negocio?",evidence:"Costeo directo, márgenes por producto/cliente/canal y puente hacia resultados."},
@@ -1919,7 +1904,6 @@ const FIRST_BITACORA_FINANCIAL_FIELDS=[
   {code:"FIN09",title:"¿El instrumento buscado es coherente con etapa, flujos, activos, riesgo y crecimiento?",evidence:"Comparativo de equity, deuda, grants, RBF, factoring u otros."},
   {code:"FIN10",title:"¿El uso de fondos es específico y se integra a una ruta de financiación?",evidence:"Presupuesto de uso de fondos, calendario, hitos y capital stack."}
 ];
-
 
 const COMPANIES=[
   {
@@ -2502,8 +2486,8 @@ function syncModeFromSession(){
 }
 
 function visibleCompanies(){
-  if(SHOWCASE_MENTOR_FINANCIERO){
-    const allowed=new Set(showcaseAssignedIds());
+  if(FINANCIAL_MENTOR_PROFILE&&!FINANCIAL_DIRECTORY_FULL){
+    const allowed=new Set(financialAssignedIds());
     return COMPANIES.filter(c=>allowed.has(c.id));
   }
   return DEMO_MODE?[...DEMO_COMPANIES,...COMPANIES]:COMPANIES;
@@ -2630,7 +2614,7 @@ function showCommunityEntry(){
 function storeSession(s,token){
   session={...s,accessToken:token};
   syncModeFromSession();
-  syncShowcaseAccess();
+  syncFinancialMentorProfile();
   sessionStorage.setItem("tangara.session",JSON.stringify(session));
   const hash=location.hash||"";
   history.replaceState({},"",location.pathname+(DEMO_MODE?"?demo=1":"")+hash);
@@ -2665,7 +2649,7 @@ async function boot(){
     if(cached?.accessToken){
       session=cached;
       syncModeFromSession();
-      syncShowcaseAccess();
+      syncFinancialMentorProfile();
       return openApp();
     }
   }catch{}
@@ -2674,34 +2658,49 @@ async function boot(){
 
 function openApp(){
   syncModeFromSession();
+  syncFinancialMentorProfile();
   const hash=location.hash||"";
   history.replaceState({},"",location.pathname+(DEMO_MODE?"?demo=1":"")+hash);
   $("#gateView").classList.add("hidden");
   $("#appView").classList.remove("hidden");
   $("#userName").textContent=session?.nombre||"Participante";
-  $("#userCompany").textContent=SHOWCASE_MENTOR_FINANCIERO
-    ? `Mentor financiero · ${showcaseAssignedIds().length} empresas asignadas`
-    : (session?.empresa||session?.empresaId||"Tángara");
+  $("#userCompany").textContent=session?.empresa||session?.empresaId||"Tángara";
   $("#userAvatar").textContent=initials(session?.nombre||session?.empresa);
   buildFilters();
   renderCarousel();
   renderCards();
-  if(SHOWCASE_MENTOR_FINANCIERO){
-    $("#connectionsLoading").textContent="Vista previa de mentor financiero. Solo aparecen las empresas asignadas a este perfil.";
-    $("#adminNavBtn").classList.add("hidden");
-    showcaseFinancialAccompaniment(showcaseAssignedIds()[0]||"");
-    const dirCopy=document.querySelector("#directorio .section-head p");
-    if(dirCopy)dirCopy.textContent=`Tienes ${showcaseAssignedIds().length} empresas asignadas. Abre cualquiera de sus perfiles para consultar la arquitectura de acompañamiento.`;
-    const cohortCopy=document.querySelector("#cohorte .section-head p");
-    if(cohortCopy)cohortCopy.textContent="Vista filtrada a las empresas asignadas a tu acompañamiento financiero.";
-    window.setTimeout(()=>$("#acompanamiento")?.scrollIntoView({behavior:"smooth",block:"start"}),260);
+  syncMentorDirectoryUI();
+  loadConnections();
+  loadAdminDashboard(false);
+  if(!DEMO_MODE&&isTangaraCompany(session?.empresaId)){
+    loadAccompaniment("");
   }else{
-    loadConnections();
-    loadAdminDashboard(false);
-    if(!DEMO_MODE&&isTangaraCompany(session?.empresaId))loadAccompaniment("");
-    else renderAccompIntro();
-    scrollTo(0,0);
+    renderAccompIntro();
   }
+  scrollTo(0,0);
+}
+
+function syncMentorDirectoryUI(){
+  const btn=$("#mentorDirectoryToggleBtn");
+  const note=$("#mentorDirectoryNote");
+  const copy=$("#directoryIntroCopy");
+  if(!FINANCIAL_MENTOR_PROFILE){
+    btn?.classList.add("hidden");
+    note?.classList.add("hidden");
+    if(copy)copy.textContent="Busca por empresa, vertical o ciudad y abre cada perfil.";
+    return;
+  }
+  btn?.classList.remove("hidden");
+  if(btn)btn.textContent=FINANCIAL_DIRECTORY_FULL?"Ver solo mis asignadas":"Ver directorio completo";
+  if(note){
+    note.classList.remove("hidden");
+    note.innerHTML=FINANCIAL_DIRECTORY_FULL
+      ? `<span class="perm on">Directorio completo: 46 empresas</span><span>Tu acompañamiento sigue limitado a ${financialAssignedIds().length} empresas asignadas.</span>`
+      : `<span class="perm on">${financialAssignedIds().length} empresas asignadas</span><span>Puedes explorar el directorio completo sin ampliar tus permisos de acompañamiento.</span>`;
+  }
+  if(copy)copy.textContent=FINANCIAL_DIRECTORY_FULL
+    ? "Explora las 46 empresas de la cohorte. El acompañamiento continúa disponible únicamente para tus asignaciones."
+    : "Estas son tus empresas asignadas. Puedes abrir el directorio completo cuando quieras.";
 }
 
 function buildFilters(){
@@ -2781,10 +2780,6 @@ function trackProfileOpen(company){
 }
 
 function openProfile(id){
-  if(SHOWCASE_MENTOR_FINANCIERO&&!showcaseCanAccessCompany(id)){
-    toast("Esta empresa no está asignada a tu acompañamiento financiero.");
-    return;
-  }
   currentCompany=companyById(id);
   if(!currentCompany)return;
   trackProfileOpen(currentCompany);
@@ -2815,8 +2810,10 @@ function openProfile(id){
 
   const acomp=$("#profileAccompBtn");
   const realCompany=isTangaraCompany(id);
+  const mentorUnassigned=!!FINANCIAL_MENTOR_PROFILE&&!financialCanAccompany(id);
   acomp.classList.toggle("hidden",DEMO_MODE||!realCompany);
-  acomp.textContent=own?"Mi acompañamiento":"Abrir acompañamiento";
+  acomp.disabled=mentorUnassigned;
+  acomp.textContent=mentorUnassigned?"Empresa no asignada":(own?"Mi acompañamiento":"Abrir acompañamiento");
 
   const wb=$("#websiteBtn");
   if(currentCompany.website){
@@ -3041,22 +3038,12 @@ function firstPresent(obj,keys){
   return "";
 }
 
-
-function renderFirstBitacora(fields,title="Primera bitácora",status="Pendiente"){
-  if(!Array.isArray(fields)||!fields.length)return '';
+function renderFirstBitacora(fields,title="Primera bitácora",status="Pendiente de diligenciar"){
+  if(!Array.isArray(fields)||!fields.length)return "";
   return `<div class="firstlog-wrap">
-    <div class="firstlog-hero">
-      <div class="firstlog-hero-top">
-        <div><strong>${escapeHTML(title)}</strong><p>Evaluación inicial de única aplicación. Cada criterio se responde en una escala de 1 a 5, desde <b>Sin evidencia</b> hasta <b>Investor/ready</b>, usando la evidencia mínima indicada.</p></div>
-        <span class="firstlog-status">${escapeHTML(status)}</span>
-      </div>
-    </div>
-    <div class="firstlog-grid">${fields.map((f,i)=>`<article class="firstlog-card">
-      <div class="firstlog-card-head"><span class="firstlog-number">${i+1}</span><h4>${escapeHTML(f.title)}</h4></div>
-      <div class="firstlog-evidence"><b>Evidencia mínima:</b> ${escapeHTML(f.evidence)}</div>
-      <div class="firstlog-scale"><span>${escapeHTML(f.code||"")}</span><b>Escala 1–5</b></div>
-    </article>`).join("")}</div>
-    <div class="firstlog-cta"><p>Para registrar la evaluación real, usa el botón <b>Completar primera bitácora</b>. El formulario identifica la empresa y divide automáticamente la ruta de Mentor financiero, Mentor de impacto o Equipo Tángara.</p><button class="btn btn-primary btn-sm" id="firstBitacoraFormBtn" type="button">Abrir formulario</button></div>
+    <div class="firstlog-hero"><div class="firstlog-hero-top"><div><strong>${escapeHTML(title)}</strong><p>Evaluación inicial de única aplicación. Cada criterio se responde en escala de 1 a 5, desde <b>Sin evidencia</b> hasta <b>Investor/ready</b>, usando la evidencia mínima indicada.</p></div><span class="firstlog-status">${escapeHTML(status)}</span></div></div>
+    <div class="firstlog-grid">${fields.map((f,i)=>`<article class="firstlog-card"><div class="firstlog-card-head"><span class="firstlog-number">${i+1}</span><h4>${escapeHTML(f.title)}</h4></div><div class="firstlog-evidence"><b>Evidencia mínima:</b> ${escapeHTML(f.evidence)}</div><div class="firstlog-scale"><span>${escapeHTML(f.code||"")}</span><b>Escala 1–5</b></div></article>`).join("")}</div>
+    <div class="firstlog-cta"><p>Esta primera evaluación se diligencia una sola vez. Al completar el formulario, la respuesta se asociará a la empresa para su consulta posterior desde este acompañamiento.</p><button class="btn btn-primary btn-sm" id="firstBitacoraFormBtn" type="button">Completar primera bitácora</button></div>
   </div>`;
 }
 
@@ -3140,35 +3127,37 @@ async function submitCorrection(e){
 }
 
 function renderAccompaniment(data){
-  accompanimentData=data;
   accompanimentTargetId=String(data?.empresaId||accompanimentTargetId||"");
   const p=data?.permissions||{};
   const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
-  const firstFields=Array.isArray(data?.primeraBitacoraFields)?data.primeraBitacoraFields:[];
-  const initialTab=firstFields.length?"first":"pred";
+
+  // ÚNICO parche sobre acompañamiento: si el usuario es mentor financiero y la empresa
+  // pertenece a sus asignaciones, añadimos la pestaña de Primera bitácora. El prediagnóstico
+  // y el histórico continúan viniendo exactamente de Flow 13.
+  const showFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialCanAccompany(data?.empresaId||accompanimentTargetId);
+  const firstFields=showFirstBitacora?FIRST_BITACORA_FINANCIAL_FIELDS:[];
   const shell=$("#accompShell");
   shell.innerHTML=`
     <div class="accomp-top">
       <div class="accomp-company">
         <strong>${escapeHTML(data?.empresa||data?.empresaId||"Empresa")}</strong>
-        <span>${escapeHTML(data?.empresaId||"")}${data?.rolVista?` · ${escapeHTML(data.rolVista)}`:""}</span>
+        <span>${escapeHTML(data?.empresaId||"")}</span>
       </div>
       <div class="permission-row">${permissionHTML(p)}</div>
     </div>
     <div class="accomp-actions">
-      ${bool(p.createBitacora)?`<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">${firstFields.length?"Completar primera bitácora":"Registrar bitácora"}</button>`:""}
-      ${firstFields.length?'<span class="perm on">✓ Primera evaluación habilitada</span>':""}
+      ${showFirstBitacora?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Completar primera bitácora</button>':bool(p.createBitacora)?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Registrar bitácora</button>':""}
       ${bool(p.correctPrediagnostico)?'<span class="perm on">✓ Corrección autorizada</span>':""}
       ${corrections.length?`<span class="perm on">${corrections.length} ${corrections.length===1?"corrección":"correcciones"} en historial</span>`:""}
     </div>
-    ${firstFields.length?'<div class="accomp-note">Vista previa privada de la arquitectura de <strong>Mentor financiero</strong>. El directorio está filtrado a las empresas asignadas a este perfil. La primera bitácora abre el formulario real; esta vista previa todavía no consulta sus respuestas desde SharePoint.</div>':bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
+    ${bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
     <div class="accomp-tabs">
-      <button class="accomp-tab ${initialTab==="pred"?"active":""}" data-acctab="pred">Prediagnóstico</button>
-      ${firstFields.length?`<button class="accomp-tab ${initialTab==="first"?"active":""}" data-acctab="first">Primera bitácora (${firstFields.length})</button>`:""}
-      <button class="accomp-tab" data-acctab="bita">Histórico (${Array.isArray(data?.bitacoras)?data.bitacoras.length:0})</button>
+      <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
+      ${showFirstBitacora?'<button class="accomp-tab" data-acctab="first">Primera bitácora (10)</button>':""}
+      <button class="accomp-tab" data-acctab="bita">${showFirstBitacora?"Histórico":"Bitácoras"} (${Array.isArray(data?.bitacoras)?data.bitacoras.length:0})</button>
     </div>
-    <div class="accomp-panel ${initialTab==="pred"?"active":""}" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
-    ${firstFields.length?`<div class="accomp-panel ${initialTab==="first"?"active":""}" id="accompFirst">${renderFirstBitacora(firstFields,data?.primeraBitacoraTitulo||"Primera bitácora",data?.primeraBitacoraEstado||"Pendiente")}</div>`:""}
+    <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
+    ${showFirstBitacora?`<div class="accomp-panel" id="accompFirst">${renderFirstBitacora(firstFields,"Primera bitácora · Mentor financiero","Pendiente de diligenciar")}</div>`:""}
     <div class="accomp-panel" id="accompBita">${renderBitacoras(data?.bitacoras,p)}</div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
@@ -3188,35 +3177,9 @@ function renderAccompaniment(data){
   $("#firstBitacoraFormBtn")?.addEventListener("click",openForm);
 }
 
-function showcaseFinancialAccompaniment(targetId=""){
-  const allowed=showcaseAssignedIds();
-  let id=String(targetId||allowed[0]||"");
-  if(!showcaseCanAccessCompany(id))id=allowed[0]||"";
-  const c=companyById(id);
-  if(!c)return renderAccompIntro();
-  renderAccompaniment({
-    ok:true,
-    status:"PRIVATE_PREVIEW_MENTOR_FINANCIERO",
-    empresa:c.name,
-    empresaId:id,
-    rolVista:`Mentor financiero · ${SHOWCASE_MENTOR_PROFILE?.label||"vista previa"}`,
-    permissions:{viewPrediagnostico:true,viewBitacoras:true,createBitacora:true,correctPrediagnostico:false},
-    prediagnostico:[],
-    correcciones:[],
-    bitacoras:[],
-    primeraBitacoraTitulo:"Primera bitácora · Mentor financiero",
-    primeraBitacoraEstado:"Pendiente de diligenciar",
-    primeraBitacoraFields:FIRST_BITACORA_FINANCIAL_FIELDS
-  });
-}
-
 async function loadAccompaniment(targetId=""){
-  if(SHOWCASE_MENTOR_FINANCIERO){
-    if(targetId&&!showcaseCanAccessCompany(targetId)){
-      toast("Esta empresa no está asignada a tu acompañamiento financiero.");
-      return;
-    }
-    showcaseFinancialAccompaniment(targetId);
+  if(FINANCIAL_MENTOR_PROFILE&&targetId&&!financialCanAccompany(targetId)){
+    toast("Puedes ver este perfil en el directorio, pero su acompañamiento no está asignado a ti.");
     return;
   }
   if(!session?.accessToken)return;
@@ -3760,6 +3723,14 @@ document.addEventListener("keydown",e=>{
 $("#searchInput").addEventListener("input",renderCards);
 $("#verticalFilter").addEventListener("change",renderCards);
 $("#cityFilter").addEventListener("change",renderCards);
+$("#mentorDirectoryToggleBtn")?.addEventListener("click",()=>{
+  if(!FINANCIAL_MENTOR_PROFILE)return;
+  FINANCIAL_DIRECTORY_FULL=!FINANCIAL_DIRECTORY_FULL;
+  buildFilters();
+  renderCarousel();
+  renderCards();
+  syncMentorDirectoryUI();
+});
 $("#connectBtn").addEventListener("click",openInterestModal);
 $("#interestSubmitBtn").addEventListener("click",revealContact);
 
@@ -3771,6 +3742,10 @@ $$(".interest-option").forEach(btn=>btn.addEventListener("click",()=>{
 $("#profileAccompBtn").addEventListener("click",()=>{
   if(!currentCompany)return;
   const targetId=currentCompany.id;
+  if(FINANCIAL_MENTOR_PROFILE&&!financialCanAccompany(targetId)){
+    toast("Esta empresa no está asignada a tu acompañamiento financiero.");
+    return;
+  }
   $("#profileBackdrop").classList.remove("open");
   const section=$("#acompanamiento");
   section?.scrollIntoView({behavior:"smooth",block:"start"});
