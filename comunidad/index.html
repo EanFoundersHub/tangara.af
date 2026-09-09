@@ -646,7 +646,38 @@ flex-wrap:wrap}
 .pred-section[open] .pred-section-toggle:after{content:'−'}
 .pred-section-body{padding:0 14px 14px;border-top:1px solid rgba(242,123,227,.10)}
 .pred-section-body .pred-grid{padding-top:14px}
-@media(max-width:760px){.pred-section-intro{flex-direction:column}.pred-section-head{padding:14px}.pred-section-main strong{font-size:14px}.pred-section-toggle{font-size:0}.pred-section-toggle:after{font-size:16px;margin-left:0}.pred-section-body{padding:0 10px 10px}}
+
+/* Foco visual para mentores financieros: destaca el bloque que deben revisar y corregir. */
+.pred-section-financial-focus{
+  border-color:rgba(255,196,87,.72);
+  background:linear-gradient(145deg,rgba(255,196,87,.11),rgba(238,70,221,.045),rgba(255,255,255,.022));
+  box-shadow:0 0 0 1px rgba(255,196,87,.10),0 18px 54px rgba(255,170,45,.08);
+}
+.pred-section-financial-focus[open]{
+  border-color:rgba(255,196,87,.92);
+  background:linear-gradient(145deg,rgba(255,196,87,.14),rgba(238,70,221,.055),rgba(255,255,255,.025));
+}
+.pred-section-financial-focus .pred-section-head{position:relative}
+.pred-section-financial-focus .pred-section-icon{
+  background:rgba(255,196,87,.16);
+  border-color:rgba(255,196,87,.46);
+  box-shadow:0 8px 24px rgba(255,170,45,.10);
+}
+.pred-section-financial-focus .pred-section-main strong{color:#FFE7AE}
+.financial-focus-badge{
+  display:inline-flex;align-items:center;gap:5px;margin-left:9px;padding:4px 8px;border-radius:999px;
+  border:1px solid rgba(255,196,87,.42);background:rgba(255,196,87,.12);color:#FFE7AE;
+  font-size:8.5px;line-height:1;letter-spacing:.09em;text-transform:uppercase;font-weight:800;vertical-align:2px
+}
+.pred-intro-financial{
+  border-color:rgba(255,196,87,.38);
+  background:linear-gradient(145deg,rgba(255,196,87,.09),rgba(238,70,221,.045));
+}
+.pred-intro-financial strong{color:#FFE7AE}
+.perm.financial-focus-perm{
+  color:#FFE7AE;border-color:rgba(255,196,87,.42);background:rgba(255,196,87,.10)
+}
+@media(max-width:760px){.pred-section-intro{flex-direction:column}.pred-section-head{padding:14px}.pred-section-main strong{font-size:14px}.pred-section-toggle{font-size:0}.pred-section-toggle:after{font-size:16px;margin-left:0}.pred-section-body{padding:0 10px 10px}.financial-focus-badge{display:flex;width:max-content;margin:6px 0 0}}
 
 /* Connections */
 .connection-summary{display:grid;
@@ -1861,37 +1892,100 @@ const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.enviro
 const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
 const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/d9807e57afab4ceb9ce236322a7e88f9/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=H45FqU2gHmFTMFws1PY8w5E7kdj4SccYI0kv0syNOEQ";
 const FLOW_ACCOMPANIMENT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/72f6f18eecea46edb8e3e08a71fa57d8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=B3wdmYw3Fcy4UMWJJnUqga8aP4O2EOb4b01dvCgF4VA";
+const FLOW_MENTOR_ASSIGNMENTS_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/10/workflows/29cda5f7d0aa4130ba8a1395e74f8fce/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RYytN1FrYpVLQo7lCO14AQ8PJPFH6NkBZmDcrmy03wo";
 const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/a5aeb4b187054a2aadc0a1720b4b59f3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0hACaGgBVtA-hkKtMj4d53_4d0KZO23WRsRrFLat0oo";
 
 // Formulario real para la primera bitácora.
 const BITACORA_FORM_URL="https://forms.cloud.microsoft/r/q05UhaBtjs";
 
-// Configuración de mentores financieros y sus asignaciones para la experiencia de Comunidad.
-// La autorización de acompañamiento continúa validándose en Flow 13; esta capa controla navegación y presentación.
+// Experiencia de mentor cargada desde backend.
+// No se almacenan asignaciones reales en el HTML.
+// Flow 23 devuelve las empresas asignadas al mentor autenticado para navegación/presentación.
+// Flow 13 sigue siendo el backend de acompañamiento y permisos por empresa.
 let FINANCIAL_MENTOR_PROFILE=null;
 let FINANCIAL_DIRECTORY_FULL=false;
-const FINANCIAL_MENTORS=[
-  {key:"CAROLINA_LEON",label:"Carolina León",emails:["finanzas@carolinaleon.com"],names:["carolina leon"],companyIds:["TAN-46","TAN-43","TAN-28","TAN-24","TAN-31","TAN-30","TAN-06"]},
-  {key:"ALEJANDRA_LOPEZ",label:"María Alejandra López Álvarez",emails:["mariaalejandralopezalvarez@gmail.com"],names:["maria alejandra lopez alvarez","alejandra lopez","maria alejandra lopez"],companyIds:["TAN-01","TAN-08","TAN-42","TAN-22","TAN-09","TAN-29","TAN-16","TAN-38"]},
-  {key:"CARLOS_CASALLAS",label:"Carlos Casallas",emails:["carlos.casallas@gmail.com"],names:["carlos casallas"],companyIds:["TAN-18","TAN-10","TAN-05","TAN-17","TAN-23","TAN-39","TAN-11","TAN-36"]},
-  {key:"FELIPE_MATALLANA",label:"Felipe Matallana",emails:["felipe@ioffi.co"],names:["felipe matallana"],companyIds:["TAN-34","TAN-02","TAN-21","TAN-14","TAN-03","TAN-41","TAN-32"]},
-  {key:"JORGE_CONTRERAS",label:"Jorge Contreras",emails:["jorge@globali.tech"],names:["jorge contreras"],companyIds:["TAN-15","TAN-20","TAN-13","TAN-45","TAN-12","TAN-07","TAN-40","TAN-19"]},
-  {key:"JUAN_CARLOS",label:"Juan Carlos",emails:["juanmbrinez@gmail.com"],names:["juan carlos","juan m brinez","juan manuel brinez","juan brinez"],companyIds:["TAN-27","TAN-25","TAN-33","TAN-44","TAN-26","TAN-04","TAN-35"]}
-];
+
 function normalizeMentorIdentity(value){
   return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
 }
 function sessionMentorEmail(){
   return String(session?.email||session?.correo||session?.EmailUsuario||session?.emailUsuario||session?.field_6||session?.field_5||"").trim().toLowerCase();
 }
+function normalizeMentorAssignment(raw){
+  if(typeof raw==="string"){
+    return {empresaId:String(raw),tipoMentoria:""};
+  }
+  raw=raw&&typeof raw==="object"?raw:{};
+  return {
+    empresaId:String(raw.empresaId||raw.EmpresaID||raw.field_5||raw.Title||""),
+    tipoMentoria:String(raw.tipoMentoria||raw.TipoMentoria||raw.tipo||raw.rolMentoria||raw.RolMentoria||"").trim().toUpperCase()
+  };
+}
 function syncFinancialMentorProfile(){
-  const n=normalizeMentorIdentity(session?.nombre);
-  const e=sessionMentorEmail();
-  FINANCIAL_MENTOR_PROFILE=FINANCIAL_MENTORS.find(m=>(e&&m.emails.includes(e))||m.names.some(name=>n===name||n.startsWith(name+" ")))||null;
-  if(!FINANCIAL_MENTOR_PROFILE)FINANCIAL_DIRECTORY_FULL=false;
+  const cached=Array.isArray(session?._mentorAssignments)?session._mentorAssignments:[];
+  if(!cached.length){
+    FINANCIAL_MENTOR_PROFILE=null;
+    FINANCIAL_DIRECTORY_FULL=false;
+    return;
+  }
+  const assignments=cached.map(normalizeMentorAssignment).filter(x=>/^TAN-\d+$/i.test(x.empresaId));
+  if(!assignments.length){
+    FINANCIAL_MENTOR_PROFILE=null;
+    FINANCIAL_DIRECTORY_FULL=false;
+    return;
+  }
+  FINANCIAL_MENTOR_PROFILE={
+    label:String(session?._mentorNombre||session?.nombre||"Mentor"),
+    email:String(session?._mentorEmail||sessionMentorEmail()),
+    assignments,
+    companyIds:[...new Set(assignments.map(x=>x.empresaId))]
+  };
 }
 function financialAssignedIds(){return FINANCIAL_MENTOR_PROFILE?.companyIds||[];}
-function financialCanAccompany(id){return financialAssignedIds().includes(String(id||""));}
+function financialAssignment(id){
+  const target=String(id||"");
+  return FINANCIAL_MENTOR_PROFILE?.assignments?.find(x=>String(x.empresaId)===target)||null;
+}
+function financialCanAccompany(id){return !!financialAssignment(id);}
+function financialMentorshipType(id){
+  return String(financialAssignment(id)?.tipoMentoria||"").toUpperCase();
+}
+function financialHasFirstBitacora(id){
+  const type=financialMentorshipType(id);
+  return financialCanAccompany(id)&&(type==="FINANCIERO"||type==="MENTOR_FINANCIERO");
+}
+async function loadFinancialMentorProfileFromBackend(){
+  if(!session?.accessToken||DEMO_MODE||isTangaraCompany(session?.empresaId))return;
+  try{
+    const data=await apiPost(FLOW_MENTOR_ASSIGNMENTS_URL,{accessToken:session.accessToken});
+    const raw=Array.isArray(data?.empresasAsignadas)
+      ? data.empresasAsignadas
+      : Array.isArray(data?.assignments)
+        ? data.assignments
+        : [];
+    const status=String(data?.status||"").toUpperCase();
+    const role=String(data?.rol||data?.role||"").toUpperCase();
+    if(status!=="MENTOR_ASSIGNMENTS"&&role!=="MENTOR"&&!raw.length)return;
+    const assignments=raw.map(normalizeMentorAssignment).filter(x=>/^TAN-\d+$/i.test(x.empresaId));
+    if(!assignments.length)return;
+
+    session._mentorAssignments=assignments;
+    session._mentorNombre=data?.mentorNombre||data?.nombreMentor||session?.nombre||"Mentor";
+    session._mentorEmail=data?.mentorEmail||data?.emailMentor||sessionMentorEmail();
+    sessionStorage.setItem("tangara.session",JSON.stringify(session));
+
+    FINANCIAL_DIRECTORY_FULL=false;
+    syncFinancialMentorProfile();
+    buildFilters();
+    renderCarousel();
+    renderCards();
+    syncMentorDirectoryUI();
+  }catch(err){
+    // Usuarios que no sean mentores pueden no tener asignaciones.
+    // No altera el funcionamiento normal de Comunidad.
+    console.debug("Sin asignaciones de mentor para este usuario.",err?.status||err?.message||err);
+  }
+}
 const FIRST_BITACORA_FINANCIAL_FIELDS=[
   {code:"FIN01",title:"¿Cuenta con estado de resultados, balance y flujo de caja actualizados, conciliados y trazables?",evidence:"Estados financieros, auxiliares, facturación, extractos y conciliaciones."},
   {code:"FIN02",title:"¿Calcula y monitorea margen bruto o de contribución por la unidad relevante del negocio?",evidence:"Costeo directo, márgenes por producto/cliente/canal y puente hacia resultados."},
@@ -2670,6 +2764,7 @@ function openApp(){
   renderCarousel();
   renderCards();
   syncMentorDirectoryUI();
+  loadFinancialMentorProfileFromBackend();
   loadConnections();
   loadAdminDashboard(false);
   if(!DEMO_MODE&&isTangaraCompany(session?.empresaId)){
@@ -3010,21 +3105,27 @@ function renderPred(items,permissions,corrections=[]){
     groups.get(id).items.push(item);
   });
 
+  const financialMentorFocus=financialHasFirstBitacora(accompanimentTargetId);
   const sections=[...groups.values()]
     .sort((a,b)=>(a.sectionOrder||99)-(b.sectionOrder||99))
     .map((group,index)=>{
       group.items.sort((a,b)=>(a.meta.order||9999)-(b.meta.order||9999));
       const correctedCount=group.items.filter(({key})=>fieldCorrections(corrections,key).length>0).length;
-      return `<details class="pred-section" ${index===0?"open":""}>
+      const financialFocus=financialMentorFocus&&String(group.section||"")==="finanzas";
+      const openSection=financialFocus||(!financialMentorFocus&&index===0);
+      return `<details class="pred-section ${financialFocus?"pred-section-financial-focus":""}" ${openSection?"open":""}>
         <summary class="pred-section-head">
-          <span class="pred-section-main"><span class="pred-section-icon">${escapeHTML(group.icon||"•")}</span><span><strong>${escapeHTML(group.sectionTitle||"Sección")}</strong><small>${group.items.length} ${group.items.length===1?"respuesta":"respuestas"}${correctedCount?` · ${correctedCount} con corrección`:""}</small></span></span>
+          <span class="pred-section-main"><span class="pred-section-icon">${escapeHTML(group.icon||"•")}</span><span><strong>${escapeHTML(group.sectionTitle||"Sección")}</strong>${financialFocus?'<span class="financial-focus-badge">★ Foco de tu mentoría</span>':""}<small>${group.items.length} ${group.items.length===1?"respuesta":"respuestas"}${correctedCount?` · ${correctedCount} con corrección`:""}</small></span></span>
           <span class="pred-section-toggle">Explorar</span>
         </summary>
         <div class="pred-section-body"><div class="pred-grid">${group.items.map(({key,value})=>renderPredField(key,value,permissions,corrections)).join("")}</div></div>
       </details>`;
     }).join("");
 
-  return `<div class="pred-section-intro"><strong>Prediagnóstico completo por secciones</strong><span>Se muestran todas las respuestas disponibles del registro. Abre cada sección para revisar el detalle y, si estás autorizado, registrar correcciones sin modificar el dato original.</span></div><div class="pred-sections">${sections}</div>`;
+  const introCopy=financialMentorFocus
+    ? `Como mentor financiero, tienes destacada y abierta la sección <b>Gestión financiera, tracción e ingresos</b>. ${bool(permissions?.correctPrediagnostico)?"Puedes registrar correcciones sobre los campos que requieran ajuste; el valor original siempre permanece trazable.":"La edición se habilita únicamente cuando el permiso de corrección esté activo en el backend."}`
+    : "Se muestran todas las respuestas disponibles del registro. Abre cada sección para revisar el detalle y, si estás autorizado, registrar correcciones sin modificar el dato original.";
+  return `<div class="pred-section-intro ${financialMentorFocus?"pred-intro-financial":""}"><strong>${financialMentorFocus?"Foco de mentoría financiera":"Prediagnóstico completo por secciones"}</strong><span>${introCopy}</span></div><div class="pred-sections">${sections}</div>`;
 }
 
 function excelDate(v){
@@ -3140,10 +3241,10 @@ function renderAccompaniment(data){
   const p=data?.permissions||{};
   const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
 
-  // ÚNICO parche sobre acompañamiento: si el usuario es mentor financiero y la empresa
-  // pertenece a sus asignaciones, añadimos la pestaña de Primera bitácora. El prediagnóstico
-  // y el histórico continúan viniendo exactamente de Flow 13.
-  const showFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialCanAccompany(data?.empresaId||accompanimentTargetId);
+  // Si Flow 13 identifica una asignación de mentor financiero para esta empresa,
+  // añadimos la pestaña de Primera bitácora. Prediagnóstico, permisos e histórico
+  // continúan viniendo del backend.
+  const showFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialHasFirstBitacora(data?.empresaId||accompanimentTargetId);
   const firstFields=showFirstBitacora?FIRST_BITACORA_FINANCIAL_FIELDS:[];
   const shell=$("#accompShell");
   shell.innerHTML=`
@@ -3157,6 +3258,7 @@ function renderAccompaniment(data){
     <div class="accomp-actions">
       ${showFirstBitacora?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Completar primera bitácora</button>':bool(p.createBitacora)?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Registrar bitácora</button>':""}
       ${bool(p.correctPrediagnostico)?'<span class="perm on">✓ Corrección autorizada</span>':""}
+      ${showFirstBitacora?'<span class="perm financial-focus-perm">★ Gestión financiera destacada</span>':""}
       ${corrections.length?`<span class="perm on">${corrections.length} ${corrections.length===1?"corrección":"correcciones"} en historial</span>`:""}
     </div>
     ${bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
