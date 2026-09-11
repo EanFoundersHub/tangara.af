@@ -3062,29 +3062,105 @@ function fieldCorrections(corrections,key){
     .sort((a,b)=>(a.version||0)-(b.version||0));
 }
 
-function correctionHistoryHTML(history){
+const PRED_MONEY_FIELDS=new Set([
+  "Campo_252","Campo_253","Campo_257",
+  "Campo_259","Campo_260","Campo_261","Campo_262","Campo_263","Campo_264","Campo_265","Campo_266","Campo_267",
+  "Campo_270","Campo_271","Campo_272","Campo_273","Campo_274","Campo_276","Campo_277","Campo_278","Campo_279","Campo_280",
+  "Campo_282","Campo_527","Campo_539"
+]);
+
+function friendlyPredLabel(label){
+  return String(label||"")
+    .replace(/:ingresos_historico$/i,"")
+    .replace(/:proyeccion_ingresos$/i,"")
+    .trim();
+}
+
+function predCurrencyCode(){
+  const row=Array.isArray(accompanimentData?.prediagnostico)?accompanimentData.prediagnostico[0]:null;
+  const raw=displayText(row?.Campo_243||"").trim().toUpperCase();
+  if(!raw)return "COP";
+  if(/\bUSD\b|D[ÓO]LAR|DOLLAR/.test(raw))return "USD";
+  if(/\bEUR\b|EURO/.test(raw))return "EUR";
+  if(/\bPEN\b|SOL(?:ES)?/.test(raw))return "PEN";
+  if(/\bMXN\b|PESO MEXICANO/.test(raw))return "MXN";
+  if(/\bCLP\b|PESO CHILENO/.test(raw))return "CLP";
+  if(/\bBRL\b|REAL(?:ES)? BRASILE/.test(raw))return "BRL";
+  if(/\bCOP\b|PESO COLOMBIANO|COLOMBIAN/.test(raw))return "COP";
+  return "COP";
+}
+
+function parsePredMoney(value){
+  if(typeof value==="number"&&Number.isFinite(value))return value;
+  let s=String(value??"").trim();
+  if(!s)return null;
+  s=s.replace(/\s/g,"").replace(/COP|USD|EUR|PEN|MXN|CLP|BRL|\$/gi,"");
+  if(!/^-?[\d.,]+$/.test(s))return null;
+  const dots=(s.match(/\./g)||[]).length;
+  const commas=(s.match(/,/g)||[]).length;
+  if(dots&&commas){
+    const lastDot=s.lastIndexOf(".");
+    const lastComma=s.lastIndexOf(",");
+    const decimalSep=lastDot>lastComma?".":",";
+    const thousandsSep=decimalSep==="."?",":".";
+    s=s.split(thousandsSep).join("");
+    if(decimalSep===",")s=s.replace(",",".");
+  }else if(dots>1){
+    s=s.replace(/\./g,"");
+  }else if(commas>1){
+    s=s.replace(/,/g,"");
+  }else if(dots===1){
+    const parts=s.split(".");
+    if(parts[1]?.length===3)s=parts.join("");
+  }else if(commas===1){
+    const parts=s.split(",");
+    if(parts[1]?.length===3)s=parts.join("");
+    else s=s.replace(",",".");
+  }
+  const n=Number(s);
+  return Number.isFinite(n)?n:null;
+}
+
+function predDisplayValue(key,value,label=""){
+  const text=displayText(value);
+  if(!PRED_MONEY_FIELDS.has(String(key)))return text;
+  const n=parsePredMoney(text);
+  if(n===null)return text;
+  try{
+    return new Intl.NumberFormat("es-CO",{
+      style:"currency",currency:predCurrencyCode(),maximumFractionDigits:0,minimumFractionDigits:0
+    }).format(n);
+  }catch(_){
+    return `$ ${new Intl.NumberFormat("es-CO",{maximumFractionDigits:0}).format(n)}`;
+  }
+}
+
+function correctionHistoryHTML(history,key,label){
   if(!history.length)return "";
   return `<details class="pred-history"><summary>Ver historial (${history.length})</summary><div class="pred-history-list">${history.map(c=>{
     const meta=[c.version?`Versión ${c.version}`:"Versión",excelDate(c.fecha),c.corregidoPor].filter(Boolean).join(" · ");
-    return `<div class="pred-history-item"><b>${escapeHTML(c.valorCorregido||"Sin valor")}</b>${c.motivo?`<div>Motivo: ${escapeHTML(c.motivo)}</div>`:""}<small>${escapeHTML(meta)}</small></div>`;
+    const correctedValue=predDisplayValue(key,c.valorCorregido,label);
+    return `<div class="pred-history-item"><b>${escapeHTML(correctedValue||"Sin valor")}</b>${c.motivo?`<div>Motivo: ${escapeHTML(c.motivo)}</div>`:""}<small>${escapeHTML(meta)}</small></div>`;
   }).join("")}</div></details>`;
 }
 
 function renderPredField(key,value,permissions,corrections=[]){
-  const original=displayText(value);
+  const originalRaw=displayText(value);
   const history=fieldCorrections(corrections,key);
   const active=history.filter(c=>c.activa);
   const current=(active.length?active:history).slice(-1)[0]||null;
   const corrected=!!current;
   const meta=predFieldMeta(key,corrections);
-  const label=meta.label||fieldLabel(key,corrections);
+  const label=friendlyPredLabel(meta.label||fieldLabel(key,corrections));
+  const original=predDisplayValue(key,originalRaw,label);
+  const currentValue=current?predDisplayValue(key,current.valorCorregido,label):"";
   const currentMeta=current?[current.version?`Versión ${current.version}`:"",excelDate(current.fecha),current.corregidoPor].filter(Boolean).join(" · "):"";
   const edit=bool(permissions?.correctPrediagnostico)?`<button class="pred-edit" type="button" data-correct-key="${escapeHTML(key)}">Corregir</button>`:"";
   return `<div class="pred-field ${predWide(label,original)?"wide":""} ${corrected?"corrected":""}">
     <div class="pred-label-row"><div><span class="pred-label">${escapeHTML(label)}</span><small class="pred-key">${escapeHTML(key)}</small></div>${edit}</div>
     <div class="pred-value-block"><span class="pred-value-caption">Información original</span><strong class="pred-value-original">${escapeHTML(original)}</strong></div>
-    ${current?`<div class="pred-current"><span class="pred-value-caption">Información corregida · vigente</span><strong class="pred-value-current">${escapeHTML(current.valorCorregido)}</strong>${currentMeta?`<div class="pred-correction-meta"><span>${escapeHTML(currentMeta)}</span></div>`:""}</div>`:""}
-    ${correctionHistoryHTML(history)}
+    ${current?`<div class="pred-current"><span class="pred-value-caption">Información corregida · vigente</span><strong class="pred-value-current">${escapeHTML(currentValue)}</strong>${currentMeta?`<div class="pred-correction-meta"><span>${escapeHTML(currentMeta)}</span></div>`:""}</div>`:""}
+    ${correctionHistoryHTML(history,key,label)}
   </div>`;
 }
 
@@ -3197,14 +3273,14 @@ function openCorrectionModal(fieldKey){
   const current=(active.length?active:history).slice(-1)[0]||null;
   correctionTarget={
     key:fieldKey,
-    label:fieldLabel(fieldKey,data.correcciones),
+    label:friendlyPredLabel(fieldLabel(fieldKey,data.correcciones)),
     original,
     current:current?.valorCorregido||original,
     history
   };
   $("#correctionTitle").textContent=`Corregir · ${correctionTarget.label}`;
-  $("#correctionOriginal").textContent=correctionTarget.original||"Sin valor";
-  $("#correctionCurrent").textContent=correctionTarget.current||"Sin valor";
+  $("#correctionOriginal").textContent=predDisplayValue(fieldKey,correctionTarget.original,correctionTarget.label)||"Sin valor";
+  $("#correctionCurrent").textContent=predDisplayValue(fieldKey,correctionTarget.current,correctionTarget.label)||"Sin valor";
   $("#correctionValue").value=correctionTarget.current||"";
   $("#correctionReason").value="";
   setInlineError("correctionError","");
