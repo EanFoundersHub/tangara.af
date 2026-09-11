@@ -1652,6 +1652,18 @@ flex-direction:column}
         </form>
       </div>
 
+      <div class="public-panel hidden" id="noAccessFoundPanel">
+        <button class="public-back" type="button" data-public-back="recoverPanel">← Volver</button>
+        <span class="eyebrow">Acceso no encontrado</span>
+        <h2 style="margin-top:9px">Aún no encontramos un acceso para ese correo</h2>
+        <p class="public-lead">Si todavía no has creado tu acceso a Comunidad Tángara, puedes registrarte ahora.</p>
+        <div class="public-info">Al crear tu acceso, el sistema verificará si ya existe un perfil similar para evitar duplicados.</div>
+        <div class="public-actions">
+          <button class="btn btn-primary" id="noAccessCreateBtn" type="button">Crear mi acceso</button>
+          <button class="btn btn-soft" id="noAccessHomeBtn" type="button">Volver al inicio</button>
+        </div>
+      </div>
+
       <div class="public-panel hidden" id="publicSuccessPanel">
         <span class="eyebrow">Solicitud recibida</span>
         <h2 id="publicSuccessTitle" style="margin-top:9px">Revisa tu correo</h2>
@@ -3752,13 +3764,17 @@ async function submitRecovery(e){
   try{
     const res=await publicFlowPost(FLOW_RECOVER_URL,{accion:"RECOVER_EMAIL",email});
     const status=String(res?.status||"").toUpperCase();
+    if(status==="NO_ACCESS_FOUND"){
+      showPublicPanel("noAccessFoundPanel");
+      return;
+    }
     if(status==="RECOVERY_REQUEST_RECEIVED"||res?.ok){
       $("#publicSuccessTitle").textContent="Revisa tu correo";
       $("#publicSuccessCopy").textContent="Si existe un acceso asociado a la información proporcionada, enviaremos las instrucciones al correo registrado.";
       showPublicPanel("publicSuccessPanel");
       return;
     }
-    setInlineError("recoverError","No pudimos procesar la solicitud en este momento.");
+    setInlineError("recoverError",res?.message||"No pudimos procesar la solicitud en este momento.");
   }catch(err){
     console.error(err);
     setInlineError("recoverError","No pudimos procesar la solicitud en este momento. Intenta nuevamente.");
@@ -3900,6 +3916,14 @@ $("#startRecoverBtn").addEventListener("click",()=>{
 $("#accessRecoverBtn").addEventListener("click",()=>showPublicPanel("recoverPanel"));
 $("#accessEntryBtn").addEventListener("click",showCommunityEntry);
 $("#successHomeBtn").addEventListener("click",showCommunityEntry);
+$("#noAccessHomeBtn").addEventListener("click",showCommunityEntry);
+$("#noAccessCreateBtn").addEventListener("click",()=>{
+  const email=$("#recoverEmail").value.trim();
+  setInlineError("registerError","");
+  if(email)$("#regEmail").value=email;
+  showPublicPanel("registerPanel");
+  setTimeout(()=>$("#regNombre")?.focus(),0);
+});
 $("#recoverMatchBtn").addEventListener("click",recoverPossibleMatch);
 $("#notMyMatchBtn").addEventListener("click",()=>showPublicPanel("notMyMatchPanel"));
 
