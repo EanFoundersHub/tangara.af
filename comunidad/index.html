@@ -1543,6 +1543,57 @@ flex-direction:column}
 .mentor-directory-note{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;color:var(--txt2);font-size:11.5px}
 @media(max-width:760px){.firstlog-grid{grid-template-columns:1fr}}
 
+/* Foco de impacto reforzado: prioridad visual, no solo una etiqueta decorativa. */
+.pred-intro-impact{
+  position:relative;overflow:hidden;padding:18px 20px 18px 22px;
+  border:1px solid rgba(143,230,182,.58);
+  background:linear-gradient(135deg,rgba(143,230,182,.16),rgba(38,11,51,.88) 56%,rgba(238,70,221,.08));
+  box-shadow:0 18px 44px rgba(41,173,112,.10)
+}
+.pred-intro-impact:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(#8FE6B6,#F27BE3)}
+.pred-intro-impact strong{font-size:15px;color:#E1FFED}
+.pred-intro-impact span{font-size:12px;color:#D8E7DD}
+.pred-section-impact-focus{position:relative;border-width:1px;border-color:rgba(143,230,182,.72);background:linear-gradient(120deg,rgba(143,230,182,.15),rgba(69,30,78,.68) 54%,rgba(238,70,221,.05));box-shadow:0 14px 38px rgba(37,164,103,.10)}
+.pred-section-impact-focus:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#8FE6B6,#5FCF91)}
+.pred-section-impact-focus[open]{border-color:rgba(143,230,182,.95);box-shadow:0 18px 48px rgba(37,164,103,.16)}
+.pred-section-impact-focus .pred-section-head{padding-left:21px}
+.pred-section-impact-focus .pred-section-icon{background:rgba(143,230,182,.20);border-color:rgba(143,230,182,.58);transform:scale(1.04)}
+.pred-section-impact-focus .pred-section-main strong{color:#E1FFED;font-size:15.5px}
+.pred-section-impact-focus .pred-section-toggle{color:#BDF3D2}
+.impact-focus-badge{font-size:9px;padding:5px 9px;border-color:rgba(143,230,182,.62);background:rgba(143,230,182,.17);color:#E1FFED;box-shadow:0 4px 14px rgba(64,200,128,.08)}
+.impact-focus-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.impact-focus-guide span{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:10px;background:rgba(143,230,182,.07);border:1px solid rgba(143,230,182,.18);font-size:10.5px;color:#D5EADD}
+.impact-focus-guide b{color:#9DECC0;font-size:12px}
+
+/* Gestión administrativa de perfiles y accesos desde el INDEX. */
+.admin-access-manager{margin-top:18px;padding:18px;border-radius:16px;border:1px solid rgba(242,123,227,.22);background:linear-gradient(145deg,rgba(238,70,221,.07),rgba(255,255,255,.025));display:grid;gap:16px}
+.admin-access-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.admin-access-head strong{display:block;color:#fff;font-size:17px}
+.admin-access-head span{display:block;margin-top:5px;color:var(--txt2);font-size:11.5px;line-height:1.5;max-width:760px}
+.admin-access-chip{padding:6px 10px;border-radius:999px;border:1px solid rgba(143,230,182,.28);background:rgba(143,230,182,.07);color:#CFF7DF;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.admin-access-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-access-field{display:grid;gap:6px}
+.admin-access-field.wide{grid-column:1/-1}
+.admin-access-field label{font-size:10.5px;font-weight:750;color:#E8DCEB}
+.admin-access-field input,.admin-access-field select{width:100%;min-height:42px;border-radius:11px;border:1px solid rgba(242,123,227,.24);background:rgba(255,255,255,.035);color:#fff;padding:0 12px;outline:none}
+.admin-access-field input:focus,.admin-access-field select:focus{border-color:rgba(242,123,227,.60);box-shadow:0 0 0 3px rgba(238,70,221,.08)}
+.admin-access-field select option{color:#2B1530}
+.admin-company-picker{grid-column:1/-1;display:none;padding:12px;border-radius:12px;border:1px solid rgba(143,230,182,.16);background:rgba(143,230,182,.035)}
+.admin-company-picker.open{display:block}
+.admin-company-picker-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.admin-company-picker-head span{font-size:11px;color:var(--txt2)}
+.admin-company-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-height:250px;overflow:auto;padding-right:4px}
+.admin-company-option{display:flex;gap:8px;align-items:flex-start;padding:9px;border-radius:9px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);font-size:10.5px;color:#E8DCEB;line-height:1.35}
+.admin-company-option input{margin-top:2px;accent-color:#EE46DD}
+.admin-reference-wrap{display:none}
+.admin-reference-wrap.open{display:grid}
+.admin-access-actions{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.admin-access-status{font-size:11px;color:var(--txt2)}
+.admin-access-status.ok{color:#9DECC0}.admin-access-status.err{color:#FF9EA8}
+.admin-existing-note{padding:12px 14px;border-radius:11px;background:rgba(255,212,139,.055);border:1px solid rgba(255,212,139,.16);font-size:10.5px;line-height:1.5;color:var(--txt2)}
+@media(max-width:900px){.admin-company-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.impact-focus-guide{grid-template-columns:1fr}.admin-access-form{grid-template-columns:1fr}.admin-access-field.wide,.admin-company-picker,.admin-access-actions{grid-column:auto}.admin-company-grid{grid-template-columns:1fr}}
+
 </style>
 
 
@@ -1817,6 +1868,27 @@ flex-direction:column}
         <div><span class="eyebrow">Vista privada</span><h2>Administración de Comunidad Tángara</h2><p>Indicadores consolidados de acceso y actividad.</p></div>
         <button class="btn btn-soft btn-sm" id="refreshAdminBtn" type="button">Actualizar dashboard</button>
       </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;margin:0 0 14px 0;padding:7px 10px;border-radius:999px;border:1px solid rgba(242,123,227,.22);background:rgba(242,123,227,.06);color:#F4C4EE;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;">Administración de accesos · v2</div>
+      <div class="admin-access-manager" id="adminAccessManager">
+        <div class="admin-access-head">
+          <div><strong>Gestión de perfiles y accesos</strong><span>Crea invitaciones directamente desde el INDEX y define rol, tipo de mentoría y alcance. El correo recibido por la persona queda asociado a esa configuración.</span></div>
+          <span class="admin-access-chip">Solo Equipo Tángara</span>
+        </div>
+        <form class="admin-access-form" id="adminInviteForm">
+          <div class="admin-access-field wide"><label for="adminInviteEmail">Correo de la persona</label><input id="adminInviteEmail" type="email" autocomplete="off" placeholder="persona@correo.com" required></div>
+          <div class="admin-access-field"><label for="adminInviteRole">Perfil</label><select id="adminInviteRole"><option value="MENTOR_IMPACTO">Mentor/a de Impacto</option><option value="MENTOR">Mentor/a Financiero/a</option><option value="ALIADO_AUTORIZADO">Aliado/a autorizado/a</option></select></div>
+          <div class="admin-access-field"><label for="adminInviteMentoria">Tipo de mentoría</label><select id="adminInviteMentoria"><option value="IMPACTO">Impacto</option><option value="FINANCIERO">Financiera</option><option value="">No aplica</option></select></div>
+          <div class="admin-access-field"><label for="adminInviteScope">Alcance de acceso</label><select id="adminInviteScope"><option value="TODAS">Todas las empresas</option><option value="EMPRESAS_ESPECIFICAS">Empresas específicas</option><option value="COPIAR_USUARIO">Copiar acceso de otro usuario</option></select></div>
+          <div class="admin-access-field admin-reference-wrap" id="adminReferenceWrap"><label for="adminReferenceEmail">Correo de referencia</label><input id="adminReferenceEmail" type="email" autocomplete="off" placeholder="usuario.referencia@correo.com"></div>
+          <div class="admin-company-picker" id="adminCompanyPicker">
+            <div class="admin-company-picker-head"><span>Selecciona los equipos a los que tendrá acceso.</span><button class="btn btn-soft btn-sm" id="adminToggleCompaniesBtn" type="button">Seleccionar todas</button></div>
+            <div class="admin-company-grid" id="adminCompanyGrid"></div>
+          </div>
+          <div class="admin-access-actions"><button class="btn btn-primary btn-sm" id="adminSendInviteBtn" type="submit">Enviar invitación</button><span class="admin-access-status" id="adminInviteStatus"></span></div>
+        </form>
+        <div class="admin-existing-note"><strong>Accesos existentes:</strong> esta misma sección quedará preparada para marcar o desmarcar empresas de perfiles ya activos. El frontend ya usa el modelo <b>rol + alcance + empresas</b>; para que la edición sea efectiva falta habilitar en Flow 26 las operaciones <b>ACTUALIZAR_ACCESOS</b> y <b>DESACTIVAR_USUARIO</b>.</div>
+      </div>
+
       <div class="admin-error hidden" id="adminError"></div>
       <div class="admin-metrics">
         <div class="admin-metric"><strong id="adminTotalUsuarios">–</strong><span>Usuarios con acceso</span><small>Contactos_Acceso</small></div>
@@ -1847,6 +1919,7 @@ flex-direction:column}
           </div>
         </div>
       </div>
+
       <div class="admin-note">Los indicadores de actividad crecen a medida que el INDEX registra aperturas reales y conexiones. El acompañamiento mantiene sus permisos separados del directorio y del dashboard.</div>
     </section>
 
@@ -1941,6 +2014,7 @@ const FLOW_CONNECT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environ
 const FLOW_TRACK_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/40c0e55b948943c88cc1c5f122128ede/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BkaZf5dPktMKC-2SL0CWzLlyWTg-A-opXdj9w98vo3Y";
 const FLOW_ACTIVITY_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/0ed09b855af34219a085cb403c6cd1b5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-m9DYEkIKHB0vTbP0ulwQQoeQ6HiAmhhO-MTAWptI1M";
 const FLOW_ADMIN_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/af1e3fdcdacd4755aa91de9367d50163/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=CjMR7WdSzs77l9yRfJQ2eLj8whrt5GmvATagY6lIMxI";
+const FLOW_ACCESS_ADMIN_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/31/workflows/805d7a2945914fc9adc262ea0ea3029d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AtLzGyfpm81pjFnuGNNxa-MLHvSMv1cUjIEekQHLQE8";
 const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/fe3170dc9df64ce6886f6a29c89a714d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NUbZNCUniX-PMfPZfouz-WqGJmhmGOMFPV2M_tsK7ds";
 const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
 const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/d9807e57afab4ceb9ce236322a7e88f9/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=H45FqU2gHmFTMFws1PY8w5E7kdj4SccYI0kv0syNOEQ";
@@ -3364,8 +3438,16 @@ function renderPred(items,permissions,corrections=[]){
   const financialMentorFocus=financialHasFirstBitacora(accompanimentTargetId);
   const impactMentorFocus=!financialMentorFocus&&isImpactMentorContext(accompanimentData);
   const impactSections=new Set(["sbn","ambiental","social"]);
+  const impactPriority={sbn:0,ambiental:1,social:2};
   const sections=[...groups.values()]
-    .sort((a,b)=>(a.sectionOrder||99)-(b.sectionOrder||99))
+    .sort((a,b)=>{
+      if(impactMentorFocus){
+        const ap=Object.prototype.hasOwnProperty.call(impactPriority,String(a.section||""))?impactPriority[String(a.section||"")]:20+(a.sectionOrder||99);
+        const bp=Object.prototype.hasOwnProperty.call(impactPriority,String(b.section||""))?impactPriority[String(b.section||"")]:20+(b.sectionOrder||99);
+        return ap-bp;
+      }
+      return (a.sectionOrder||99)-(b.sectionOrder||99);
+    })
     .map((group,index)=>{
       group.items.sort((a,b)=>(a.meta.order||9999)-(b.meta.order||9999));
       const correctedCount=group.items.filter(({key})=>fieldCorrections(corrections,key).length>0).length;
@@ -3375,7 +3457,7 @@ function renderPred(items,permissions,corrections=[]){
       return `<details class="pred-section ${financialFocus?"pred-section-financial-focus":""} ${impactFocus?"pred-section-impact-focus":""}" ${openSection?"open":""}>
         <summary class="pred-section-head">
           <span class="pred-section-main"><span class="pred-section-icon">${escapeHTML(group.icon||"•")}</span><span><strong>${escapeHTML(group.sectionTitle||"Sección")}</strong>${financialFocus?'<span class="financial-focus-badge">★ Foco de tu mentoría</span>':impactFocus?'<span class="impact-focus-badge">✦ Foco de impacto</span>':""}<small>${group.items.length} ${group.items.length===1?"respuesta":"respuestas"}${correctedCount?` · ${correctedCount} con corrección`:""}</small></span></span>
-          <span class="pred-section-toggle">Explorar</span>
+          <span class="pred-section-toggle">${impactFocus?"Revisar foco":"Explorar"}</span>
         </summary>
         <div class="pred-section-body"><div class="pred-grid">${group.items.map(({key,value})=>renderPredField(key,value,permissions,corrections)).join("")}</div></div>
       </details>`;
@@ -3387,8 +3469,9 @@ function renderPred(items,permissions,corrections=[]){
       ? `Como mentor de impacto, tienes destacados los bloques <b>Soluciones basadas en naturaleza (cuando aplique)</b>, <b>Impacto ambiental, métricas y regulación</b> e <b>Impacto social, beneficiarios, género e inclusión</b>. ${bool(permissions?.correctPrediagnostico)?"Puedes registrar correcciones con trazabilidad sobre la información que requiera ajuste.":"La edición se habilita únicamente cuando el permiso de corrección esté activo en el backend."}`
       : "Se muestran todas las respuestas disponibles del registro. Abre cada sección para revisar el detalle y, si estás autorizado, registrar correcciones sin modificar el dato original.";
   const introClass=financialMentorFocus?"pred-intro-financial":impactMentorFocus?"pred-intro-impact":"";
-  const introTitle=financialMentorFocus?"Foco de mentoría financiera":impactMentorFocus?"Foco de mentoría de impacto":"Prediagnóstico completo por secciones";
-  return `<div class="pred-section-intro ${introClass}"><strong>${introTitle}</strong><span>${introCopy}</span></div><div class="pred-sections">${sections}</div>`;
+  const introTitle=financialMentorFocus?"Foco de mentoría financiera":impactMentorFocus?"Foco prioritario · Mentoría de Impacto":"Prediagnóstico completo por secciones";
+  const impactGuide=impactMentorFocus?`<div class="impact-focus-guide"><span><b>01</b> Impacto ambiental y métricas</span><span><b>02</b> Impacto social e inclusión</span><span><b>03</b> SBN, cuando aplique</span></div>`:"";
+  return `<div class="pred-section-intro ${introClass}"><div><strong>${introTitle}</strong><span>${introCopy}</span>${impactGuide}</div></div><div class="pred-sections">${sections}</div>`;
 }
 
 function excelDate(v){
@@ -3834,6 +3917,7 @@ function setAdminVisible(show){
   adminAuthorized=!!show;
   $("#adminNavBtn")?.classList.toggle("hidden",!show);
   $("#adminDashboard")?.classList.toggle("hidden",!show);
+  if(show){adminRenderCompanyPicker();adminSyncInviteFields();}
 }
 
 function renderAdminDashboard(data){
@@ -3860,6 +3944,73 @@ function renderAdminDashboard(data){
   $("#adminConexionesMini").textContent=conns;
   $("#adminPerfilesMini").textContent=opens;
   $("#adminActivosMini").textContent=active;
+}
+
+
+function adminSetInviteStatus(message,type=""){
+  const el=$("#adminInviteStatus");
+  if(!el)return;
+  el.textContent=message||"";
+  el.classList.remove("ok","err");
+  if(type)el.classList.add(type);
+}
+
+function adminRenderCompanyPicker(){
+  const grid=$("#adminCompanyGrid");
+  if(!grid||grid.dataset.ready==="1")return;
+  grid.innerHTML=COMPANIES.map(c=>`<label class="admin-company-option"><input type="checkbox" value="${escapeHTML(c.id)}"><span><b>${escapeHTML(c.id)}</b> · ${escapeHTML(c.name)}</span></label>`).join("");
+  grid.dataset.ready="1";
+}
+
+function adminSyncInviteFields(){
+  const role=$("#adminInviteRole")?.value||"MENTOR_IMPACTO";
+  const mentoria=$("#adminInviteMentoria");
+  if(mentoria){
+    if(role==="MENTOR_IMPACTO")mentoria.value="IMPACTO";
+    else if(role==="MENTOR")mentoria.value="FINANCIERO";
+    else mentoria.value="";
+  }
+  const scope=$("#adminInviteScope")?.value||"TODAS";
+  $("#adminCompanyPicker")?.classList.toggle("open",scope==="EMPRESAS_ESPECIFICAS");
+  $("#adminReferenceWrap")?.classList.toggle("open",scope==="COPIAR_USUARIO");
+  if(scope==="EMPRESAS_ESPECIFICAS")adminRenderCompanyPicker();
+}
+
+function adminSelectedCompanies(){
+  return $$("#adminCompanyGrid input[type='checkbox']:checked").map(x=>x.value).filter(Boolean);
+}
+
+async function adminCreateInvitation(event){
+  event?.preventDefault?.();
+  if(!adminAuthorized||!session?.accessToken)return;
+  const email=String($("#adminInviteEmail")?.value||"").trim().toLowerCase();
+  const rol=$("#adminInviteRole")?.value||"";
+  const tipoMentoria=$("#adminInviteMentoria")?.value||"";
+  const alcance=$("#adminInviteScope")?.value||"TODAS";
+  const referenciaEmail=String($("#adminReferenceEmail")?.value||"").trim().toLowerCase();
+  const empresas=alcance==="EMPRESAS_ESPECIFICAS"?adminSelectedCompanies():[];
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return adminSetInviteStatus("Escribe un correo válido.","err");
+  if(alcance==="EMPRESAS_ESPECIFICAS"&&!empresas.length)return adminSetInviteStatus("Selecciona al menos una empresa.","err");
+  if(alcance==="COPIAR_USUARIO"&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(referenciaEmail))return adminSetInviteStatus("Indica el correo del usuario de referencia.","err");
+  const btn=$("#adminSendInviteBtn");
+  setBusy(btn,true,"Enviando…");
+  adminSetInviteStatus("Creando invitación…");
+  try{
+    const res=await apiPost(FLOW_ACCESS_ADMIN_URL,{accessToken:session.accessToken,operacion:"CREAR_INVITACION",email,rol,tipoMentoria,alcance,empresas,referenciaEmail});
+    const status=String(res?.status||"").toUpperCase();
+    if(status==="INVITATION_CREATED"){
+      adminSetInviteStatus(`Invitación enviada a ${email}.`,"ok");
+      $("#adminInviteForm")?.reset();
+      adminSyncInviteFields();
+      $$("#adminCompanyGrid input[type='checkbox']").forEach(x=>x.checked=false);
+      return;
+    }
+    if(status==="INVITATION_EXISTS")return adminSetInviteStatus("Esta persona ya tiene una invitación registrada.","err");
+    adminSetInviteStatus(res?.message||"No pudimos crear la invitación.","err");
+  }catch(err){
+    console.error("Error creando invitación",err);
+    adminSetInviteStatus(Number(err?.status)===403?"Tu perfil no está autorizado para gestionar accesos.":"No pudimos crear la invitación en este momento.","err");
+  }finally{setBusy(btn,false)}
 }
 
 async function loadAdminDashboard(scrollAfter=false){
@@ -4152,6 +4303,16 @@ $$(".connection-tab").forEach(btn=>btn.addEventListener("click",()=>{
 
 $("#adminNavBtn").addEventListener("click",()=>loadAdminDashboard(true));
 $("#refreshAdminBtn").addEventListener("click",()=>loadAdminDashboard(false));
+$("#adminInviteRole")?.addEventListener("change",adminSyncInviteFields);
+$("#adminInviteScope")?.addEventListener("change",adminSyncInviteFields);
+$("#adminInviteForm")?.addEventListener("submit",adminCreateInvitation);
+$("#adminToggleCompaniesBtn")?.addEventListener("click",()=>{
+  adminRenderCompanyPicker();
+  const boxes=$$("#adminCompanyGrid input[type='checkbox']");
+  const selectAll=boxes.some(x=>!x.checked);
+  boxes.forEach(x=>x.checked=selectAll);
+  $("#adminToggleCompaniesBtn").textContent=selectAll?"Limpiar selección":"Seleccionar todas";
+});
 
 $("#logoutBtn").addEventListener("click",()=>{
   sessionStorage.removeItem("tangara.session");
