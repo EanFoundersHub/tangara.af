@@ -677,7 +677,43 @@ flex-wrap:wrap}
 .perm.financial-focus-perm{
   color:#FFE7AE;border-color:rgba(255,196,87,.42);background:rgba(255,196,87,.10)
 }
-@media(max-width:760px){.pred-section-intro{flex-direction:column}.pred-section-head{padding:14px}.pred-section-main strong{font-size:14px}.pred-section-toggle{font-size:0}.pred-section-toggle:after{font-size:16px;margin-left:0}.pred-section-body{padding:0 10px 10px}.financial-focus-badge{display:flex;width:max-content;margin:6px 0 0}}
+/* Foco visual para mentores de impacto: resalta medición, resultados sociales/ambientales y SBN. */
+.pred-section-impact-focus{
+  border-color:rgba(143,230,182,.56);
+  background:linear-gradient(145deg,rgba(143,230,182,.10),rgba(238,70,221,.035),rgba(255,255,255,.022));
+  box-shadow:0 0 0 1px rgba(143,230,182,.08),0 18px 54px rgba(65,190,130,.06);
+}
+.pred-section-impact-focus[open]{
+  border-color:rgba(143,230,182,.78);
+  background:linear-gradient(145deg,rgba(143,230,182,.13),rgba(238,70,221,.045),rgba(255,255,255,.025));
+}
+.pred-section-impact-focus .pred-section-icon{
+  background:rgba(143,230,182,.13);
+  border-color:rgba(143,230,182,.36);
+  box-shadow:0 8px 24px rgba(65,190,130,.08);
+}
+.pred-section-impact-focus .pred-section-main strong{color:#CFF7DF}
+.impact-focus-badge{
+  display:inline-flex;align-items:center;gap:5px;margin-left:9px;padding:4px 8px;border-radius:999px;
+  border:1px solid rgba(143,230,182,.36);background:rgba(143,230,182,.10);color:#CFF7DF;
+  font-size:8.5px;line-height:1;letter-spacing:.09em;text-transform:uppercase;font-weight:800;vertical-align:2px
+}
+.pred-intro-impact{
+  border-color:rgba(143,230,182,.30);
+  background:linear-gradient(145deg,rgba(143,230,182,.075),rgba(238,70,221,.035));
+}
+.pred-intro-impact strong{color:#CFF7DF}
+.perm.impact-focus-perm{color:#CFF7DF;border-color:rgba(143,230,182,.36);background:rgba(143,230,182,.09)}
+
+/* Contexto de invitación dentro del alta pública. */
+.invite-context{display:grid;gap:7px;margin:4px 0 18px;padding:15px 16px;border-radius:14px;border:1px solid rgba(143,230,182,.24);background:linear-gradient(145deg,rgba(143,230,182,.07),rgba(238,70,221,.04))}
+.invite-context strong{font-size:15px;color:#fff;line-height:1.35}
+.invite-context p{margin:0;color:var(--txt2);font-size:12px;line-height:1.55}
+.invite-context-badge{display:inline-flex;width:max-content;align-items:center;padding:5px 9px;border-radius:999px;background:rgba(242,123,227,.10);border:1px solid rgba(242,123,227,.24);color:#F6A6EB;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+#regEmail[readonly]{cursor:not-allowed;color:#CFF7DF;border-color:rgba(143,230,182,.30);background:rgba(143,230,182,.055)}
+#regCategoria:disabled{opacity:.82;cursor:not-allowed;color:#CFF7DF;border-color:rgba(143,230,182,.26)}
+
+@media(max-width:760px){.pred-section-intro{flex-direction:column}.pred-section-head{padding:14px}.pred-section-main strong{font-size:14px}.pred-section-toggle{font-size:0}.pred-section-toggle:after{font-size:16px;margin-left:0}.pred-section-body{padding:0 10px 10px}.financial-focus-badge,.impact-focus-badge{display:flex;width:max-content;margin:6px 0 0}}
 
 /* Connections */
 .connection-summary{display:grid;
@@ -1561,8 +1597,13 @@ flex-direction:column}
       <div class="public-panel hidden" id="registerPanel">
         <button class="public-back" type="button" data-public-back="communityEntryPanel">← Volver</button>
         <span class="eyebrow">Nuevo acceso</span>
-        <h2 style="margin-top:9px">Únete a Comunidad Tángara</h2>
-        <p class="public-lead">Completa tus datos y verifica tu correo.</p>
+        <h2 id="registerTitle" style="margin-top:9px">Únete a Comunidad Tángara</h2>
+        <p class="public-lead" id="registerLead">Completa tus datos y verifica tu correo.</p>
+        <div class="invite-context hidden" id="inviteContext">
+          <span class="invite-context-badge" id="inviteRoleBadge">Invitación Tángara</span>
+          <strong id="inviteContextTitle">Completa tu perfil</strong>
+          <p id="inviteContextCopy">Tu invitación fue validada. Completa los datos restantes para activar tu acceso.</p>
+        </div>
         <form class="public-form" id="registrationForm" novalidate>
           <div class="public-form-grid">
             <div class="public-field"><label>Nombre <span>*</span></label><input id="regNombre" required></div>
@@ -1903,6 +1944,7 @@ const FLOW_ADMIN_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environme
 const FLOW_REGISTER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/fe3170dc9df64ce6886f6a29c89a714d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NUbZNCUniX-PMfPZfouz-WqGJmhmGOMFPV2M_tsK7ds";
 const FLOW_CONFIRM_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/24/workflows/e397c694833d405aa91a55eb5afd5f55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bdYfPDte9jdJs6pRrdskINSddGtK7FIiFQO14XPwmmA";
 const FLOW_RECOVER_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/d9807e57afab4ceb9ce236322a7e88f9/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=H45FqU2gHmFTMFws1PY8w5E7kdj4SccYI0kv0syNOEQ";
+const FLOW_INVITATION_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/17/workflows/23b6ee60888e4eaa929ce3ea5fc19b45/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=QS2jTgczKbkMEQF-h7huEZZnCDFnwJaj2SoaFzE8Xr8";
 const FLOW_ACCOMPANIMENT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/72f6f18eecea46edb8e3e08a71fa57d8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=B3wdmYw3Fcy4UMWJJnUqga8aP4O2EOb4b01dvCgF4VA";
 const FLOW_MENTOR_ASSIGNMENTS_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/10/workflows/29cda5f7d0aa4130ba8a1395e74f8fce/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RYytN1FrYpVLQo7lCO14AQ8PJPFH6NkBZmDcrmy03wo";
 const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/a5aeb4b187054a2aadc0a1720b4b59f3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0hACaGgBVtA-hkKtMj4d53_4d0KZO23WRsRrFLat0oo";
@@ -2009,6 +2051,15 @@ const FIRST_BITACORA_FINANCIAL_FIELDS=[
   {code:"FIN08",title:"¿La necesidad de capital y la capacidad de absorberlo están sustentadas en el plan y la caja?",evidence:"Modelo, plan de contratación/inversión, hitos y capacidad operativa."},
   {code:"FIN09",title:"¿El instrumento buscado es coherente con etapa, flujos, activos, riesgo y crecimiento?",evidence:"Comparativo de equity, deuda, grants, RBF, factoring u otros."},
   {code:"FIN10",title:"¿El uso de fondos es específico y se integra a una ruta de financiación?",evidence:"Presupuesto de uso de fondos, calendario, hitos y capital stack."}
+];
+
+// Criterios del mismo Formulario Primera Bitácora para la ruta “Mentor de impacto”.
+const FIRST_BITACORA_IMPACT_FIELDS=[
+  {code:"IMP01",title:"¿Tiene identificados y gestiona los trade-offs entre crecimiento, margen e impacto?",evidence:"Decisiones, políticas, criterios de acceso o indicadores de misión."},
+  {code:"IMP02",title:"¿La teoría de cambio conecta problema, actividades, productos, resultados e impacto de forma causal?",evidence:"Teoría de cambio y evidencia de los vínculos causales."},
+  {code:"IMP03",title:"¿Comprende la adicionalidad, el contrafactual y los riesgos de impacto del negocio?",evidence:"Análisis de adicionalidad, contrafactual, supuestos y riesgos."},
+  {code:"IMP04",title:"¿Cuenta con un sistema proporcional de indicadores, línea base, metas, fuentes y periodicidad?",evidence:"Fichas técnicas de indicadores y tablero mínimo."},
+  {code:"IMP05",title:"¿Usa la información de impacto para tomar decisiones, aprender y reportar?",evidence:"Rutina de revisión, tablero, decisiones y reportes."}
 ];
 
 const COMPANIES=[
@@ -2521,6 +2572,7 @@ let session=null;
 let currentCompany=null;
 let pendingRegistration=null;
 let pendingMatch=null;
+let invitationContext=null;
 let selectedInterest="";
 let connectionItems=[];
 let accompanimentData=null;
@@ -2704,6 +2756,117 @@ async function publicFlowPost(url,payload){
   return data;
 }
 
+function normalizeInviteValue(value){
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toUpperCase();
+}
+
+function invitationCategoryForRole(role){
+  const r=normalizeInviteValue(role);
+  if(r.includes("MENTOR"))return "Mentor/a Tángara";
+  if(r==="ALIADO_AUTORIZADO"||r.includes("ALIADO"))return "Aliado/a de Tángara";
+  if(r.includes("EQUIPO"))return "Equipo Tángara";
+  return "";
+}
+
+function invitationDisplayLabel(ctx){
+  const type=normalizeInviteValue(ctx?.tipoMentoria);
+  const role=normalizeInviteValue(ctx?.rol);
+  if(type==="IMPACTO"||role==="MENTOR_IMPACTO")return "Mentor/a de Impacto";
+  if(type==="FINANCIERO"||role.includes("FINANCIERO"))return "Mentor/a Financiero/a";
+  if(role==="ALIADO_AUTORIZADO")return "Equipo aliado de acompañamiento";
+  return "Invitación a Comunidad Tángara";
+}
+
+function rememberInvitationProfile(ctx){
+  const email=String(ctx?.email||"").trim().toLowerCase();
+  if(!email)return;
+  try{
+    localStorage.setItem(`tangara.invitationProfile:${email}`,JSON.stringify({
+      rol:String(ctx?.rol||""),tipoMentoria:String(ctx?.tipoMentoria||""),alcance:String(ctx?.alcance||"")
+    }));
+  }catch{}
+}
+
+function localInvitationProfile(){
+  const email=sessionMentorEmail();
+  if(!email)return null;
+  try{return JSON.parse(localStorage.getItem(`tangara.invitationProfile:${email}`)||"null")}catch{return null}
+}
+
+function sessionMentorHints(){
+  const category=typeof session?.categoriaPerfil==="object"?session?.categoriaPerfil?.Value:session?.categoriaPerfil;
+  return [session?.rol,session?.role,session?.cargo,session?.field_4,category,session?.categoria,session?.tipoUsuario]
+    .map(normalizeInviteValue).filter(Boolean).join(" | ");
+}
+
+function isImpactMentorContext(data=null){
+  if(FINANCIAL_MENTOR_PROFILE)return false;
+  const backendRole=normalizeInviteValue(data?.rol||data?.role||data?.permissionRole||data?.rolPermiso||data?.tipoMentoria);
+  if(backendRole.includes("IMPACTO"))return true;
+  const local=localInvitationProfile();
+  if(normalizeInviteValue(local?.tipoMentoria)==="IMPACTO"||normalizeInviteValue(local?.rol)==="MENTOR_IMPACTO")return true;
+  const hints=sessionMentorHints();
+  return hints.includes("MENTOR")&&!hints.includes("FINANCIERO");
+}
+
+function applyInvitationToRegistration(ctx){
+  invitationContext=ctx&&typeof ctx==="object"?ctx:null;
+  if(!invitationContext)return;
+  const email=String(invitationContext.email||"").trim().toLowerCase();
+  const label=invitationDisplayLabel(invitationContext);
+  const category=invitationCategoryForRole(invitationContext.rol);
+  rememberInvitationProfile(invitationContext);
+  try{sessionStorage.setItem("tangara.invitationContext",JSON.stringify(invitationContext))}catch{}
+  $("#inviteContext")?.classList.remove("hidden");
+  $("#inviteRoleBadge").textContent=label;
+  $("#inviteContextTitle").textContent=`Invitación validada · ${label}`;
+  $("#inviteContextCopy").textContent="Completa tus datos profesionales. El correo de la invitación queda protegido para que los permisos se asignen al perfil correcto.";
+  $("#registerTitle").textContent="Completa tu perfil en Comunidad Tángara";
+  $("#registerLead").textContent="Tu invitación ya fue validada. Solo falta completar tu perfil y verificar el correo.";
+  const emailInput=$("#regEmail");
+  if(emailInput){emailInput.value=email;emailInput.readOnly=true;emailInput.setAttribute("aria-readonly","true");}
+  if(category&&$("#regCategoria")){
+    $("#regCategoria").value=category;
+    $("#regCategoria").disabled=true;
+    $("#regCategoriaOtroWrap")?.classList.add("hidden");
+    $("#regCategoriaOtro").required=false;
+  }
+  if(normalizeInviteValue(invitationContext.tipoMentoria)==="IMPACTO"&&$("#regCargo")&&!$("#regCargo").value){
+    $("#regCargo").placeholder="Ej. Mentor/a de impacto";
+  }
+}
+
+function showInvitationGateError(message){
+  showPublicPanel("accessCheckPanel");
+  $("#gateTitle").textContent="Invitación no disponible";
+  $("#gateCopy").textContent="No pudimos continuar con este enlace de invitación.";
+  $("#gateLoader")?.classList.add("hidden");
+  $("#gateError").textContent=message||"La invitación no existe, ya fue utilizada o dejó de estar disponible.";
+  $("#gateError").classList.remove("hidden");
+  $("#accessFallbackActions").classList.remove("hidden");
+}
+
+async function openInvitationRegistration(token){
+  showPublicPanel("accessCheckPanel");
+  $("#gateTitle").textContent="Validando tu invitación";
+  $("#gateCopy").textContent="Estamos preparando tu perfil en Comunidad Tángara.";
+  $("#gateLoader")?.classList.remove("hidden");
+  try{
+    const res=await publicFlowPost(FLOW_INVITATION_VALIDATE_URL,{tokenInvitacion:token});
+    const status=normalizeInviteValue(res?.status);
+    if(!res?.ok||status!=="INVITATION_VALID"){
+      return showInvitationGateError(status==="INVITATION_ALREADY_USED"?"Esta invitación ya fue utilizada. Ingresa con tu enlace personal o recupera tu acceso.":res?.message);
+    }
+    applyInvitationToRegistration(res);
+    setInlineError("registerError","");
+    showPublicPanel("registerPanel");
+    setTimeout(()=>$("#regNombre")?.focus(),80);
+  }catch(err){
+    console.error("Validación de invitación",err);
+    showInvitationGateError("No pudimos validar la invitación en este momento. Intenta nuevamente desde el enlace recibido por correo.");
+  }
+}
+
 function showPublicPanel(id){
   $$(".public-panel").forEach(p=>p.classList.add("hidden"));
   $("#"+id)?.classList.remove("hidden");
@@ -2738,6 +2901,11 @@ function showGateError(msg){
 }
 
 async function boot(){
+  const inviteToken=params.get("invite");
+  if(inviteToken){
+    await openInvitationRegistration(inviteToken);
+    return;
+  }
   const token=params.get("accessToken")||params.get("access");
   if(token){
     showPublicPanel("accessCheckPanel");
@@ -3194,16 +3362,19 @@ function renderPred(items,permissions,corrections=[]){
   });
 
   const financialMentorFocus=financialHasFirstBitacora(accompanimentTargetId);
+  const impactMentorFocus=!financialMentorFocus&&isImpactMentorContext(accompanimentData);
+  const impactSections=new Set(["sbn","ambiental","social"]);
   const sections=[...groups.values()]
     .sort((a,b)=>(a.sectionOrder||99)-(b.sectionOrder||99))
     .map((group,index)=>{
       group.items.sort((a,b)=>(a.meta.order||9999)-(b.meta.order||9999));
       const correctedCount=group.items.filter(({key})=>fieldCorrections(corrections,key).length>0).length;
       const financialFocus=financialMentorFocus&&String(group.section||"")==="finanzas";
-      const openSection=financialFocus||(!financialMentorFocus&&index===0);
-      return `<details class="pred-section ${financialFocus?"pred-section-financial-focus":""}" ${openSection?"open":""}>
+      const impactFocus=impactMentorFocus&&impactSections.has(String(group.section||""));
+      const openSection=financialFocus||impactFocus||(!financialMentorFocus&&!impactMentorFocus&&index===0);
+      return `<details class="pred-section ${financialFocus?"pred-section-financial-focus":""} ${impactFocus?"pred-section-impact-focus":""}" ${openSection?"open":""}>
         <summary class="pred-section-head">
-          <span class="pred-section-main"><span class="pred-section-icon">${escapeHTML(group.icon||"•")}</span><span><strong>${escapeHTML(group.sectionTitle||"Sección")}</strong>${financialFocus?'<span class="financial-focus-badge">★ Foco de tu mentoría</span>':""}<small>${group.items.length} ${group.items.length===1?"respuesta":"respuestas"}${correctedCount?` · ${correctedCount} con corrección`:""}</small></span></span>
+          <span class="pred-section-main"><span class="pred-section-icon">${escapeHTML(group.icon||"•")}</span><span><strong>${escapeHTML(group.sectionTitle||"Sección")}</strong>${financialFocus?'<span class="financial-focus-badge">★ Foco de tu mentoría</span>':impactFocus?'<span class="impact-focus-badge">✦ Foco de impacto</span>':""}<small>${group.items.length} ${group.items.length===1?"respuesta":"respuestas"}${correctedCount?` · ${correctedCount} con corrección`:""}</small></span></span>
           <span class="pred-section-toggle">Explorar</span>
         </summary>
         <div class="pred-section-body"><div class="pred-grid">${group.items.map(({key,value})=>renderPredField(key,value,permissions,corrections)).join("")}</div></div>
@@ -3212,8 +3383,12 @@ function renderPred(items,permissions,corrections=[]){
 
   const introCopy=financialMentorFocus
     ? `Como mentor financiero, tienes destacada y abierta la sección <b>Gestión financiera, tracción e ingresos</b>. ${bool(permissions?.correctPrediagnostico)?"Puedes registrar correcciones sobre los campos que requieran ajuste; el valor original siempre permanece trazable.":"La edición se habilita únicamente cuando el permiso de corrección esté activo en el backend."}`
-    : "Se muestran todas las respuestas disponibles del registro. Abre cada sección para revisar el detalle y, si estás autorizado, registrar correcciones sin modificar el dato original.";
-  return `<div class="pred-section-intro ${financialMentorFocus?"pred-intro-financial":""}"><strong>${financialMentorFocus?"Foco de mentoría financiera":"Prediagnóstico completo por secciones"}</strong><span>${introCopy}</span></div><div class="pred-sections">${sections}</div>`;
+    : impactMentorFocus
+      ? `Como mentor de impacto, tienes destacados los bloques <b>Soluciones basadas en naturaleza (cuando aplique)</b>, <b>Impacto ambiental, métricas y regulación</b> e <b>Impacto social, beneficiarios, género e inclusión</b>. ${bool(permissions?.correctPrediagnostico)?"Puedes registrar correcciones con trazabilidad sobre la información que requiera ajuste.":"La edición se habilita únicamente cuando el permiso de corrección esté activo en el backend."}`
+      : "Se muestran todas las respuestas disponibles del registro. Abre cada sección para revisar el detalle y, si estás autorizado, registrar correcciones sin modificar el dato original.";
+  const introClass=financialMentorFocus?"pred-intro-financial":impactMentorFocus?"pred-intro-impact":"";
+  const introTitle=financialMentorFocus?"Foco de mentoría financiera":impactMentorFocus?"Foco de mentoría de impacto":"Prediagnóstico completo por secciones";
+  return `<div class="pred-section-intro ${introClass}"><strong>${introTitle}</strong><span>${introCopy}</span></div><div class="pred-sections">${sections}</div>`;
 }
 
 function excelDate(v){
@@ -3329,11 +3504,14 @@ function renderAccompaniment(data){
   const p=data?.permissions||{};
   const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
 
-  // Si Flow 13 identifica una asignación de mentor financiero para esta empresa,
-  // añadimos la pestaña de Primera bitácora. Prediagnóstico, permisos e histórico
-  // continúan viniendo del backend.
-  const showFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialHasFirstBitacora(data?.empresaId||accompanimentTargetId);
-  const firstFields=showFirstBitacora?FIRST_BITACORA_FINANCIAL_FIELDS:[];
+  // Primera bitácora según el tipo de mentoría. El mismo Microsoft Form ya contiene
+  // las rutas “Mentor financiero” y “Mentor de impacto”.
+  const showFinancialFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialHasFirstBitacora(data?.empresaId||accompanimentTargetId);
+  const showImpactFirstBitacora=!showFinancialFirstBitacora&&isImpactMentorContext(data);
+  const showFirstBitacora=showFinancialFirstBitacora||showImpactFirstBitacora;
+  const firstFields=showFinancialFirstBitacora?FIRST_BITACORA_FINANCIAL_FIELDS:showImpactFirstBitacora?FIRST_BITACORA_IMPACT_FIELDS:[];
+  const firstBitacoraTitle=showImpactFirstBitacora?"Primera bitácora · Mentor de impacto":"Primera bitácora · Mentor financiero";
+  const firstBitacoraCount=firstFields.length;
   const shell=$("#accompShell");
   shell.innerHTML=`
     <div class="accomp-top">
@@ -3346,17 +3524,17 @@ function renderAccompaniment(data){
     <div class="accomp-actions">
       ${showFirstBitacora?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Completar primera bitácora</button>':bool(p.createBitacora)?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Registrar bitácora</button>':""}
       ${bool(p.correctPrediagnostico)?'<span class="perm on">✓ Corrección autorizada</span>':""}
-      ${showFirstBitacora?'<span class="perm financial-focus-perm">★ Gestión financiera destacada</span>':""}
+      ${showFinancialFirstBitacora?'<span class="perm financial-focus-perm">★ Gestión financiera destacada</span>':showImpactFirstBitacora?'<span class="perm impact-focus-perm">✦ Impacto destacado</span>':""}
       ${corrections.length?`<span class="perm on">${corrections.length} ${corrections.length===1?"corrección":"correcciones"} en historial</span>`:""}
     </div>
     ${bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
     <div class="accomp-tabs">
       <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
-      ${showFirstBitacora?'<button class="accomp-tab" data-acctab="first">Primera bitácora (10)</button>':""}
+      ${showFirstBitacora?`<button class="accomp-tab" data-acctab="first">Primera bitácora (${firstBitacoraCount})</button>`:""}
       <button class="accomp-tab" data-acctab="bita">${showFirstBitacora?"Histórico":"Bitácoras"} (${Array.isArray(data?.bitacoras)?data.bitacoras.length:0})</button>
     </div>
     <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
-    ${showFirstBitacora?`<div class="accomp-panel" id="accompFirst">${renderFirstBitacora(firstFields,"Primera bitácora · Mentor financiero","Pendiente de diligenciar")}</div>`:""}
+    ${showFirstBitacora?`<div class="accomp-panel" id="accompFirst">${renderFirstBitacora(firstFields,firstBitacoraTitle,"Pendiente de diligenciar")}</div>`:""}
     <div class="accomp-panel" id="accompBita">${renderBitacoras(data?.bitacoras,p)}</div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
@@ -3717,12 +3895,13 @@ async function loadAdminDashboard(scrollAfter=false){
 function registrationPayload(){
   const interes=$("#regInteres").value;
   const categoria=$("#regCategoria").value;
+  const invitedCategory=invitationContext?invitationCategoryForRole(invitationContext.rol):"";
   return {
     nombre:$("#regNombre").value.trim(),
     apellido:$("#regApellido").value.trim(),
     empresa:$("#regEmpresa").value.trim(),
     cargo:$("#regCargo").value.trim(),
-    email:$("#regEmail").value.trim(),
+    email:String(invitationContext?.email||$("#regEmail").value).trim().toLowerCase(),
     telefonoWhatsApp:$("#regTelefono").value.trim(),
     linkedin:$("#regLinkedin").value.trim(),
     redSocial:$("#regRedSocial").value.trim(),
@@ -3730,8 +3909,8 @@ function registrationPayload(){
     interesPortafolio:interes==="Otro"?`Otro: ${$("#regInteresOtro").value.trim()}`:interes,
     interesPortafolioEsOtro:interes==="Otro",
     interesPortafolioOtro:$("#regInteresOtro").value.trim(),
-    categoriaPerfil:categoria,
-    categoriaOtro:categoria==="Otro"?$("#regCategoriaOtro").value.trim():""
+    categoriaPerfil:invitedCategory||categoria,
+    categoriaOtro:(invitedCategory||categoria)==="Otro"?$("#regCategoriaOtro").value.trim():""
   };
 }
 
@@ -3807,8 +3986,9 @@ async function submitVerification(e){
       status=String(res?.status||"").trim().toUpperCase();
     }
     if(status==="ACCESS_CREATED"){
-      try{sessionStorage.removeItem("tangara.pendingRegistration")}catch{}
+      try{sessionStorage.removeItem("tangara.pendingRegistration");sessionStorage.removeItem("tangara.invitationContext")}catch{}
       pendingRegistration=null;
+      invitationContext=null;
       $("#publicSuccessTitle").textContent="Tu acceso fue creado";
       $("#publicSuccessCopy").textContent="Revisa tu correo. Te enviamos tu enlace personal para entrar a Comunidad Tángara.";
       showPublicPanel("publicSuccessPanel");
@@ -3981,6 +4161,10 @@ $("#logoutBtn").addEventListener("click",()=>{
 
 $("#startRegisterBtn").addEventListener("click",()=>{
   setInlineError("registerError","");
+  if(!invitationContext){
+    try{invitationContext=JSON.parse(sessionStorage.getItem("tangara.invitationContext")||"null")}catch{}
+    if(invitationContext)applyInvitationToRegistration(invitationContext);
+  }
   showPublicPanel("registerPanel");
 });
 
