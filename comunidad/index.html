@@ -1866,29 +1866,11 @@ flex-direction:column}
     <section class="block admin-dashboard hidden" id="adminDashboard">
       <div class="section-head">
         <div><span class="eyebrow">Vista privada</span><h2>Administración de Comunidad Tángara</h2><p>Indicadores consolidados de acceso y actividad.</p></div>
-        <button class="btn btn-soft btn-sm" id="refreshAdminBtn" type="button">Actualizar dashboard</button>
-      </div>
-      <div style="display:inline-flex;align-items:center;gap:8px;margin:0 0 14px 0;padding:7px 10px;border-radius:999px;border:1px solid rgba(242,123,227,.22);background:rgba(242,123,227,.06);color:#F4C4EE;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;">Administración de accesos · v2</div>
-      <div class="admin-access-manager" id="adminAccessManager">
-        <div class="admin-access-head">
-          <div><strong>Gestión de perfiles y accesos</strong><span>Crea invitaciones directamente desde el INDEX y define rol, tipo de mentoría y alcance. El correo recibido por la persona queda asociado a esa configuración.</span></div>
-          <span class="admin-access-chip">Solo Equipo Tángara</span>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+          <button class="btn btn-primary btn-sm" id="adminAccessNavBtn" type="button">Gestionar accesos</button>
+          <button class="btn btn-soft btn-sm" id="refreshAdminBtn" type="button">Actualizar dashboard</button>
         </div>
-        <form class="admin-access-form" id="adminInviteForm">
-          <div class="admin-access-field wide"><label for="adminInviteEmail">Correo de la persona</label><input id="adminInviteEmail" type="email" autocomplete="off" placeholder="persona@correo.com" required></div>
-          <div class="admin-access-field"><label for="adminInviteRole">Perfil</label><select id="adminInviteRole"><option value="MENTOR_IMPACTO">Mentor/a de Impacto</option><option value="MENTOR">Mentor/a Financiero/a</option><option value="ALIADO_AUTORIZADO">Aliado/a autorizado/a</option></select></div>
-          <div class="admin-access-field"><label for="adminInviteMentoria">Tipo de mentoría</label><select id="adminInviteMentoria"><option value="IMPACTO">Impacto</option><option value="FINANCIERO">Financiera</option><option value="">No aplica</option></select></div>
-          <div class="admin-access-field"><label for="adminInviteScope">Alcance de acceso</label><select id="adminInviteScope"><option value="TODAS">Todas las empresas</option><option value="EMPRESAS_ESPECIFICAS">Empresas específicas</option><option value="COPIAR_USUARIO">Copiar acceso de otro usuario</option></select></div>
-          <div class="admin-access-field admin-reference-wrap" id="adminReferenceWrap"><label for="adminReferenceEmail">Correo de referencia</label><input id="adminReferenceEmail" type="email" autocomplete="off" placeholder="usuario.referencia@correo.com"></div>
-          <div class="admin-company-picker" id="adminCompanyPicker">
-            <div class="admin-company-picker-head"><span>Selecciona los equipos a los que tendrá acceso.</span><button class="btn btn-soft btn-sm" id="adminToggleCompaniesBtn" type="button">Seleccionar todas</button></div>
-            <div class="admin-company-grid" id="adminCompanyGrid"></div>
-          </div>
-          <div class="admin-access-actions"><button class="btn btn-primary btn-sm" id="adminSendInviteBtn" type="submit">Enviar invitación</button><span class="admin-access-status" id="adminInviteStatus"></span></div>
-        </form>
-        <div class="admin-existing-note"><strong>Accesos existentes:</strong> esta misma sección quedará preparada para marcar o desmarcar empresas de perfiles ya activos. El frontend ya usa el modelo <b>rol + alcance + empresas</b>; para que la edición sea efectiva falta habilitar en Flow 26 las operaciones <b>ACTUALIZAR_ACCESOS</b> y <b>DESACTIVAR_USUARIO</b>.</div>
       </div>
-
       <div class="admin-error hidden" id="adminError"></div>
       <div class="admin-metrics">
         <div class="admin-metric"><strong id="adminTotalUsuarios">–</strong><span>Usuarios con acceso</span><small>Contactos_Acceso</small></div>
@@ -1918,6 +1900,27 @@ flex-direction:column}
             <div class="admin-list-row"><span>Usuarios que exploran perfiles</span><strong id="adminActivosMini">–</strong></div>
           </div>
         </div>
+      </div>
+
+      <div class="admin-access-manager" id="adminAccessManager" style="scroll-margin-top:96px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;margin:0 0 2px 0;padding:6px 9px;border-radius:999px;border:1px solid rgba(242,123,227,.22);background:rgba(242,123,227,.06);color:#F4C4EE;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;width:max-content;max-width:100%;">Administración de accesos</div>
+        <div class="admin-access-head">
+          <div><strong>Gestión de perfiles y accesos</strong><span>Crea invitaciones directamente desde el INDEX y define rol, tipo de mentoría y alcance. El correo recibido por la persona queda asociado a esa configuración.</span></div>
+          <span class="admin-access-chip">Solo Equipo Tángara</span>
+        </div>
+        <form class="admin-access-form" id="adminInviteForm">
+          <div class="admin-access-field wide"><label for="adminInviteEmail">Correo de la persona</label><input id="adminInviteEmail" type="email" autocomplete="off" placeholder="persona@correo.com" required></div>
+          <div class="admin-access-field"><label for="adminInviteRole">Perfil</label><select id="adminInviteRole"><option value="MENTOR_IMPACTO">Mentor/a de Impacto</option><option value="MENTOR">Mentor/a Financiero/a</option><option value="ALIADO_AUTORIZADO">Aliado/a autorizado/a</option></select></div>
+          <div class="admin-access-field"><label for="adminInviteMentoria">Tipo de mentoría</label><select id="adminInviteMentoria"><option value="IMPACTO">Impacto</option><option value="FINANCIERO">Financiera</option><option value="">No aplica</option></select></div>
+          <div class="admin-access-field"><label for="adminInviteScope">Alcance de acceso</label><select id="adminInviteScope"><option value="TODAS">Todas las empresas</option><option value="EMPRESAS_ESPECIFICAS">Empresas específicas</option><option value="COPIAR_USUARIO">Copiar acceso de otro usuario</option></select></div>
+          <div class="admin-access-field admin-reference-wrap" id="adminReferenceWrap"><label for="adminReferenceEmail">Correo de referencia</label><input id="adminReferenceEmail" type="email" autocomplete="off" placeholder="usuario.referencia@correo.com"></div>
+          <div class="admin-company-picker" id="adminCompanyPicker">
+            <div class="admin-company-picker-head"><span>Selecciona los equipos a los que tendrá acceso.</span><button class="btn btn-soft btn-sm" id="adminToggleCompaniesBtn" type="button">Seleccionar todas</button></div>
+            <div class="admin-company-grid" id="adminCompanyGrid"></div>
+          </div>
+          <div class="admin-access-actions"><button class="btn btn-primary btn-sm" id="adminSendInviteBtn" type="submit">Enviar invitación</button><span class="admin-access-status" id="adminInviteStatus"></span></div>
+        </form>
+        <div class="admin-existing-note"><strong>Accesos existentes:</strong> esta misma sección quedará preparada para marcar o desmarcar empresas de perfiles ya activos. El frontend ya usa el modelo <b>rol + alcance + empresas</b>; para que la edición sea efectiva falta habilitar en Flow 26 las operaciones <b>ACTUALIZAR_ACCESOS</b> y <b>DESACTIVAR_USUARIO</b>.</div>
       </div>
 
       <div class="admin-note">Los indicadores de actividad crecen a medida que el INDEX registra aperturas reales y conexiones. El acompañamiento mantiene sus permisos separados del directorio y del dashboard.</div>
@@ -4302,6 +4305,11 @@ $$(".connection-tab").forEach(btn=>btn.addEventListener("click",()=>{
 }));
 
 $("#adminNavBtn").addEventListener("click",()=>loadAdminDashboard(true));
+$("#adminAccessNavBtn")?.addEventListener("click",()=>{
+  if(!adminAuthorized)return;
+  $("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"});
+  setTimeout(()=>$("#adminAccessManager")?.scrollIntoView({behavior:"smooth",block:"start"}),220);
+});
 $("#refreshAdminBtn").addEventListener("click",()=>loadAdminDashboard(false));
 $("#adminInviteRole")?.addEventListener("change",adminSyncInviteFields);
 $("#adminInviteScope")?.addEventListener("change",adminSyncInviteFields);
