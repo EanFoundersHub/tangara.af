@@ -1647,9 +1647,33 @@ flex-direction:column}
 .admin-history-state{white-space:nowrap}
 .admin-history-empty{padding:22px!important;text-align:center;color:var(--txt2)!important}
 
+.admin-invite-monitor{margin:18px 0;padding:16px;border:1px solid rgba(242,123,227,.15);border-radius:16px;background:rgba(255,255,255,.018)}
+.admin-invite-monitor-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.admin-invite-monitor-head strong{display:block;font-size:16px;color:#fff}
+.admin-invite-monitor-head span{display:block;margin-top:4px;max-width:760px;color:var(--txt2);font-size:11px;line-height:1.5}
+.admin-invite-monitor-toolbar{display:grid;grid-template-columns:minmax(240px,1fr) minmax(170px,.35fr);gap:9px;margin-bottom:10px}
+.admin-invite-monitor-toolbar input,.admin-invite-monitor-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
+.admin-invite-monitor-toolbar select option{color:#2B1530}
+.admin-invite-monitor-wrap{overflow:auto;border:1px solid rgba(242,123,227,.13);border-radius:13px;background:rgba(7,3,12,.16);max-height:390px}
+.admin-invite-monitor-table{width:100%;min-width:1040px;border-collapse:separate;border-spacing:0;font-size:10px}
+.admin-invite-monitor-table th{position:sticky;top:0;z-index:3;text-align:left;padding:9px 10px;background:#24102e;color:#F4C4EE;border-bottom:1px solid rgba(242,123,227,.20);font-size:8.8px;letter-spacing:.055em;text-transform:uppercase}
+.admin-invite-monitor-table td{vertical-align:middle;padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--txt2)}
+.admin-invite-monitor-table tr:last-child td{border-bottom:0}
+.admin-invite-monitor-table td strong{display:block;color:#fff;font-weight:700}
+.admin-invite-monitor-table td small{display:block;margin-top:2px;color:var(--txt3);font-size:8.8px;line-height:1.35}
+.admin-profile-state{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-size:8.8px;font-weight:800;white-space:nowrap}
+.admin-profile-state.created{background:rgba(143,230,182,.09);border:1px solid rgba(143,230,182,.22);color:#B9F5D0}
+.admin-profile-state.pending{background:rgba(255,210,120,.08);border:1px solid rgba(255,210,120,.20);color:#FFE0A2}
+.admin-profile-state.inactive{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);color:var(--txt3)}
+.admin-invite-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.admin-invite-actions .btn{padding:7px 9px}
+.admin-invite-monitor-empty{padding:22px!important;text-align:center;color:var(--txt2)!important}
+.admin-invite-monitor-note{margin-top:8px;color:var(--txt3);font-size:9.5px;line-height:1.45}
+
+
 
 @media(max-width:900px){.admin-company-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.impact-focus-guide{grid-template-columns:1fr}.admin-access-form{grid-template-columns:1fr}.admin-access-field.wide,.admin-company-picker,.admin-access-actions{grid-column:auto}.admin-company-grid{grid-template-columns:1fr}.admin-matrix-toolbar,.admin-history-toolbar{grid-template-columns:1fr}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.impact-focus-guide{grid-template-columns:1fr}.admin-access-form{grid-template-columns:1fr}.admin-access-field.wide,.admin-company-picker,.admin-access-actions{grid-column:auto}.admin-company-grid{grid-template-columns:1fr}.admin-matrix-toolbar,.admin-history-toolbar,.admin-invite-monitor-toolbar{grid-template-columns:1fr}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
 
@@ -1977,6 +2001,37 @@ flex-direction:column}
           </div>
           <div class="admin-access-actions"><button class="btn btn-primary btn-sm" id="adminSendInviteBtn" type="submit">Enviar invitación</button><span class="admin-access-status" id="adminInviteStatus"></span></div>
         </form>
+
+        <div class="admin-invite-monitor" id="adminInviteMonitor">
+          <div class="admin-invite-monitor-head">
+            <div>
+              <strong>Invitaciones y estado de perfil</strong>
+              <span>Consulta quién ya creó su perfil y quién sigue pendiente. Solo los pendientes pueden recibir un reenvío de su misma invitación, sin crear registros ni tokens duplicados.</span>
+            </div>
+            <button class="btn btn-soft btn-sm" id="adminInviteMonitorRefresh" type="button">Actualizar estado</button>
+          </div>
+          <div class="admin-invite-monitor-toolbar">
+            <input id="adminInviteMonitorSearch" autocomplete="off" placeholder="Buscar correo, mentor o perfil…">
+            <select id="adminInviteMonitorState">
+              <option value="">Todos los estados</option>
+              <option value="PENDIENTE">Pendientes de crear perfil</option>
+              <option value="CREADO">Perfil creado</option>
+            </select>
+          </div>
+          <div class="admin-invite-monitor-wrap">
+            <table class="admin-invite-monitor-table">
+              <thead>
+                <tr><th>Persona</th><th>Perfil</th><th>Acceso</th><th>Estado</th><th>Envío</th><th>Acciones</th></tr>
+              </thead>
+              <tbody id="adminInviteMonitorBody">
+                <tr><td colspan="6" class="admin-invite-monitor-empty">El estado de las invitaciones se cargará con la administración.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="admin-invite-monitor-note">“Perfil creado” se valida contra <b>Contactos_Acceso</b>; el campo Activado de la invitación se usa como respaldo. Reenviar conserva el mismo registro y el mismo token.</div>
+          <div class="admin-matrix-status" id="adminInviteMonitorStatus"></div>
+        </div>
+
         <div class="admin-mentor-matrix" id="adminMentorMatrix">
           <div class="admin-matrix-head">
             <div><strong>Matriz de mentores por empresa</strong><span>Vista operativa tipo Excel. Puedes cambiar el mentor financiero, sumar mentores de impacto o desasignarlos sin entrar a SharePoint. Los cambios actualizan permisos y conservan historial.</span></div>
@@ -2758,7 +2813,7 @@ let accompanimentTargetId="";
 let activityPending=new Set();
 let activitySeen=new Set();
 let adminAuthorized=false;
-let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial:[]};
+let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial:[],contactos:[]};
 let adminMentorMatrixLoading=false;
 let correctionTarget=null;
 
@@ -4292,6 +4347,161 @@ function adminRenderMentorMatrix(){
 }
 
 
+
+function adminAccessContacts(){
+  const raw=Array.isArray(adminMentorMatrixData.contactos)?adminMentorMatrixData.contactos:[];
+  return raw.map(x=>({
+    raw:x,
+    id:String(adminMatrixField(x,"Title","ContactoID")||"").trim(),
+    email:String(adminMatrixField(x,"field_5","EmailNormalizado","EmailAcceso","Email","email")||"").trim().toLowerCase(),
+    name:String(adminMatrixField(x,"field_3","Nombre","name")||"").trim(),
+    role:String(adminMatrixField(x,"CategoriaPerfil","field_4","Rol")||"").trim()
+  })).filter(x=>x.email);
+}
+
+function adminInvitationRows(){
+  const contacts=new Map(adminAccessContacts().map(x=>[x.email,x]));
+  const raw=Array.isArray(adminMentorMatrixData.invitaciones)?adminMentorMatrixData.invitaciones:[];
+  return raw.map(x=>{
+    const email=String(adminMatrixField(x,"Title","EmailInvitado","email")||"").trim().toLowerCase();
+    const contact=contacts.get(email)||null;
+    const role=String(adminMatrixField(x,"field_2","RolDestino")||"").trim();
+    const type=adminMatrixType(adminMatrixField(x,"TipoMentoria"),role);
+    const invitationActive=bool(adminMatrixField(x,"field_4","Activo"));
+    const activated=bool(adminMatrixField(x,"field_5","Activado"));
+    const scope=String(adminMatrixField(x,"AlcanceAcceso")||"").trim().toUpperCase();
+    const companies=String(adminMatrixField(x,"EmpresasPermitidas")||"").trim();
+    const referenceEmail=String(adminMatrixField(x,"ReferenciaEmail")||"").trim().toLowerCase();
+    const token=String(adminMatrixField(x,"field_8","TokenInvitacion")||"").trim();
+    const sent=bool(adminMatrixField(x,"InvitacionEnviada"));
+    const sentDate=String(adminMatrixField(x,"FechaEnvio")||"").trim();
+    const created=!!contact||activated;
+    return {
+      raw:x,email,contact,role,type,invitationActive,activated,scope,companies,referenceEmail,token,sent,sentDate,created,
+      name:String(contact?.name||"").trim()
+    };
+  }).filter(x=>x.email);
+}
+
+function adminInviteRoleLabel(row){
+  const role=normalizeInviteValue(row?.role);
+  if(role==="MENTOR_IMPACTO")return "Mentor/a de Impacto";
+  if(role==="MENTOR"||role==="MENTOR_FINANCIERO")return "Mentor/a Financiero/a";
+  if(role==="ALIADO_AUTORIZADO")return "Aliado/a autorizado/a";
+  if(role==="EQUIPO_TANGARA")return "Equipo Tángara";
+  return row?.role||"Invitación";
+}
+
+function adminInviteScopeLabel(row){
+  if(row.scope==="COPIAR_USUARIO")return row.referenceEmail?`Hereda de ${row.referenceEmail}`:"Copiar acceso";
+  if(row.scope==="EMPRESAS_ESPECIFICAS"){
+    const count=row.companies?row.companies.split(";").map(x=>x.trim()).filter(Boolean).length:0;
+    return count?`${count} ${count===1?"empresa":"empresas"}`:"Empresas específicas";
+  }
+  if(row.scope==="TODAS")return "Todas las empresas";
+  return row.scope||"—";
+}
+
+function adminInviteMonitorSetStatus(message="",kind=""){
+  const el=$("#adminInviteMonitorStatus");
+  if(!el)return;
+  el.textContent=message||"";
+  el.className="admin-matrix-status"+(kind?` ${kind}`:"");
+}
+
+function adminInviteLink(token){
+  if(!token)return "";
+  const url=new URL(location.href);
+  url.search="";
+  url.hash="";
+  url.searchParams.set("invite",token);
+  return url.toString();
+}
+
+function adminRenderInvitationMonitor(){
+  const body=$("#adminInviteMonitorBody");
+  if(!body)return;
+  const query=String($("#adminInviteMonitorSearch")?.value||"").trim().toLocaleLowerCase("es");
+  const state=String($("#adminInviteMonitorState")?.value||"").trim().toUpperCase();
+  const rows=adminInvitationRows().filter(row=>{
+    if(state==="CREADO"&&!row.created)return false;
+    if(state==="PENDIENTE"&&row.created)return false;
+    if(!query)return true;
+    return [
+      row.email,row.name,row.role,row.type,row.scope,row.companies,row.referenceEmail
+    ].join(" ").toLocaleLowerCase("es").includes(query);
+  }).sort((a,b)=>{
+    if(a.created!==b.created)return a.created?1:-1;
+    return a.email.localeCompare(b.email,"es",{sensitivity:"base"});
+  });
+
+  if(!rows.length){
+    body.innerHTML='<tr><td colspan="6" class="admin-invite-monitor-empty">No hay invitaciones que coincidan con estos filtros.</td></tr>';
+    return;
+  }
+
+  body.innerHTML=rows.map(row=>{
+    const person=row.name
+      ? `<strong>${escapeHTML(row.name)}</strong><small>${escapeHTML(row.email)}</small>`
+      : `<strong>${escapeHTML(row.email)}</strong>`;
+    const profile=`<strong>${escapeHTML(adminInviteRoleLabel(row))}</strong><small>${escapeHTML(row.type||"Sin tipo de mentoría")}</small>`;
+    const access=`<strong>${escapeHTML(adminInviteScopeLabel(row))}</strong>${row.companies?`<small>${escapeHTML(row.companies)}</small>`:""}`;
+    const stateHtml=row.created
+      ? '<span class="admin-profile-state created">● Perfil creado</span>'
+      : row.invitationActive
+        ? '<span class="admin-profile-state pending">● Pendiente de crear perfil</span>'
+        : '<span class="admin-profile-state inactive">Invitación inactiva</span>';
+    const sending=row.sent
+      ? `<strong>Enviada</strong>${row.sentDate?`<small>${escapeHTML(adminHistoryDate(row.sentDate))}</small>`:""}`
+      : '<strong>No marcada como enviada</strong>';
+    const resendDisabled=row.created||!row.invitationActive?"disabled":"";
+    const resendTitle=row.created?"El perfil ya existe":(!row.invitationActive?"La invitación está inactiva":"Reenviar la misma invitación");
+    const link=row.token?adminInviteLink(row.token):"";
+    const actions=`<div class="admin-invite-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-invite-resend data-email="${escapeHTML(row.email)}" ${resendDisabled} title="${escapeHTML(resendTitle)}">Reenviar</button>
+      ${link?`<button class="btn btn-soft btn-sm" type="button" data-invite-copy-link data-link="${escapeHTML(link)}">Copiar enlace</button>`:""}
+    </div>`;
+    return `<tr><td>${person}</td><td>${profile}</td><td>${access}</td><td>${stateHtml}</td><td>${sending}</td><td>${actions}</td></tr>`;
+  }).join("");
+}
+
+async function adminResendInvitation(button){
+  if(!adminAuthorized||!session?.accessToken)return;
+  const email=String(button?.dataset?.email||"").trim().toLowerCase();
+  if(!email)return;
+  setBusy(button,true,"Reenviando…");
+  adminInviteMonitorSetStatus(`Reenviando invitación a ${email}…`);
+  try{
+    const base=new URL(location.href);
+    base.search="";
+    base.hash="";
+    const res=await apiPost(FLOW_ACCESS_ADMIN_URL,{
+      accessToken:session.accessToken,
+      operacion:"REENVIAR_INVITACION",
+      email,
+      urlBase:base.toString()
+    });
+    const status=String(res?.status||"").toUpperCase();
+    if(!res?.ok||status!=="INVITATION_RESENT")throw new Error(res?.message||"No se pudo reenviar la invitación");
+    adminInviteMonitorSetStatus(`Invitación reenviada a ${email}.`,"ok");
+    await adminLoadMentorMatrix(false);
+  }catch(err){
+    console.error("Error reenviando invitación",err);
+    adminInviteMonitorSetStatus(err?.message||"No pudimos reenviar la invitación.","err");
+  }finally{setBusy(button,false)}
+}
+
+async function adminCopyInvitationLink(button){
+  const link=String(button?.dataset?.link||"").trim();
+  if(!link)return;
+  try{
+    await navigator.clipboard.writeText(link);
+    adminInviteMonitorSetStatus("Enlace de invitación copiado.","ok");
+  }catch{
+    adminInviteMonitorSetStatus("No pudimos copiar el enlace automáticamente.","err");
+  }
+}
+
 function adminHistoryRows(){
   const raw=Array.isArray(adminMentorMatrixData.historial)?adminMentorMatrixData.historial:[];
   return raw.map(x=>({
@@ -4397,11 +4607,13 @@ async function adminLoadMentorMatrix(showStatus=true){
       empresas:Array.isArray(data.empresas)?data.empresas:[],
       asignaciones:Array.isArray(data.asignaciones)?data.asignaciones:[],
       invitaciones:Array.isArray(data.invitaciones)?data.invitaciones:[],
-      historial:Array.isArray(data.historial)?data.historial:[]
+      historial:Array.isArray(data.historial)?data.historial:[],
+      contactos:Array.isArray(data.contactos)?data.contactos:[]
     };
     adminMatrixSyncMentorFilter();
     adminRenderMentorMatrix();
     adminRenderHistory();
+    adminRenderInvitationMonitor();
     if(showStatus)adminMatrixSetStatus("Matriz actualizada.","ok"); else adminMatrixSetStatus("");
   }catch(err){
     console.error("Error cargando matriz de mentores",err);
@@ -4840,6 +5052,15 @@ $("#adminHistorySearch")?.addEventListener("input",adminRenderHistory);
 $("#adminHistoryType")?.addEventListener("change",adminRenderHistory);
 $("#adminHistoryAction")?.addEventListener("change",adminRenderHistory);
 $("#adminHistoryUser")?.addEventListener("change",adminRenderHistory);
+$("#adminInviteMonitorRefresh")?.addEventListener("click",()=>adminLoadMentorMatrix(true));
+$("#adminInviteMonitorSearch")?.addEventListener("input",adminRenderInvitationMonitor);
+$("#adminInviteMonitorState")?.addEventListener("change",adminRenderInvitationMonitor);
+$("#adminInviteMonitorBody")?.addEventListener("click",e=>{
+  const resend=e.target.closest("[data-invite-resend]");
+  if(resend)return adminResendInvitation(resend);
+  const copy=e.target.closest("[data-invite-copy-link]");
+  if(copy)return adminCopyInvitationLink(copy);
+});
 $("#adminMentorMatrixBody")?.addEventListener("click",e=>{
   const assign=e.target.closest("[data-matrix-assign]");
   if(assign)return adminMatrixAssign(assign);
