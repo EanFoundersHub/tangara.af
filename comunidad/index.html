@@ -4326,7 +4326,7 @@ async function adminLoadMentorMatrix(showStatus=true){
   setBusy(btn,true,"Actualizando…");
   if(showStatus)adminMatrixSetStatus("Cargando empresas, asignaciones e invitaciones…");
   try{
-    const data=await apiPost(FLOW_ACCESS_ADMIN_URL,{accessToken:session.accessToken,operacion:"LISTAR_GESTION_MENTORES"});
+    const data=await apiPostWithRetry(FLOW_ACCESS_ADMIN_URL,{accessToken:session.accessToken,operacion:"LISTAR_GESTION_MENTORES"},1);
     if(!data?.ok||String(data?.status||"").toUpperCase()!=="GESTION_MENTORES_OK")throw new Error(data?.message||"Respuesta inesperada");
     adminMentorMatrixData={
       empresas:Array.isArray(data.empresas)?data.empresas:[],
@@ -4340,7 +4340,14 @@ async function adminLoadMentorMatrix(showStatus=true){
     if(showStatus)adminMatrixSetStatus("Matriz actualizada.","ok"); else adminMatrixSetStatus("");
   }catch(err){
     console.error("Error cargando matriz de mentores",err);
-    adminMatrixSetStatus(Number(err?.status)===403?"Tu perfil no está autorizado para consultar la matriz.":"No pudimos cargar la matriz de mentores.","err");
+    const status=Number(err?.status)||0;
+    const detail=String(err?.data?.message||err?.message||"").trim();
+    const msg=status===403
+      ?"Tu perfil no está autorizado para consultar la matriz."
+      :status
+        ?`No pudimos cargar la matriz de mentores (HTTP ${status}${detail?": "+detail:""}).`
+        :`No pudimos cargar la matriz de mentores${detail?": "+detail:""}.`;
+    adminMatrixSetStatus(msg,"err");
     const body=$("#adminMentorMatrixBody");
     if(body)body.innerHTML='<tr><td colspan="3" class="admin-matrix-loading">No se pudo cargar la matriz. Usa “Actualizar matriz” para reintentar.</td></tr>';
   }finally{
@@ -4737,7 +4744,20 @@ $$(".connection-tab").forEach(btn=>btn.addEventListener("click",()=>{
   $("#panelSent").classList.toggle("active",btn.dataset.tab==="sent");
 }));
 
-$("#adminNavBtn").addEventListener("click",()=>loadAdminDashboard(true));
+function adminScrollToDashboard(){
+  const section=$("#adminDashboard");
+  if(!section)return;
+  const top=Math.max(0,section.getBoundingClientRect().top+window.scrollY-76);
+  window.scrollTo({top,behavior:"smooth"});
+}
+$("#adminNavBtn").addEventListener("click",()=>{
+  if(adminAuthorized){
+    adminScrollToDashboard();
+    loadAdminDashboard(false);
+  }else{
+    loadAdminDashboard(true);
+  }
+});
 $("#adminAccessNavBtn")?.addEventListener("click",()=>{
   if(!adminAuthorized)return;
   $("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"});
