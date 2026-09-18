@@ -1591,8 +1591,65 @@ flex-direction:column}
 .admin-access-status{font-size:11px;color:var(--txt2)}
 .admin-access-status.ok{color:#9DECC0}.admin-access-status.err{color:#FF9EA8}
 .admin-existing-note{padding:12px 14px;border-radius:11px;background:rgba(255,212,139,.055);border:1px solid rgba(255,212,139,.16);font-size:10.5px;line-height:1.5;color:var(--txt2)}
-@media(max-width:900px){.admin-company-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.impact-focus-guide{grid-template-columns:1fr}.admin-access-form{grid-template-columns:1fr}.admin-access-field.wide,.admin-company-picker,.admin-access-actions{grid-column:auto}.admin-company-grid{grid-template-columns:1fr}}
+
+.admin-mentor-matrix{display:grid;gap:12px;padding-top:4px;border-top:1px solid rgba(242,123,227,.12)}
+.admin-matrix-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.admin-matrix-head strong{display:block;font-size:16px;color:#fff}
+.admin-matrix-head span{display:block;margin-top:4px;font-size:11px;line-height:1.45;color:var(--txt2);max-width:760px}
+.admin-matrix-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.admin-matrix-toolbar{display:grid;grid-template-columns:minmax(240px,1.4fr) minmax(210px,.8fr);gap:9px}
+.admin-matrix-toolbar input,.admin-matrix-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
+.admin-matrix-toolbar select option{color:#2B1530}
+.admin-matrix-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.admin-matrix-kpi{padding:10px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.admin-matrix-kpi strong{display:block;font-size:18px;color:#fff}.admin-matrix-kpi span{display:block;margin-top:3px;font-size:9.5px;color:var(--txt3)}
+.admin-matrix-status{min-height:16px;font-size:10.5px;color:var(--txt2)}
+.admin-matrix-status.ok{color:#9DECC0}.admin-matrix-status.err{color:#FF9EA8}
+.admin-matrix-wrap{overflow:auto;border:1px solid rgba(242,123,227,.14);border-radius:13px;background:rgba(7,3,12,.16);max-height:610px}
+.admin-matrix-table{width:100%;min-width:970px;border-collapse:separate;border-spacing:0;font-size:10.5px}
+.admin-matrix-table th{position:sticky;top:0;z-index:4;text-align:left;padding:10px 11px;background:#24102e;color:#F4C4EE;border-bottom:1px solid rgba(242,123,227,.20);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.admin-matrix-table th:first-child{left:0;z-index:5}
+.admin-matrix-table td{vertical-align:top;padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.012)}
+.admin-matrix-table tr:last-child td{border-bottom:0}
+.admin-matrix-company{position:sticky;left:0;z-index:2;min-width:225px;background:#1d0d27!important;border-right:1px solid rgba(242,123,227,.10)}
+.admin-matrix-company strong{display:block;color:#fff;font-size:11.5px}.admin-matrix-company span{display:block;color:#F6A6EB;font-size:9.5px;margin-top:3px}
+.admin-mentor-cell{display:grid;gap:8px;min-width:305px}
+.admin-mentor-chips{display:flex;gap:6px;flex-wrap:wrap;min-height:27px;align-items:flex-start}
+.admin-mentor-empty{font-size:10px;color:var(--txt3);padding:5px 0}
+.admin-mentor-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:5px 7px 5px 9px;border-radius:999px;border:1px solid rgba(143,230,182,.22);background:rgba(143,230,182,.07);color:#DDF9E8}
+.admin-mentor-chip.fin{border-color:rgba(242,123,227,.24);background:rgba(238,70,221,.08);color:#F7D6F2}
+.admin-mentor-chip .mentor-chip-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:195px}
+.admin-mentor-chip small{padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.07);font-size:7.5px;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em}
+.admin-mentor-chip button{width:19px;height:19px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#fff;font-size:13px;line-height:1;cursor:pointer}
+.admin-mentor-chip button:hover{background:rgba(255,110,110,.22)}
+.admin-mentor-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.admin-mentor-add select{width:100%;min-height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#fff;padding:0 8px;font-size:9.5px;outline:none}
+.admin-mentor-add select option{color:#2B1530}.admin-mentor-add button{min-height:34px;padding:0 10px}
+.admin-matrix-loading{padding:24px;text-align:center;color:var(--txt2)}
+.admin-matrix-foot{font-size:9.5px;color:var(--txt3);line-height:1.45}
+
+.admin-history{margin-top:18px;padding-top:18px;border-top:1px solid rgba(242,123,227,.12)}
+.admin-history-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
+.admin-history-head strong{display:block;font-size:16px;color:#fff}
+.admin-history-head span{display:block;margin-top:4px;font-size:11px;line-height:1.45;color:var(--txt2);max-width:760px}
+.admin-history-toolbar{display:grid;grid-template-columns:minmax(240px,1.4fr) repeat(3,minmax(150px,.55fr));gap:9px;margin-bottom:10px}
+.admin-history-toolbar input,.admin-history-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
+.admin-history-toolbar select option{color:#2B1530}
+.admin-history-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px;color:var(--txt3);font-size:9.5px}
+.admin-history-wrap{overflow:auto;border:1px solid rgba(242,123,227,.14);border-radius:13px;background:rgba(7,3,12,.16);max-height:430px}
+.admin-history-table{width:100%;min-width:1080px;border-collapse:separate;border-spacing:0;font-size:10px}
+.admin-history-table th{position:sticky;top:0;z-index:3;text-align:left;padding:9px 10px;background:#24102e;color:#F4C4EE;border-bottom:1px solid rgba(242,123,227,.20);font-size:8.8px;letter-spacing:.055em;text-transform:uppercase}
+.admin-history-table td{vertical-align:top;padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--txt2)}
+.admin-history-table tr:last-child td{border-bottom:0}
+.admin-history-table td strong{color:#fff;font-weight:700}
+.admin-history-table td small{display:block;margin-top:2px;color:var(--txt3);font-size:8.8px}
+.admin-history-action{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;background:rgba(242,123,227,.09);border:1px solid rgba(242,123,227,.18);color:#F4C4EE;font-size:8.8px;font-weight:800;letter-spacing:.03em}
+.admin-history-state{white-space:nowrap}
+.admin-history-empty{padding:22px!important;text-align:center;color:var(--txt2)!important}
+
+
+@media(max-width:900px){.admin-company-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.impact-focus-guide{grid-template-columns:1fr}.admin-access-form{grid-template-columns:1fr}.admin-access-field.wide,.admin-company-picker,.admin-access-actions{grid-column:auto}.admin-company-grid{grid-template-columns:1fr}.admin-matrix-toolbar,.admin-history-toolbar{grid-template-columns:1fr}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
 
@@ -1920,7 +1977,51 @@ flex-direction:column}
           </div>
           <div class="admin-access-actions"><button class="btn btn-primary btn-sm" id="adminSendInviteBtn" type="submit">Enviar invitación</button><span class="admin-access-status" id="adminInviteStatus"></span></div>
         </form>
-        <div class="admin-existing-note"><strong>Accesos existentes:</strong> esta misma sección quedará preparada para marcar o desmarcar empresas de perfiles ya activos. El frontend ya usa el modelo <b>rol + alcance + empresas</b>; para que la edición sea efectiva falta habilitar en Flow 26 las operaciones <b>ACTUALIZAR_ACCESOS</b> y <b>DESACTIVAR_USUARIO</b>.</div>
+        <div class="admin-mentor-matrix" id="adminMentorMatrix">
+          <div class="admin-matrix-head">
+            <div><strong>Matriz de mentores por empresa</strong><span>Vista operativa tipo Excel. Puedes cambiar el mentor financiero, sumar mentores de impacto o desasignarlos sin entrar a SharePoint. Los cambios actualizan permisos y conservan historial.</span></div>
+            <div class="admin-matrix-actions"><button class="btn btn-soft btn-sm" id="adminMentorMatrixRefresh" type="button">Actualizar matriz</button></div>
+          </div>
+          <div class="admin-matrix-toolbar">
+            <input id="adminMatrixSearch" autocomplete="off" placeholder="Buscar empresa, ID, mentor o correo…">
+            <select id="adminMatrixMentorFilter"><option value="">Todos los mentores</option></select>
+          </div>
+          <div class="admin-matrix-summary">
+            <div class="admin-matrix-kpi"><strong id="adminMatrixCompanies">–</strong><span>Empresas</span></div>
+            <div class="admin-matrix-kpi"><strong id="adminMatrixFinancial">–</strong><span>Con mentor financiero activo</span></div>
+            <div class="admin-matrix-kpi"><strong id="adminMatrixImpact">–</strong><span>Con mentoría de impacto activa</span></div>
+            <div class="admin-matrix-kpi"><strong id="adminMatrixInvites">–</strong><span>Invitaciones disponibles</span></div>
+          </div>
+          <div class="admin-matrix-status" id="adminMatrixStatus"></div>
+          <div class="admin-matrix-wrap">
+            <table class="admin-matrix-table">
+              <thead><tr><th>Empresa</th><th>Mentor financiero</th><th>Mentoría de impacto</th></tr></thead>
+              <tbody id="adminMentorMatrixBody"><tr><td colspan="3" class="admin-matrix-loading">La matriz se cargará al abrir la administración.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="admin-matrix-foot">Para mentoría financiera, asignar una persona nueva reemplaza automáticamente al mentor financiero activo de esa empresa. En impacto se permiten varios mentores activos por empresa.</div>
+
+          <div class="admin-history" id="adminMentorHistory">
+            <div class="admin-history-head">
+              <div><strong>Historial de cambios de asignaciones</strong><span>Auditoría de altas, activaciones y desasignaciones. Incluye fecha y hora, empresa, mentor, estado anterior y nuevo, y el usuario administrador que realizó el cambio.</span></div>
+              <button class="btn btn-soft btn-sm" id="adminHistoryRefresh" type="button">Actualizar historial</button>
+            </div>
+            <div class="admin-history-toolbar">
+              <input id="adminHistorySearch" autocomplete="off" placeholder="Buscar empresa, mentor, correo o usuario…">
+              <select id="adminHistoryType"><option value="">Todos los tipos</option><option value="FINANCIERO">Financiera</option><option value="IMPACTO">Impacto</option></select>
+              <select id="adminHistoryAction"><option value="">Todas las acciones</option><option value="CREAR_ASIGNACION">Crear asignación</option><option value="ACTIVAR">Activar</option><option value="DESASIGNAR">Desasignar</option></select>
+              <select id="adminHistoryUser"><option value="">Todos los usuarios</option></select>
+            </div>
+            <div class="admin-history-meta"><span id="adminHistoryCount">0 cambios</span><span>Más reciente primero</span></div>
+            <div class="admin-history-wrap">
+              <table class="admin-history-table">
+                <thead><tr><th>Fecha y hora</th><th>Empresa</th><th>Mentor</th><th>Tipo</th><th>Acción</th><th>Cambio</th><th>Modificado por</th></tr></thead>
+                <tbody id="adminHistoryBody"><tr><td colspan="7" class="admin-history-empty">El historial se cargará junto con la matriz.</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="admin-existing-note"><strong>Historial:</strong> las desasignaciones no borran registros. Flow 26 conserva el cambio y sincroniza el permiso real del mentor o, si todavía está invitado, su lista de empresas permitidas.</div>
       </div>
 
       <div class="admin-note">Los indicadores de actividad crecen a medida que el INDEX registra aperturas reales y conexiones. El acompañamiento mantiene sus permisos separados del directorio y del dashboard.</div>
@@ -2657,6 +2758,8 @@ let accompanimentTargetId="";
 let activityPending=new Set();
 let activitySeen=new Set();
 let adminAuthorized=false;
+let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial:[]};
+let adminMentorMatrixLoading=false;
 let correctionTarget=null;
 
 try{
@@ -3983,6 +4086,334 @@ function adminSelectedCompanies(){
   return $$("#adminCompanyGrid input[type='checkbox']:checked").map(x=>x.value).filter(Boolean);
 }
 
+
+function adminMatrixField(row,...keys){
+  for(const key of keys){
+    if(!row||row[key]===undefined||row[key]===null)continue;
+    const value=row[key];
+    if(typeof value==="string"&&!value.trim())continue;
+    return value;
+  }
+  return "";
+}
+
+function adminMatrixType(value,role=""){
+  const type=normalizeInviteValue(value);
+  const r=normalizeInviteValue(role);
+  if(type.includes("IMPACT")||r==="MENTOR_IMPACTO")return "IMPACTO";
+  if(type.includes("FINAN")||r==="MENTOR"||r.includes("FINANCIERO"))return "FINANCIERO";
+  return "";
+}
+
+function adminMatrixCompanies(){
+  const raw=Array.isArray(adminMentorMatrixData.empresas)?adminMentorMatrixData.empresas:[];
+  const rows=raw.map(x=>({
+    id:String(adminMatrixField(x,"Title","EmpresaID","field_4")||"").trim(),
+    name:String(adminMatrixField(x,"field_1","EmpresaNombre","name")||"").trim()
+  })).filter(x=>x.id);
+  const source=rows.length?rows:COMPANIES.map(c=>({id:c.id,name:c.name}));
+  return source.sort((a,b)=>a.id.localeCompare(b.id,"es",{numeric:true}));
+}
+
+function adminMatrixAssignments(){
+  const raw=Array.isArray(adminMentorMatrixData.asignaciones)?adminMentorMatrixData.asignaciones:[];
+  return raw.map(x=>({
+    raw:x,
+    email:String(adminMatrixField(x,"field_3","MentorEmail","Email")||"").trim().toLowerCase(),
+    name:String(adminMatrixField(x,"field_2","MentorNombreCanonico","field_1","MentorNombreFuente")||"").trim(),
+    companyId:String(adminMatrixField(x,"field_4","EmpresaID")||"").trim(),
+    companyName:String(adminMatrixField(x,"field_5","EmpresaNombre")||"").trim(),
+    type:adminMatrixType(adminMatrixField(x,"field_6","TipoMentoria")),
+    active:bool(adminMatrixField(x,"field_7","Activo"))
+  })).filter(x=>x.email&&x.companyId&&x.type);
+}
+
+function adminMatrixInvitations(){
+  const raw=Array.isArray(adminMentorMatrixData.invitaciones)?adminMentorMatrixData.invitaciones:[];
+  return raw.map(x=>({
+    raw:x,
+    email:String(adminMatrixField(x,"Title","EmailInvitado","email")||"").trim().toLowerCase(),
+    role:String(adminMatrixField(x,"field_2","RolDestino")||"").trim(),
+    type:adminMatrixType(adminMatrixField(x,"TipoMentoria"),adminMatrixField(x,"field_2","RolDestino")),
+    invitationActive:bool(adminMatrixField(x,"field_4","Activo")),
+    activated:bool(adminMatrixField(x,"field_5","Activado"))
+  })).filter(x=>x.email&&x.type);
+}
+
+function adminMatrixMentors(type=""){
+  const merged=new Map();
+  for(const a of adminMatrixAssignments()){
+    if(type&&a.type!==type)continue;
+    const key=`${a.type}|${a.email}`;
+    const current=merged.get(key)||{email:a.email,name:"",type:a.type,invited:false};
+    if(a.name)current.name=a.name;
+    merged.set(key,current);
+  }
+  for(const inv of adminMatrixInvitations()){
+    if(type&&inv.type!==type)continue;
+    const key=`${inv.type}|${inv.email}`;
+    const current=merged.get(key)||{email:inv.email,name:"",type:inv.type,invited:false};
+    current.invited=true;
+    current.invitationActive=inv.invitationActive;
+    current.activated=inv.activated;
+    merged.set(key,current);
+  }
+  return [...merged.values()].sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email,"es",{sensitivity:"base"}));
+}
+
+function adminMatrixMentorLabel(mentor){
+  const name=String(mentor?.name||"").trim();
+  const email=String(mentor?.email||"").trim();
+  return name&&name.toLowerCase()!==email.toLowerCase()?`${name} · ${email}`:email;
+}
+
+function adminMatrixSetStatus(message="",kind=""){
+  const el=$("#adminMatrixStatus");
+  if(!el)return;
+  el.textContent=message;
+  el.className="admin-matrix-status"+(kind?` ${kind}`:"");
+}
+
+function adminMatrixSyncMentorFilter(){
+  const select=$("#adminMatrixMentorFilter");
+  if(!select)return;
+  const current=select.value;
+  const mentors=adminMatrixMentors();
+  select.innerHTML='<option value="">Todos los mentores</option>'+mentors.map(m=>`<option value="${escapeHTML(m.email)}">${escapeHTML(adminMatrixMentorLabel(m))}</option>`).join("");
+  if(mentors.some(m=>m.email===current))select.value=current;
+}
+
+function adminMatrixCell(company,type,assignments,pool){
+  const active=assignments.filter(a=>a.companyId===company.id&&a.type===type&&a.active);
+  const invitationEmails=new Set(adminMatrixInvitations().map(x=>x.email));
+  const chips=active.length?active.map(a=>{
+    const label=a.name?`${a.name} · ${a.email}`:a.email;
+    const invited=invitationEmails.has(a.email)?'<small>Invitación</small>':"";
+    return `<span class="admin-mentor-chip ${type==="FINANCIERO"?"fin":""}"><span class="mentor-chip-label" title="${escapeHTML(label)}">${escapeHTML(label)}</span>${invited}<button type="button" title="Desasignar" data-matrix-remove data-company-id="${escapeHTML(company.id)}" data-company-name="${escapeHTML(company.name)}" data-type="${type}" data-email="${escapeHTML(a.email)}" data-name="${escapeHTML(a.name||a.email)}">×</button></span>`;
+  }).join(""):'<span class="admin-mentor-empty">Sin asignación activa</span>';
+  const selectedEmails=new Set(active.map(a=>a.email));
+  const options=pool.map(m=>`<option value="${escapeHTML(m.email)}" data-name="${escapeHTML(m.name||m.email)}" ${selectedEmails.has(m.email)?"disabled":""}>${escapeHTML(adminMatrixMentorLabel(m))}${m.invited?" · invitado":""}</option>`).join("");
+  const buttonLabel=type==="FINANCIERO"&&active.length?"Cambiar":"Asignar";
+  return `<div class="admin-mentor-cell" data-company-id="${escapeHTML(company.id)}" data-type="${type}"><div class="admin-mentor-chips">${chips}</div><div class="admin-mentor-add"><select data-matrix-select><option value="">${type==="FINANCIERO"?"Seleccionar mentor financiero…":"Añadir mentor de impacto…"}</option>${options}</select><button class="btn btn-soft btn-sm" type="button" data-matrix-assign data-company-id="${escapeHTML(company.id)}" data-company-name="${escapeHTML(company.name)}" data-type="${type}">${buttonLabel}</button></div></div>`;
+}
+
+function adminRenderMentorMatrix(){
+  const body=$("#adminMentorMatrixBody");
+  if(!body)return;
+  const companies=adminMatrixCompanies();
+  const assignments=adminMatrixAssignments();
+  const financialPool=adminMatrixMentors("FINANCIERO");
+  const impactPool=adminMatrixMentors("IMPACTO");
+  const query=String($("#adminMatrixSearch")?.value||"").trim().toLocaleLowerCase("es");
+  const mentorFilter=String($("#adminMatrixMentorFilter")?.value||"").trim().toLowerCase();
+  const filtered=companies.filter(c=>{
+    const related=assignments.filter(a=>a.companyId===c.id);
+    if(mentorFilter&&!related.some(a=>a.email===mentorFilter&&a.active))return false;
+    if(!query)return true;
+    const hay=[c.id,c.name,...related.flatMap(a=>[a.name,a.email])].join(" ").toLocaleLowerCase("es");
+    return hay.includes(query);
+  });
+  const finCompanies=new Set(assignments.filter(a=>a.active&&a.type==="FINANCIERO").map(a=>a.companyId));
+  const impactCompanies=new Set(assignments.filter(a=>a.active&&a.type==="IMPACTO").map(a=>a.companyId));
+  $("#adminMatrixCompanies").textContent=companies.length;
+  $("#adminMatrixFinancial").textContent=finCompanies.size;
+  $("#adminMatrixImpact").textContent=impactCompanies.size;
+  $("#adminMatrixInvites").textContent=adminMatrixInvitations().length;
+  if(!filtered.length){
+    body.innerHTML='<tr><td colspan="3" class="admin-matrix-loading">No hay empresas que coincidan con este filtro.</td></tr>';
+    return;
+  }
+  body.innerHTML=filtered.map(c=>`<tr><td class="admin-matrix-company"><strong>${escapeHTML(c.name||c.id)}</strong><span>${escapeHTML(c.id)}</span></td><td>${adminMatrixCell(c,"FINANCIERO",assignments,financialPool)}</td><td>${adminMatrixCell(c,"IMPACTO",assignments,impactPool)}</td></tr>`).join("");
+}
+
+
+function adminHistoryRows(){
+  const raw=Array.isArray(adminMentorMatrixData.historial)?adminMentorMatrixData.historial:[];
+  return raw.map(x=>({
+    raw:x,
+    date:String(adminMatrixField(x,"FechaCambio","Created")||"").trim(),
+    companyId:String(adminMatrixField(x,"EmpresaID","field_1")||"").trim(),
+    companyName:String(adminMatrixField(x,"EmpresaNombre","field_2")||"").trim(),
+    email:String(adminMatrixField(x,"MentorEmail","field_3")||"").trim().toLowerCase(),
+    name:String(adminMatrixField(x,"MentorNombre","field_4")||"").trim(),
+    type:adminMatrixType(adminMatrixField(x,"TipoMentoria","field_5")),
+    action:String(adminMatrixField(x,"Accion","field_6")||"").trim().toUpperCase(),
+    previous:String(adminMatrixField(x,"EstadoAnterior","field_7")||"").trim().toUpperCase(),
+    next:String(adminMatrixField(x,"EstadoNuevo","field_8")||"").trim().toUpperCase(),
+    by:String(adminMatrixField(x,"ModificadoPor","field_9","Editor")||"").trim()
+  })).sort((a,b)=>{
+    const da=Date.parse(a.date)||0, db=Date.parse(b.date)||0;
+    return db-da;
+  });
+}
+
+function adminHistoryDate(value){
+  if(!value)return "—";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return value;
+  try{
+    return new Intl.DateTimeFormat("es-CO",{
+      day:"2-digit",month:"2-digit",year:"numeric",
+      hour:"2-digit",minute:"2-digit",second:"2-digit"
+    }).format(d);
+  }catch{return d.toLocaleString()}
+}
+
+function adminHistoryActionLabel(value){
+  const v=String(value||"").toUpperCase();
+  if(v==="CREAR_ASIGNACION")return "Crear asignación";
+  if(v==="ACTIVAR")return "Activar";
+  if(v==="DESASIGNAR")return "Desasignar";
+  return v||"—";
+}
+
+function adminHistorySyncUsers(rows){
+  const el=$("#adminHistoryUser");
+  if(!el)return;
+  const current=el.value;
+  const users=[...new Set(rows.map(x=>x.by).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+  el.innerHTML='<option value="">Todos los usuarios</option>'+users.map(x=>`<option value="${escapeHTML(x)}">${escapeHTML(x)}</option>`).join("");
+  if(users.includes(current))el.value=current;
+}
+
+function adminRenderHistory(){
+  const body=$("#adminHistoryBody");
+  if(!body)return;
+  const rows=adminHistoryRows();
+  adminHistorySyncUsers(rows);
+  const q=String($("#adminHistorySearch")?.value||"").trim().toLocaleLowerCase("es");
+  const type=String($("#adminHistoryType")?.value||"").trim().toUpperCase();
+  const action=String($("#adminHistoryAction")?.value||"").trim().toUpperCase();
+  const by=String($("#adminHistoryUser")?.value||"").trim();
+
+  const filtered=rows.filter(x=>{
+    if(type&&x.type!==type)return false;
+    if(action&&x.action!==action)return false;
+    if(by&&x.by!==by)return false;
+    if(!q)return true;
+    const hay=[x.companyId,x.companyName,x.email,x.name,x.type,x.action,x.previous,x.next,x.by].join(" ").toLocaleLowerCase("es");
+    return hay.includes(q);
+  });
+
+  const count=$("#adminHistoryCount");
+  if(count)count.textContent=`${filtered.length} ${filtered.length===1?"cambio":"cambios"}`;
+
+  if(!filtered.length){
+    body.innerHTML='<tr><td colspan="7" class="admin-history-empty">No hay cambios que coincidan con estos filtros.</td></tr>';
+    return;
+  }
+
+  body.innerHTML=filtered.map(x=>{
+    const mentor=x.name&&x.name.toLowerCase()!==x.email?`<strong>${escapeHTML(x.name)}</strong><small>${escapeHTML(x.email)}</small>`:`<strong>${escapeHTML(x.email||"—")}</strong>`;
+    const company=x.companyName?`<strong>${escapeHTML(x.companyName)}</strong><small>${escapeHTML(x.companyId)}</small>`:`<strong>${escapeHTML(x.companyId||"—")}</strong>`;
+    const change=`<span class="admin-history-state">${escapeHTML(x.previous||"—")} → ${escapeHTML(x.next||"—")}</span>`;
+    return `<tr>
+      <td>${escapeHTML(adminHistoryDate(x.date))}</td>
+      <td>${company}</td>
+      <td>${mentor}</td>
+      <td>${escapeHTML(x.type||"—")}</td>
+      <td><span class="admin-history-action">${escapeHTML(adminHistoryActionLabel(x.action))}</span></td>
+      <td>${change}</td>
+      <td>${escapeHTML(x.by||"—")}</td>
+    </tr>`;
+  }).join("");
+}
+
+async function adminLoadMentorMatrix(showStatus=true){
+  if(!adminAuthorized||!session?.accessToken||adminMentorMatrixLoading)return;
+  adminMentorMatrixLoading=true;
+  const btn=$("#adminMentorMatrixRefresh");
+  setBusy(btn,true,"Actualizando…");
+  if(showStatus)adminMatrixSetStatus("Cargando empresas, asignaciones e invitaciones…");
+  try{
+    const data=await apiPost(FLOW_ACCESS_ADMIN_URL,{accessToken:session.accessToken,operacion:"LISTAR_GESTION_MENTORES"});
+    if(!data?.ok||String(data?.status||"").toUpperCase()!=="GESTION_MENTORES_OK")throw new Error(data?.message||"Respuesta inesperada");
+    adminMentorMatrixData={
+      empresas:Array.isArray(data.empresas)?data.empresas:[],
+      asignaciones:Array.isArray(data.asignaciones)?data.asignaciones:[],
+      invitaciones:Array.isArray(data.invitaciones)?data.invitaciones:[],
+      historial:Array.isArray(data.historial)?data.historial:[]
+    };
+    adminMatrixSyncMentorFilter();
+    adminRenderMentorMatrix();
+    adminRenderHistory();
+    if(showStatus)adminMatrixSetStatus("Matriz actualizada.","ok"); else adminMatrixSetStatus("");
+  }catch(err){
+    console.error("Error cargando matriz de mentores",err);
+    adminMatrixSetStatus(Number(err?.status)===403?"Tu perfil no está autorizado para consultar la matriz.":"No pudimos cargar la matriz de mentores.","err");
+    const body=$("#adminMentorMatrixBody");
+    if(body)body.innerHTML='<tr><td colspan="3" class="admin-matrix-loading">No se pudo cargar la matriz. Usa “Actualizar matriz” para reintentar.</td></tr>';
+  }finally{
+    adminMentorMatrixLoading=false;
+    setBusy(btn,false);
+  }
+}
+
+async function adminMatrixUpdateOne({companyId,companyName,email,name,type,active}){
+  return apiPost(FLOW_ACCESS_ADMIN_URL,{
+    accessToken:session.accessToken,
+    operacion:"ACTUALIZAR_ASIGNACION_MENTOR",
+    email,
+    mentorNombre:name||email,
+    empresaId:companyId,
+    empresaNombre:companyName||companyById(companyId)?.name||companyId,
+    tipoMentoria:type,
+    activo:!!active
+  });
+}
+
+async function adminMatrixAssign(button){
+  if(!adminAuthorized||!session?.accessToken)return;
+  const companyId=button.dataset.companyId||"";
+  const companyName=button.dataset.companyName||companyId;
+  const type=button.dataset.type||"";
+  const cell=button.closest(".admin-mentor-cell");
+  const select=cell?.querySelector("[data-matrix-select]");
+  const email=String(select?.value||"").trim().toLowerCase();
+  if(!email)return adminMatrixSetStatus("Selecciona primero un mentor.","err");
+  const mentor=adminMatrixMentors(type).find(m=>m.email===email)||{email,name:email,type};
+  setBusy(button,true,type==="FINANCIERO"?"Cambiando…":"Asignando…");
+  adminMatrixSetStatus(`Actualizando ${companyId}…`);
+  try{
+    const assignments=adminMatrixAssignments();
+    if(type==="FINANCIERO"){
+      const current=assignments.filter(a=>a.companyId===companyId&&a.type==="FINANCIERO"&&a.active&&a.email!==email);
+      for(const old of current){
+        const res=await adminMatrixUpdateOne({companyId,companyName,email:old.email,name:old.name||old.email,type:"FINANCIERO",active:false});
+        if(!res?.ok)throw new Error(res?.message||"No se pudo desasignar el mentor financiero anterior");
+      }
+    }
+    const res=await adminMatrixUpdateOne({companyId,companyName,email,name:mentor.name||mentor.email,type,active:true});
+    if(!res?.ok||String(res?.status||"").toUpperCase()!=="ASIGNACION_MENTOR_ACTUALIZADA")throw new Error(res?.message||"No se pudo actualizar la asignación");
+    adminMatrixSetStatus(`${type==="FINANCIERO"?"Mentor financiero":"Mentoría de impacto"} actualizado en ${companyId}.`,"ok");
+    await adminLoadMentorMatrix(false);
+  }catch(err){
+    console.error("Error actualizando asignación",err);
+    adminMatrixSetStatus(err?.message||"No pudimos actualizar la asignación.","err");
+  }finally{setBusy(button,false)}
+}
+
+async function adminMatrixRemove(button){
+  if(!adminAuthorized||!session?.accessToken)return;
+  const companyId=button.dataset.companyId||"";
+  const companyName=button.dataset.companyName||companyId;
+  const type=button.dataset.type||"";
+  const email=String(button.dataset.email||"").trim().toLowerCase();
+  const name=button.dataset.name||email;
+  if(!email)return;
+  button.disabled=true;
+  adminMatrixSetStatus(`Desasignando ${email} de ${companyId}…`);
+  try{
+    const res=await adminMatrixUpdateOne({companyId,companyName,email,name,type,active:false});
+    if(!res?.ok||String(res?.status||"").toUpperCase()!=="ASIGNACION_MENTOR_ACTUALIZADA")throw new Error(res?.message||"No se pudo desasignar");
+    adminMatrixSetStatus(`Mentor desasignado de ${companyId}.`,"ok");
+    await adminLoadMentorMatrix(false);
+  }catch(err){
+    console.error("Error desasignando mentor",err);
+    adminMatrixSetStatus(err?.message||"No pudimos desasignar el mentor.","err");
+  }finally{button.disabled=false}
+}
+
 async function adminCreateInvitation(event){
   event?.preventDefault?.();
   if(!adminAuthorized||!session?.accessToken)return;
@@ -4006,6 +4437,7 @@ async function adminCreateInvitation(event){
       $("#adminInviteForm")?.reset();
       adminSyncInviteFields();
       $$("#adminCompanyGrid input[type='checkbox']").forEach(x=>x.checked=false);
+      adminLoadMentorMatrix(false);
       return;
     }
     if(status==="INVITATION_EXISTS")return adminSetInviteStatus("Esta persona ya tiene una invitación registrada.","err");
@@ -4031,6 +4463,7 @@ async function loadAdminDashboard(scrollAfter=false){
     }
     setAdminVisible(true);
     renderAdminDashboard(data);
+    adminLoadMentorMatrix(false);
     if(scrollAfter)setTimeout(()=>$("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
   }catch(err){
     if(Number(err?.status)===401){
@@ -4314,6 +4747,20 @@ $("#refreshAdminBtn").addEventListener("click",()=>loadAdminDashboard(false));
 $("#adminInviteRole")?.addEventListener("change",adminSyncInviteFields);
 $("#adminInviteScope")?.addEventListener("change",adminSyncInviteFields);
 $("#adminInviteForm")?.addEventListener("submit",adminCreateInvitation);
+$("#adminMentorMatrixRefresh")?.addEventListener("click",()=>adminLoadMentorMatrix(true));
+$("#adminMatrixSearch")?.addEventListener("input",adminRenderMentorMatrix);
+$("#adminMatrixMentorFilter")?.addEventListener("change",adminRenderMentorMatrix);
+$("#adminHistoryRefresh")?.addEventListener("click",()=>adminLoadMentorMatrix(true));
+$("#adminHistorySearch")?.addEventListener("input",adminRenderHistory);
+$("#adminHistoryType")?.addEventListener("change",adminRenderHistory);
+$("#adminHistoryAction")?.addEventListener("change",adminRenderHistory);
+$("#adminHistoryUser")?.addEventListener("change",adminRenderHistory);
+$("#adminMentorMatrixBody")?.addEventListener("click",e=>{
+  const assign=e.target.closest("[data-matrix-assign]");
+  if(assign)return adminMatrixAssign(assign);
+  const remove=e.target.closest("[data-matrix-remove]");
+  if(remove)return adminMatrixRemove(remove);
+});
 $("#adminToggleCompaniesBtn")?.addEventListener("click",()=>{
   adminRenderCompanyPicker();
   const boxes=$$("#adminCompanyGrid input[type='checkbox']");
