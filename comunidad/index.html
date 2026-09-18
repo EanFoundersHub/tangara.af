@@ -1670,6 +1670,24 @@ flex-direction:column}
 .admin-invite-monitor-empty{padding:22px!important;text-align:center;color:var(--txt2)!important}
 .admin-invite-monitor-note{margin-top:8px;color:var(--txt3);font-size:9.5px;line-height:1.45}
 
+.invite-config-modal{width:min(760px,100%)}
+.invite-config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.invite-config-field{display:flex;flex-direction:column;gap:6px}
+.invite-config-field.wide{grid-column:1/-1}
+.invite-config-field label{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#F4C4EE}
+.invite-config-field input,.invite-config-field select{min-height:42px;width:100%;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
+.invite-config-field select option{color:#2B1530}
+.invite-config-company-wrap{grid-column:1/-1;border:1px solid rgba(242,123,227,.14);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+.invite-config-company-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;color:var(--txt2);font-size:10px}
+.invite-config-company-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:220px;overflow:auto;padding-right:4px}
+.invite-config-company{display:flex;gap:7px;align-items:flex-start;padding:7px 8px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.018);font-size:9.5px;color:var(--txt2)}
+.invite-config-company input{margin-top:2px}
+.invite-config-actions{display:flex;justify-content:flex-end;gap:8px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.invite-config-status{margin-right:auto;font-size:10px;color:var(--txt2)}
+.invite-config-status.ok{color:#B9F5D0}.invite-config-status.err{color:#FFB4C7}
+@media(max-width:680px){.invite-config-grid{grid-template-columns:1fr}.invite-config-field.wide,.invite-config-company-wrap{grid-column:auto}.invite-config-company-grid{grid-template-columns:1fr}}
+
+
 
 
 @media(max-width:900px){.admin-company-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-matrix-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -2094,6 +2112,65 @@ flex-direction:column}
       <section class="cards" id="cards"></section>
     </section>
   </main>
+</div>
+
+
+<div class="backdrop" id="inviteConfigBackdrop" role="dialog" aria-modal="true" aria-labelledby="inviteConfigTitle">
+  <article class="modal invite-config-modal">
+    <header class="modal-head">
+      <button class="close" data-close="inviteConfigBackdrop" aria-label="Cerrar">×</button>
+      <span class="eyebrow">Invitación existente</span>
+      <h2 id="inviteConfigTitle" style="margin-top:10px;font-size:30px">Configurar acceso</h2>
+      <p id="inviteConfigEmail">—</p>
+    </header>
+    <div class="modal-body">
+      <form id="inviteConfigForm">
+        <div class="invite-config-grid">
+          <div class="invite-config-field">
+            <label for="inviteConfigRole">Perfil</label>
+            <select id="inviteConfigRole">
+              <option value="MENTOR_IMPACTO">Mentor/a de Impacto</option>
+              <option value="MENTOR">Mentor/a Financiero/a</option>
+              <option value="ALIADO_AUTORIZADO">Aliado/a autorizado/a</option>
+              <option value="EQUIPO_TANGARA">Equipo Tángara</option>
+            </select>
+          </div>
+          <div class="invite-config-field">
+            <label for="inviteConfigMentoria">Tipo de mentoría</label>
+            <select id="inviteConfigMentoria">
+              <option value="IMPACTO">Impacto</option>
+              <option value="FINANCIERO">Financiera</option>
+              <option value="">No aplica</option>
+            </select>
+          </div>
+          <div class="invite-config-field wide">
+            <label for="inviteConfigScope">Alcance de acceso</label>
+            <select id="inviteConfigScope">
+              <option value="TODAS">Todas las empresas</option>
+              <option value="EMPRESAS_ESPECIFICAS">Empresas específicas</option>
+              <option value="COPIAR_USUARIO">Copiar acceso de otro usuario</option>
+            </select>
+          </div>
+          <div class="invite-config-field wide" id="inviteConfigReferenceWrap">
+            <label for="inviteConfigReference">Correo de referencia</label>
+            <input id="inviteConfigReference" type="email" autocomplete="off" placeholder="jorge@globali.tech">
+          </div>
+          <div class="invite-config-company-wrap" id="inviteConfigCompanyWrap">
+            <div class="invite-config-company-head">
+              <span>Empresas específicas</span>
+              <button class="btn btn-soft btn-sm" id="inviteConfigToggleCompanies" type="button">Seleccionar todas</button>
+            </div>
+            <div class="invite-config-company-grid" id="inviteConfigCompanyGrid"></div>
+          </div>
+        </div>
+        <div class="invite-config-actions">
+          <span class="invite-config-status" id="inviteConfigStatus"></span>
+          <button class="btn btn-soft" type="button" data-close="inviteConfigBackdrop">Cancelar</button>
+          <button class="btn btn-primary" id="inviteConfigSave" type="submit">Guardar configuración</button>
+        </div>
+      </form>
+    </div>
+  </article>
 </div>
 
 <div class="backdrop" id="profileBackdrop" role="dialog" aria-modal="true">
@@ -4457,12 +4534,109 @@ function adminRenderInvitationMonitor(){
     const resendDisabled=row.created||!row.invitationActive?"disabled":"";
     const resendTitle=row.created?"El perfil ya existe":(!row.invitationActive?"La invitación está inactiva":"Reenviar la misma invitación");
     const link=row.token?adminInviteLink(row.token):"";
+    const configDisabled=row.created?"disabled":"";
+    const configTitle=row.created?"El perfil ya existe; ajusta sus permisos desde la matriz o la gestión de accesos.":"Configurar perfil y alcance de esta invitación";
     const actions=`<div class="admin-invite-actions">
+      <button class="btn btn-soft btn-sm" type="button" data-invite-config data-email="${escapeHTML(row.email)}" ${configDisabled} title="${escapeHTML(configTitle)}">Configurar acceso</button>
       <button class="btn btn-primary btn-sm" type="button" data-invite-resend data-email="${escapeHTML(row.email)}" ${resendDisabled} title="${escapeHTML(resendTitle)}">Reenviar</button>
       ${link?`<button class="btn btn-soft btn-sm" type="button" data-invite-copy-link data-link="${escapeHTML(link)}">Copiar enlace</button>`:""}
     </div>`;
     return `<tr><td>${person}</td><td>${profile}</td><td>${access}</td><td>${stateHtml}</td><td>${sending}</td><td>${actions}</td></tr>`;
   }).join("");
+}
+
+
+let adminInviteConfigTarget=null;
+
+function adminInviteConfigSetStatus(message="",kind=""){
+  const el=$("#inviteConfigStatus");
+  if(!el)return;
+  el.textContent=message||"";
+  el.className="invite-config-status"+(kind?` ${kind}`:"");
+}
+
+function adminInviteConfigCompanies(){
+  return $$("#inviteConfigCompanyGrid input[type='checkbox']:checked").map(x=>x.value);
+}
+
+function adminInviteConfigSyncVisibility(){
+  const scope=String($("#inviteConfigScope")?.value||"TODAS");
+  const referenceWrap=$("#inviteConfigReferenceWrap");
+  const companyWrap=$("#inviteConfigCompanyWrap");
+  if(referenceWrap)referenceWrap.style.display=scope==="COPIAR_USUARIO"?"flex":"none";
+  if(companyWrap)companyWrap.style.display=scope==="EMPRESAS_ESPECIFICAS"?"block":"none";
+}
+
+function adminInviteConfigRenderCompanies(selected=[]){
+  const grid=$("#inviteConfigCompanyGrid");
+  if(!grid)return;
+  const chosen=new Set((selected||[]).map(x=>String(x).trim()).filter(Boolean));
+  grid.innerHTML=adminMatrixCompanies().map(c=>`
+    <label class="invite-config-company">
+      <input type="checkbox" value="${escapeHTML(c.id)}" ${chosen.has(c.id)?"checked":""}>
+      <span><b>${escapeHTML(c.id)}</b> · ${escapeHTML(c.name||c.id)}</span>
+    </label>`).join("");
+  const total=$$("#inviteConfigCompanyGrid input[type='checkbox']").length;
+  const checked=$$("#inviteConfigCompanyGrid input[type='checkbox']:checked").length;
+  const btn=$("#inviteConfigToggleCompanies");
+  if(btn)btn.textContent=total&&checked===total?"Quitar todas":"Seleccionar todas";
+}
+
+function adminOpenInviteConfig(button){
+  const email=String(button?.dataset?.email||"").trim().toLowerCase();
+  const row=adminInvitationRows().find(x=>x.email===email);
+  if(!row)return;
+  if(row.created)return adminInviteMonitorSetStatus("Ese usuario ya creó su perfil; esta configuración ya no se edita desde la invitación.","err");
+
+  adminInviteConfigTarget=row;
+  $("#inviteConfigEmail").textContent=email;
+  $("#inviteConfigRole").value=row.role||"ALIADO_AUTORIZADO";
+  $("#inviteConfigMentoria").value=row.type||"";
+  $("#inviteConfigScope").value=row.scope||"TODAS";
+  $("#inviteConfigReference").value=row.referenceEmail||"";
+  const selected=row.companies?row.companies.split(";").map(x=>x.trim()).filter(Boolean):[];
+  adminInviteConfigRenderCompanies(selected);
+  adminInviteConfigSyncVisibility();
+  adminInviteConfigSetStatus("");
+  $("#inviteConfigBackdrop")?.classList.add("open");
+}
+
+async function adminSaveInviteConfig(event){
+  event.preventDefault();
+  if(!adminInviteConfigTarget||!session?.accessToken)return;
+
+  const email=adminInviteConfigTarget.email;
+  const rol=String($("#inviteConfigRole")?.value||"").trim();
+  const tipoMentoria=String($("#inviteConfigMentoria")?.value||"").trim();
+  const alcance=String($("#inviteConfigScope")?.value||"TODAS").trim();
+  const referenciaEmail=String($("#inviteConfigReference")?.value||"").trim().toLowerCase();
+  const empresas=alcance==="EMPRESAS_ESPECIFICAS"?adminInviteConfigCompanies():[];
+
+  if(alcance==="COPIAR_USUARIO"&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(referenciaEmail)){
+    return adminInviteConfigSetStatus("Indica un correo de referencia válido.","err");
+  }
+  if(alcance==="EMPRESAS_ESPECIFICAS"&&!empresas.length){
+    return adminInviteConfigSetStatus("Selecciona al menos una empresa.","err");
+  }
+
+  const button=$("#inviteConfigSave");
+  setBusy(button,true,"Guardando…");
+  adminInviteConfigSetStatus("Actualizando la invitación…");
+  try{
+    const res=await apiPost(FLOW_ACCESS_ADMIN_URL,{
+      accessToken:session.accessToken,
+      operacion:"ACTUALIZAR_INVITACION_EXISTENTE",
+      email,rol,tipoMentoria,alcance,empresas,referenciaEmail
+    });
+    const status=String(res?.status||"").toUpperCase();
+    if(!res?.ok||status!=="INVITATION_UPDATED")throw new Error(res?.message||"No se pudo actualizar la invitación");
+    adminInviteConfigSetStatus("Configuración guardada.","ok");
+    await adminLoadMentorMatrix(false);
+    setTimeout(()=>$("#inviteConfigBackdrop")?.classList.remove("open"),450);
+  }catch(err){
+    console.error("Error actualizando invitación existente",err);
+    adminInviteConfigSetStatus(err?.message||"No pudimos actualizar la invitación.","err");
+  }finally{setBusy(button,false)}
 }
 
 async function adminResendInvitation(button){
@@ -5056,11 +5230,21 @@ $("#adminInviteMonitorRefresh")?.addEventListener("click",()=>adminLoadMentorMat
 $("#adminInviteMonitorSearch")?.addEventListener("input",adminRenderInvitationMonitor);
 $("#adminInviteMonitorState")?.addEventListener("change",adminRenderInvitationMonitor);
 $("#adminInviteMonitorBody")?.addEventListener("click",e=>{
+  const config=e.target.closest("[data-invite-config]");
+  if(config)return adminOpenInviteConfig(config);
   const resend=e.target.closest("[data-invite-resend]");
   if(resend)return adminResendInvitation(resend);
   const copy=e.target.closest("[data-invite-copy-link]");
   if(copy)return adminCopyInvitationLink(copy);
 });
+$("#inviteConfigScope")?.addEventListener("change",adminInviteConfigSyncVisibility);
+$("#inviteConfigToggleCompanies")?.addEventListener("click",()=>{
+  const boxes=$$("#inviteConfigCompanyGrid input[type='checkbox']");
+  const allSelected=boxes.length&&boxes.every(x=>x.checked);
+  boxes.forEach(x=>x.checked=!allSelected);
+  $("#inviteConfigToggleCompanies").textContent=allSelected?"Seleccionar todas":"Quitar todas";
+});
+$("#inviteConfigForm")?.addEventListener("submit",adminSaveInviteConfig);
 $("#adminMentorMatrixBody")?.addEventListener("click",e=>{
   const assign=e.target.closest("[data-matrix-assign]");
   if(assign)return adminMatrixAssign(assign);
