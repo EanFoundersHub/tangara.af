@@ -4100,8 +4100,20 @@ function adminMatrixField(row,...keys){
 function adminMatrixType(value,role=""){
   const type=normalizeInviteValue(value);
   const r=normalizeInviteValue(role);
-  if(type.includes("IMPACT")||r==="MENTOR_IMPACTO")return "IMPACTO";
-  if(type.includes("FINAN")||r==="MENTOR"||r.includes("FINANCIERO"))return "FINANCIERO";
+
+  if(
+    r==="MENTOR_IMPACTO" ||
+    type==="IMPACTO" ||
+    type==="MENTOR_IMPACTO"
+  )return "IMPACTO";
+
+  if(
+    r==="MENTOR" ||
+    r==="MENTOR_FINANCIERO" ||
+    type==="FINANCIERO" ||
+    type==="MENTOR_FINANCIERO"
+  )return "FINANCIERO";
+
   return "";
 }
 
@@ -4141,24 +4153,75 @@ function adminMatrixInvitations(){
 }
 
 function adminMatrixMentors(type=""){
-  const merged=new Map();
-  for(const a of adminMatrixAssignments()){
-    if(type&&a.type!==type)continue;
-    const key=`${a.type}|${a.email}`;
-    const current=merged.get(key)||{email:a.email,name:"",type:a.type,invited:false};
-    if(a.name)current.name=a.name;
-    merged.set(key,current);
-  }
+  /*
+    Catálogo canónico de mentores.
+    La clasificación NO se toma de cualquier asignación histórica, porque una
+    prueba o una asignación inactiva de otro tipo podría mezclar los selectores.
+    Prioridad:
+      1) Rol/tipo explícito de la invitación.
+      2) Tipo de las asignaciones ACTIVAS.
+      3) Historial de asignaciones como respaldo.
+  */
+  const catalog=new Map();
+
+  const getMentor=email=>{
+    const key=String(email||"").trim().toLowerCase();
+    if(!key)return null;
+    if(!catalog.has(key)){
+      catalog.set(key,{
+        email:key,
+        name:"",
+        type:"",
+        invited:false,
+        invitationActive:false,
+        activated:false,
+        invitationType:"",
+        activeCounts:{FINANCIERO:0,IMPACTO:0},
+        allCounts:{FINANCIERO:0,IMPACTO:0}
+      });
+    }
+    return catalog.get(key);
+  };
+
   for(const inv of adminMatrixInvitations()){
-    if(type&&inv.type!==type)continue;
-    const key=`${inv.type}|${inv.email}`;
-    const current=merged.get(key)||{email:inv.email,name:"",type:inv.type,invited:false};
-    current.invited=true;
-    current.invitationActive=inv.invitationActive;
-    current.activated=inv.activated;
-    merged.set(key,current);
+    const mentor=getMentor(inv.email);
+    if(!mentor)continue;
+    mentor.invited=true;
+    mentor.invitationActive=inv.invitationActive;
+    mentor.activated=inv.activated;
+    if(inv.type)mentor.invitationType=inv.type;
   }
-  return [...merged.values()].sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email,"es",{sensitivity:"base"}));
+
+  for(const a of adminMatrixAssignments()){
+    const mentor=getMentor(a.email);
+    if(!mentor)continue;
+    if(a.name)mentor.name=a.name;
+    if(a.type==="FINANCIERO"||a.type==="IMPACTO"){
+      mentor.allCounts[a.type]+=1;
+      if(a.active)mentor.activeCounts[a.type]+=1;
+    }
+  }
+
+  const chooseByCounts=counts=>{
+    if(counts.IMPACTO>counts.FINANCIERO)return "IMPACTO";
+    if(counts.FINANCIERO>counts.IMPACTO)return "FINANCIERO";
+    return "";
+  };
+
+  const mentors=[];
+  for(const mentor of catalog.values()){
+    mentor.type =
+      mentor.invitationType ||
+      chooseByCounts(mentor.activeCounts) ||
+      chooseByCounts(mentor.allCounts) ||
+      "";
+
+    if(!mentor.type)continue;
+    if(type&&mentor.type!==type)continue;
+    mentors.push(mentor);
+  }
+
+  return mentors.sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email,"es",{sensitivity:"base"}));
 }
 
 function adminMatrixMentorLabel(mentor){
@@ -4192,7 +4255,9 @@ function adminMatrixCell(company,type,assignments,pool){
     return `<span class="admin-mentor-chip ${type==="FINANCIERO"?"fin":""}"><span class="mentor-chip-label" title="${escapeHTML(label)}">${escapeHTML(label)}</span>${invited}<button type="button" title="Desasignar" data-matrix-remove data-company-id="${escapeHTML(company.id)}" data-company-name="${escapeHTML(company.name)}" data-type="${type}" data-email="${escapeHTML(a.email)}" data-name="${escapeHTML(a.name||a.email)}">×</button></span>`;
   }).join(""):'<span class="admin-mentor-empty">Sin asignación activa</span>';
   const selectedEmails=new Set(active.map(a=>a.email));
-  const options=pool.map(m=>`<option value="${escapeHTML(m.email)}" data-name="${escapeHTML(m.name||m.email)}" ${selectedEmails.has(m.email)?"disabled":""}>${escapeHTML(adminMatrixMentorLabel(m))}${m.invited?" · invitado":""}</option>`).join("");
+  // Blindaje adicional: cada selector solo recibe mentores de su propia categoría.
+  const safePool=pool.filter(m=>String(m.type||"").toUpperCase()===type);
+  const options=safePool.map(m=>`<option value="${escapeHTML(m.email)}" data-name="${escapeHTML(m.name||m.email)}" ${selectedEmails.has(m.email)?"disabled":""}>${escapeHTML(adminMatrixMentorLabel(m))}${m.invited?" · invitado":""}</option>`).join("");
   const buttonLabel=type==="FINANCIERO"&&active.length?"Cambiar":"Asignar";
   return `<div class="admin-mentor-cell" data-company-id="${escapeHTML(company.id)}" data-type="${type}"><div class="admin-mentor-chips">${chips}</div><div class="admin-mentor-add"><select data-matrix-select><option value="">${type==="FINANCIERO"?"Seleccionar mentor financiero…":"Añadir mentor de impacto…"}</option>${options}</select><button class="btn btn-soft btn-sm" type="button" data-matrix-assign data-company-id="${escapeHTML(company.id)}" data-company-name="${escapeHTML(company.name)}" data-type="${type}">${buttonLabel}</button></div></div>`;
 }
