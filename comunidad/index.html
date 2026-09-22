@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Comunidad Tángara · v6 simplificada · bitácoras internas posteriores a la primera -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -1706,6 +1707,301 @@ flex-direction:column}
 @keyframes tangaraBirdFloat{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(-8px,-12px,0) rotate(-1.25deg)}}
 </style>
 
+
+<style id="tangara-simple-v6">
+/* Experiencia simplificada v6: menos ruido, más acciones claras. */
+.hero-simple-toggle{display:flex;justify-content:flex-end;margin-top:10px}
+.hero-stats:not(.expanded) .stat:nth-child(n+5){display:none}
+.hero-stats:not(.expanded){grid-template-columns:repeat(4,minmax(0,1fr))}
+
+/* Acompañamiento */
+.accomp-shell{padding:0;background:transparent;border:0;gap:12px}
+.mentor-overview{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:20px;border-radius:18px;background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));border:1px solid rgba(242,123,227,.22)}
+.mentor-overview h3{font-size:24px;margin:5px 0 4px}.mentor-overview-id{font-size:10px;color:var(--txt3)}
+.mentor-overview-role{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:6px 10px;border-radius:999px;border:1px solid rgba(242,123,227,.24);background:rgba(238,70,221,.07);color:#F6C8EF;font-size:10px;font-weight:750}
+.mentor-overview-side{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.mentor-count{min-width:118px;padding:12px 14px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid var(--line);text-align:center}.mentor-count strong{display:block;font-size:27px;color:#fff;line-height:1}.mentor-count span{display:block;margin-top:5px;color:var(--txt3);font-size:9px;text-transform:uppercase;letter-spacing:.06em}
+.mentor-primary-action{min-width:170px}
+.accomp-simple-meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--txt2);font-size:10.5px}
+.accomp-simple-meta span{padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.025);border:1px solid var(--line)}
+.accomp-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;padding:4px}.accomp-tab{width:100%}
+.accomp-actions,.permission-row{display:none!important}
+.accomp-note{margin:0}
+.bita-list{gap:8px}.bita-card{padding:15px 16px}.bita-head strong{font-size:14px}.bita-card p{margin-top:6px}
+.bita-empty-simple{padding:24px;text-align:center;border:1px dashed rgba(242,123,227,.22);border-radius:14px;color:var(--txt2);background:rgba(255,255,255,.018)}
+.bita-empty-simple strong{display:block;color:#fff;font-size:15px;margin-bottom:5px}
+
+/* Modal de bitácora */
+.bitacora-modal{width:min(720px,100%)}
+.bitacora-context{display:grid;grid-template-columns:1fr 1fr 110px;gap:9px;margin-bottom:18px}
+.bitacora-context>div{padding:11px 12px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.bitacora-context span{display:block;font-size:8.8px;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:4px}.bitacora-context strong{font-size:12.5px;color:#fff}
+.bitacora-form{display:grid;gap:14px}.bitacora-field{display:grid;gap:7px}.bitacora-field label{font-size:11.5px;font-weight:700;color:#fff}.bitacora-field input,.bitacora-field textarea{width:100%;border-radius:11px;border:1px solid var(--line2);background:rgba(255,255,255,.035);color:#fff;padding:11px 12px;outline:none}.bitacora-field textarea{min-height:120px;resize:vertical;line-height:1.5}.bitacora-field input:focus,.bitacora-field textarea:focus{border-color:rgba(242,123,227,.62);box-shadow:0 0 0 3px rgba(238,70,221,.08)}
+.bitacora-error{padding:11px 13px;border-radius:10px;background:rgba(255,154,168,.07);border:1px solid rgba(255,154,168,.22);color:#ffb2bd;font-size:12px}.bitacora-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}.bitacora-help{font-size:11px;color:var(--txt2);line-height:1.5;margin:-2px 0 2px}
+
+/* Administración por vistas, no por pared de controles. */
+#adminAccessNavBtn{display:none!important}
+.admin-simple-nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px;padding:5px;border:1px solid rgba(242,123,227,.18);border-radius:13px;background:rgba(255,255,255,.02);width:max-content;max-width:100%}
+.admin-simple-nav button{border:0;background:transparent;color:var(--txt2);padding:10px 14px;border-radius:9px;font-weight:700;font-size:12px}.admin-simple-nav button.active{background:rgba(238,70,221,.16);color:#fff}
+.admin-simple-view{display:none}.admin-simple-view.active{display:block}
+.admin-simple-title{margin:0 0 14px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(242,123,227,.16)}.admin-simple-title strong{display:block;font-size:17px;color:#fff}.admin-simple-title span{display:block;margin-top:5px;font-size:11.5px;line-height:1.45;color:var(--txt2)}
+.admin-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}.admin-metrics .admin-metric:nth-child(4),.admin-metrics .admin-metric:nth-child(5),.admin-metrics .admin-metric:nth-child(6),.admin-metrics .admin-metric:nth-child(7){display:none}.admin-metrics .admin-metric:nth-child(8){display:block}
+.admin-access-manager{margin-top:0;padding:0;border:0;background:transparent;gap:0}
+.admin-access-head{margin-bottom:14px}.admin-access-head>span{display:none}
+.admin-invite-monitor,.admin-mentor-matrix,.admin-history{margin-top:14px}
+.admin-mentor-matrix{padding-top:0;border-top:0}.admin-history{padding-top:0;border-top:0}
+.admin-existing-note{margin-top:12px}
+.admin-simple-view .admin-access-form{padding:16px;border-radius:15px;background:rgba(255,255,255,.022);border:1px solid rgba(242,123,227,.15)}
+
+@media(max-width:900px){.hero-stats:not(.expanded){grid-template-columns:repeat(2,minmax(0,1fr))}.mentor-overview{grid-template-columns:1fr}.mentor-overview-side{justify-content:flex-start}.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.bitacora-context{grid-template-columns:1fr}.mentor-overview-side{display:grid;grid-template-columns:1fr;width:100%}.mentor-count,.mentor-primary-action{width:100%}.admin-simple-nav{display:grid;grid-template-columns:1fr 1fr;width:100%}.hero-stats:not(.expanded){grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="tangara-simple-v7">
+/* v7 · menos capas, una jerarquia clara. Sin cambios de logo ni tipografia. */
+
+/* 1 · Hero mas corto: el titular manda, las cifras acompanan */
+.hero{padding:clamp(34px,4vw,54px) 0 clamp(20px,2.4vw,30px)}
+.hero-inner{max-width:780px}
+.hero h1{font-size:clamp(30px,3.9vw,50px);line-height:1.02;margin:14px 0 14px}
+.hero .lead{font-size:clamp(15px,1.1vw,17px);line-height:1.6;max-width:62ch}
+.hero-stats{margin-top:clamp(22px,2.6vw,30px);padding-top:clamp(18px,2vw,24px);gap:0;border-top:1px solid rgba(238,70,221,.16)}
+.hero-stats:not(.expanded),.hero-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.hero-stats .stat{background:none;border:0;border-left:1px solid rgba(242,123,227,.16);border-radius:0;padding:2px 18px}
+.hero-stats .stat:first-child{border-left:0;padding-left:0}
+.stat strong{font-size:clamp(22px,2vw,29px);color:#fff;font-weight:700}
+.stat span{margin-top:6px;font-size:11px;letter-spacing:.02em;text-transform:none;color:var(--txt2);line-height:1.4}
+
+/* 2 · Navegacion de secciones: se ve de una que la pagina tiene tres lugares */
+.sec-nav{position:sticky;top:57px;z-index:35;background:rgba(25,8,36,.86);backdrop-filter:blur(18px);border-bottom:1px solid rgba(238,70,221,.13)}
+.sec-nav-inner{width:min(1300px,100%);margin:auto;padding:0 clamp(18px,3.4vw,44px);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.sec-nav-inner::-webkit-scrollbar{display:none}
+.sec-nav a{padding:13px 14px;font-size:13px;font-weight:650;color:var(--txt2);border-bottom:2px solid transparent;white-space:nowrap;transition:.2s var(--ease)}
+.sec-nav a:hover{color:#fff}
+.sec-nav a.active{color:#fff;border-bottom-color:var(--mag)}
+.block{scroll-margin-top:112px}
+
+/* 3 · Un solo encabezado por seccion, sin parrafos repetidos */
+.block{padding:clamp(34px,4vw,52px) 0}
+.section-head{margin-bottom:18px;gap:18px}
+.section-head h2{font-size:clamp(23px,2.2vw,30px)}
+.section-head p{font-size:14px;line-height:1.6;max-width:66ch;color:var(--txt2)}
+.section-head .eyebrow{font-size:11px}
+#cohorte{padding-top:clamp(20px,2.4vw,30px)}
+#cohorte .section-head{margin-bottom:12px}
+#cohorte .section-head .eyebrow,#cohorte .section-head p{display:none}
+#cohorte .section-head h2{font-size:15px;font-weight:650;letter-spacing:0;color:var(--txt2)}
+#acompanamiento,#solicitudes,#directorio{border-top:1px solid rgba(238,70,221,.10)}
+
+/* 4 · Tarjetas de empresa: descripcion recortada limpia y una accion visible */
+.cards{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px;padding-bottom:56px}
+.company{grid-template-columns:1fr;gap:10px;align-content:start;padding:18px 20px;border-radius:16px}
+.company:hover{transform:translateY(-2px)}
+.company h3{font-size:17px;margin:6px 0 0;line-height:1.25}
+.company p{font-size:13.5px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;max-height:none}
+.company-side{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;text-align:left;border-left:0;border-top:1px solid rgba(242,123,227,.14);padding:12px 0 0;min-width:0}
+.company-side span{font-size:11.5px;color:var(--txt2)}
+.company-side b{font-size:12.5px}
+.company .vertical{font-size:10.5px}
+
+/* 5 · Filtros legibles, sin etiquetas cortadas */
+.toolbar{grid-template-columns:minmax(220px,1.7fr) repeat(2,minmax(205px,.85fr))}
+.toolbar select{font-size:13.5px;padding-right:32px;text-overflow:ellipsis}
+.toolbar input{font-size:14px}
+.directory-meta{font-size:12.5px}
+.directory-meta span:last-child{color:var(--txt3)}
+
+/* 6 · Contactos: tres cifras sobrias */
+.connection-summary{gap:0;border:1px solid rgba(242,123,227,.16);border-radius:16px;overflow:hidden}
+.connection-stat{border-radius:0;border:0;border-left:1px solid rgba(242,123,227,.14);padding:18px 20px}
+.connection-stat:first-child{border-left:0}
+
+.feedback-float{opacity:.88}
+.feedback-float:hover{opacity:1}
+
+@media(max-width:900px){.hero-stats,.hero-stats:not(.expanded){grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 0}.hero-stats .stat:nth-child(odd){border-left:0;padding-left:0}.sec-nav{top:53px}}
+@media(max-width:760px){.company-side{flex-wrap:wrap}.connection-summary{grid-template-columns:1fr}.connection-stat{border-left:0;border-top:1px solid rgba(242,123,227,.14)}.connection-stat:first-child{border-top:0}}
+</style>
+
+
+<style id="tangara-motion-v7-1">
+/* v7.1 · Motion pass
+   Mantiene el movimiento original y extiende la misma lógica a los componentes nuevos.
+   Toda animación se desactiva cuando el sistema del usuario solicita reducir movimiento. */
+
+@media (prefers-reduced-motion:no-preference){
+
+  /* Entrada general de la aplicación */
+  #appView:not(.hidden) .topbar{
+    animation:tgDropIn .48s cubic-bezier(.22,1,.36,1) both;
+  }
+  #appView:not(.hidden) .sec-nav{
+    animation:tgFadeIn .5s .07s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  /* Hero con secuencia ligera */
+  #appView:not(.hidden) .hero .chip{
+    animation:tgRiseIn .52s .06s cubic-bezier(.22,1,.36,1) both;
+  }
+  #appView:not(.hidden) .hero h1{
+    animation:tgRiseIn .62s .12s cubic-bezier(.22,1,.36,1) both;
+  }
+  #appView:not(.hidden) .hero .lead{
+    animation:tgRiseIn .62s .19s cubic-bezier(.22,1,.36,1) both;
+  }
+  #appView:not(.hidden) .hero-stats{
+    animation:tgRiseIn .62s .25s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  /* Modales: fondo + tarjeta. Antes abrían de golpe. */
+  .backdrop.open{
+    animation:tgBackdropIn .22s ease-out both;
+  }
+  .backdrop.open > .modal,
+  .backdrop.open > .interest-box,
+  .backdrop.open > .correction-box{
+    animation:tgModalIn .38s cubic-bezier(.22,1,.36,1) both;
+    transform-origin:50% 44%;
+  }
+
+  /* Cambio de pestañas/vistas */
+  .accomp-panel.active,
+  .connection-panel.active,
+  .admin-simple-view.active{
+    animation:tgPanelIn .34s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  /* Revelado de las cifras adicionales */
+  .hero-stats.expanded .stat:nth-child(n+5){
+    animation:tgStatReveal .42s cubic-bezier(.22,1,.36,1) both;
+  }
+  .hero-stats.expanded .stat:nth-child(6){animation-delay:.035s}
+  .hero-stats.expanded .stat:nth-child(7){animation-delay:.07s}
+  .hero-stats.expanded .stat:nth-child(8){animation-delay:.105s}
+  .hero-stats.expanded .stat:nth-child(9){animation-delay:.14s}
+  .hero-stats.expanded .stat:nth-child(10){animation-delay:.175s}
+  .hero-stats.expanded .stat:nth-child(11){animation-delay:.21s}
+  .hero-stats.expanded .stat:nth-child(12){animation-delay:.245s}
+
+  /* Microinteracciones */
+  .stat,
+  .mentor-count,
+  .connection-stat,
+  .admin-metric,
+  .admin-panel,
+  .admin-matrix-kpi,
+  .light-card,
+  .firstlog-card,
+  .bita-card{
+    transition:
+      transform .22s var(--ease),
+      border-color .22s var(--ease),
+      background .22s var(--ease),
+      box-shadow .22s var(--ease);
+  }
+
+  .stat:hover,
+  .mentor-count:hover,
+  .connection-stat:hover,
+  .admin-metric:hover,
+  .admin-matrix-kpi:hover,
+  .light-card:hover,
+  .firstlog-card:hover,
+  .bita-card:hover{
+    transform:translateY(-2px);
+  }
+
+  .admin-panel:hover{
+    border-color:rgba(242,123,227,.32);
+  }
+
+  .admin-simple-nav button,
+  .accomp-tab,
+  .connection-tab,
+  .interest-option,
+  .pred-edit,
+  .close,
+  .feedback-float,
+  .mentor-primary-action,
+  .hero-simple-toggle .btn{
+    transition:
+      transform .2s var(--ease),
+      background .2s var(--ease),
+      border-color .2s var(--ease),
+      color .2s var(--ease),
+      box-shadow .2s var(--ease),
+      opacity .2s var(--ease);
+  }
+
+  .admin-simple-nav button:hover,
+  .accomp-tab:hover,
+  .connection-tab:hover,
+  .interest-option:hover,
+  .pred-edit:hover,
+  .hero-simple-toggle .btn:hover{
+    transform:translateY(-1px);
+  }
+
+  .close:hover{
+    transform:rotate(5deg) scale(1.05);
+    background:rgba(255,255,255,.11);
+  }
+
+  .feedback-float:hover{
+    transform:translateY(-2px);
+    box-shadow:0 20px 50px rgba(33,4,43,.42);
+  }
+
+  /* El carrusel sigue vivo, pero se detiene cuando el usuario quiere leer. */
+  .carousel:hover .marquee-track{
+    animation-play-state:paused;
+  }
+
+  /* Indicadores y chips nuevos no quedan estáticos */
+  .mentor-overview-role,
+  .admin-profile-state,
+  .admin-history-action,
+  .perm.on{
+    transition:transform .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease);
+  }
+  .mentor-overview-role:hover,
+  .admin-profile-state:hover,
+  .admin-history-action:hover,
+  .perm.on:hover{
+    transform:translateY(-1px);
+  }
+}
+
+@keyframes tgDropIn{
+  from{opacity:0;transform:translate3d(0,-12px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes tgFadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes tgRiseIn{
+  from{opacity:0;transform:translate3d(0,18px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes tgBackdropIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes tgModalIn{
+  from{opacity:0;transform:translate3d(0,18px,0) scale(.975)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes tgPanelIn{
+  from{opacity:0;transform:translate3d(0,9px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes tgStatReveal{
+  from{opacity:0;transform:translate3d(0,10px,0) scale(.985)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+</style>
+
 </head>
 <body>
 
@@ -1879,6 +2175,14 @@ flex-direction:column}
     </div>
   </header>
 
+  <nav class="sec-nav" id="secNav" aria-label="Secciones">
+    <div class="sec-nav-inner">
+      <a href="#directorio">Directorio</a>
+      <a href="#acompanamiento">Acompañamiento</a>
+      <a href="#solicitudes">Contactos</a>
+    </div>
+  </nav>
+
   <main class="shell">
     <section class="hero">
       <img class="hero-bird" src="../assets/hero-bird-network.png" alt="">
@@ -1889,13 +2193,13 @@ flex-direction:column}
         <div class="hero-stats" aria-label="Tángara en cifras">
           <div class="stat"><strong>46</strong><span>empresas seleccionadas</span></div>
           <div class="stat"><strong>4</strong><span>verticales climáticas</span></div>
+          <div class="stat"><strong>67%</strong><span>ya conversa con inversionistas</span></div>
+          <div class="stat"><strong>USD 5,25 M</strong><span>levantados en 24 meses</span></div>
           <div class="stat"><strong>91,3%</strong><span>operación principal en Colombia</span></div>
           <div class="stat"><strong>6,4 años</strong><span>mediana de constitución</span></div>
           <div class="stat"><strong>USD 209k</strong><span>ventas medianas 2025</span></div>
           <div class="stat"><strong>39%</strong><span>alcanzó break-even</span></div>
           <div class="stat"><strong>82,6%</strong><span>orientación B2B</span></div>
-          <div class="stat"><strong>USD 5,25 M</strong><span>levantados en los últimos 24 meses</span></div>
-          <div class="stat"><strong>67%</strong><span>ya conversa con inversionistas</span></div>
           <div class="stat"><strong>43%</strong><span>en ronda activa</span></div>
           <div class="stat"><strong>29 h</strong><span>formación grupal</span></div>
           <div class="stat"><strong>69%</strong><span>tiene Data Room completo</span></div>
@@ -1919,7 +2223,7 @@ flex-direction:column}
 
     <section class="block" id="acompanamiento">
       <div class="section-head">
-        <div><span class="eyebrow">Acompañamiento</span><h2>Prediagnóstico y bitácoras</h2><p>Las empresas consultan su propia información. Mentores y usuarios autorizados pueden abrir el acompañamiento de las empresas que tengan asignadas.</p></div>
+        <div><span class="eyebrow">Acompañamiento</span><h2>Seguimiento de empresas</h2><p>Consulta el prediagnóstico y registra las bitácoras de tus empresas asignadas desde un solo lugar.</p></div>
         <button class="btn btn-soft btn-sm" id="refreshAccompBtn" type="button">Actualizar</button>
       </div>
       <div class="accomp-shell" id="accompShell">
@@ -1964,7 +2268,7 @@ flex-direction:column}
 
     <section class="block admin-dashboard hidden" id="adminDashboard">
       <div class="section-head">
-        <div><span class="eyebrow">Vista privada</span><h2>Administración de Comunidad Tángara</h2><p>Indicadores consolidados de acceso y actividad.</p></div>
+        <div><span class="eyebrow">Vista privada</span><h2>Administración</h2><p>Un resumen primero. Invitaciones, mentores e historial quedan separados para que cada tarea tenga su lugar.</p></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
           <button class="btn btn-primary btn-sm" id="adminAccessNavBtn" type="button">Gestionar accesos</button>
           <button class="btn btn-soft btn-sm" id="refreshAdminBtn" type="button">Actualizar dashboard</button>
@@ -1996,7 +2300,7 @@ flex-direction:column}
           <div class="admin-list">
             <div class="admin-list-row"><span>Conexiones / solicitudes</span><strong id="adminConexionesMini">–</strong></div>
             <div class="admin-list-row"><span>Aperturas de perfiles</span><strong id="adminPerfilesMini">–</strong></div>
-            <div class="admin-list-row"><span>Usuarios que exploran perfiles</span><strong id="adminActivosMini">–</strong></div>
+            <div class="admin-list-row"><span>Usuarios que exploran perfiles</span><strong id="adminActivosMini">–</strong></div><div class="admin-list-row"><span>Registros recibidos</span><strong id="adminRegistrosMini">–</strong></div>
           </div>
         </div>
       </div>
@@ -2211,6 +2515,33 @@ flex-direction:column}
   </article>
 </div>
 
+
+<div class="backdrop" id="bitacoraBackdrop" role="dialog" aria-modal="true" aria-labelledby="bitacoraTitle">
+  <article class="modal bitacora-modal">
+    <header class="modal-head">
+      <button class="close" data-close="bitacoraBackdrop" aria-label="Cerrar">×</button>
+      <span class="eyebrow">Seguimiento de mentoría</span>
+      <h2 id="bitacoraTitle" style="margin-top:10px;font-size:32px">Diligenciar bitácora</h2>
+      <p>Registra únicamente lo esencial de esta sesión. La empresa, el mentor y el tipo de mentoría se toman automáticamente de tu acceso.</p>
+    </header>
+    <div class="modal-body">
+      <div class="bitacora-context">
+        <div><span>Empresa</span><strong id="bitacoraCompany">—</strong></div>
+        <div><span>Mentoría</span><strong id="bitacoraType">—</strong></div>
+        <div><span>Bitácora</span><strong id="bitacoraNumber">—</strong></div>
+      </div>
+      <form class="bitacora-form" id="bitacoraForm">
+        <div class="bitacora-field"><label for="bitacoraFecha">Fecha de la sesión</label><input id="bitacoraFecha" type="date" required></div>
+        <div class="bitacora-field"><label for="bitacoraAvances">Avances de la sesión</label><textarea id="bitacoraAvances" required placeholder="¿Qué se revisó, qué avanzó y qué decisiones se tomaron?"></textarea></div>
+        <div class="bitacora-field"><label for="bitacoraProximos">Compromisos y próximos pasos</label><textarea id="bitacoraProximos" required placeholder="¿Qué debe hacer la empresa antes de la siguiente sesión?"></textarea></div>
+        <p class="bitacora-help">No se cargan archivos ni grabaciones. Esta bitácora queda asociada automáticamente a la empresa y a tu tipo de mentoría.</p>
+        <div class="bitacora-error hidden" id="bitacoraError"></div>
+        <div class="bitacora-actions"><button class="btn btn-soft" type="button" data-close="bitacoraBackdrop">Cancelar</button><button class="btn btn-primary" id="bitacoraSubmitBtn" type="submit">Guardar bitácora</button></div>
+      </form>
+    </div>
+  </article>
+</div>
+
 <div class="backdrop" id="correctionBackdrop" role="dialog" aria-modal="true" aria-labelledby="correctionTitle">
   <article class="correction-box">
     <button class="close" data-close="correctionBackdrop" aria-label="Cerrar">×</button>
@@ -2258,6 +2589,7 @@ const FLOW_INVITATION_VALIDATE_URL="https://defaultc06fb5591b684b84a14f47d0d837a
 const FLOW_ACCOMPANIMENT_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/72f6f18eecea46edb8e3e08a71fa57d8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=B3wdmYw3Fcy4UMWJJnUqga8aP4O2EOb4b01dvCgF4VA";
 const FLOW_MENTOR_ASSIGNMENTS_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/10/workflows/29cda5f7d0aa4130ba8a1395e74f8fce/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RYytN1FrYpVLQo7lCO14AQ8PJPFH6NkBZmDcrmy03wo";
 const FLOW_CORRECTION_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/a5aeb4b187054a2aadc0a1720b4b59f3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0hACaGgBVtA-hkKtMj4d53_4d0KZO23WRsRrFLat0oo";
+const FLOW_BITACORAS_URL="https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/20/workflows/88070d04b811481caf70473b5f30542b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=vUv_qUm-uiJsvPOgQnpXOoCKteLnY7AOcJMO88Et9o0";
 
 // Formulario real para la primera bitácora.
 const BITACORA_FORM_URL="https://forms.cloud.microsoft/r/q05UhaBtjs";
@@ -2892,7 +3224,9 @@ let activitySeen=new Set();
 let adminAuthorized=false;
 let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial:[],contactos:[]};
 let adminMentorMatrixLoading=false;
+let adminOperationsLoaded=false;
 let correctionTarget=null;
+let newBitacoraContext=null;
 
 try{
   activitySeen=new Set(JSON.parse(sessionStorage.getItem("tangara.activityProfiles")||"[]"));
@@ -3242,6 +3576,19 @@ async function boot(){
   showCommunityEntry();
 }
 
+function initSimpleExperience(){
+  const stats=$(".hero-stats");
+  if(stats&&!$("#heroStatsToggle")){
+    const wrap=document.createElement("div");wrap.className="hero-simple-toggle";
+    wrap.innerHTML='<button class="btn btn-soft btn-sm" id="heroStatsToggle" type="button">Ver más cifras</button>';
+    stats.insertAdjacentElement("afterend",wrap);
+    $("#heroStatsToggle")?.addEventListener("click",()=>{
+      const expanded=stats.classList.toggle("expanded");
+      $("#heroStatsToggle").textContent=expanded?"Ver menos cifras":"Ver más cifras";
+    });
+  }
+}
+
 function openApp(){
   syncModeFromSession();
   syncFinancialMentorProfile();
@@ -3256,6 +3603,7 @@ function openApp(){
   renderCarousel();
   renderCards();
   syncMentorDirectoryUI();
+  initSimpleExperience();
   loadFinancialMentorProfileFromBackend();
   loadConnections();
   loadAdminDashboard(false);
@@ -3820,59 +4168,194 @@ async function submitCorrection(e){
   }
 }
 
+function mentorshipTypeForCompany(data,companyId){
+  const assignment=financialAssignment(companyId);
+  const assigned=normalizeInviteValue(assignment?.tipoMentoria);
+  if(assigned==="FINANCIERO"||assigned==="IMPACTO")return assigned;
+  const backend=normalizeInviteValue(data?.tipoMentoria||data?.permissionRole||data?.rolPermiso||data?.rol||data?.role);
+  if(backend.includes("FINANCIERO"))return "FINANCIERO";
+  if(backend.includes("IMPACTO"))return "IMPACTO";
+  const local=localInvitationProfile();
+  const localType=normalizeInviteValue(local?.tipoMentoria||local?.rol);
+  if(localType.includes("FINANCIERO"))return "FINANCIERO";
+  if(localType.includes("IMPACTO"))return "IMPACTO";
+  const hints=sessionMentorHints();
+  if(hints.includes("FINANCIERO"))return "FINANCIERO";
+  if(hints.includes("IMPACTO"))return "IMPACTO";
+  return "";
+}
+
+function bitacoraRowType(row){
+  if(!row||typeof row!=="object")return "";
+  const direct=firstPresent(row,["TipoMentoria","Tipo de mentoría","Tipo de mentoria","Tipo mentoría","Tipo mentoria","RolMentoria","Rol de mentoría","Mentoria","Mentoría"]);
+  let text=normalizeInviteValue(direct);
+  if(!text){
+    text=normalizeInviteValue(Object.entries(row).filter(([k])=>/mentor|mentoria|mentoría|tipo/i.test(k)).map(([,v])=>v).join(" | "));
+  }
+  if(text.includes("FINANC"))return "FINANCIERO";
+  if(text.includes("IMPACT"))return "IMPACTO";
+  return "";
+}
+
+function relevantLegacyBitacoras(items,type){
+  const rows=Array.isArray(items)?items:[];
+  if(!type)return rows;
+  const typed=rows.filter(r=>bitacoraRowType(r));
+  return typed.length?rows.filter(r=>bitacoraRowType(r)===type):rows;
+}
+
+function normalizeNewBitacoras(value){
+  if(Array.isArray(value))return value;
+  if(!value)return [];
+  try{const parsed=JSON.parse(String(value));return Array.isArray(parsed)?parsed:[]}catch{return []}
+}
+
+function newBitacoraView(row){
+  return {
+    number:Number(firstPresent(row,["NumeroBitacora","field_4"]))||0,
+    date:firstPresent(row,["FechaSesion","field_5","Fecha"]),
+    mentor:displayText(firstPresent(row,["MentorNombre","field_6","Mentor"])),
+    advances:displayText(firstPresent(row,["Avances","field_8"])),
+    next:displayText(firstPresent(row,["ProximosPasos","field_9"])),
+    source:"new"
+  };
+}
+
+function legacyBitacoraView(row,index){
+  return {
+    number:index+1,
+    date:firstPresent(row,["Fecha de la sesión","Fecha","fecha"]),
+    mentor:displayText(firstPresent(row,["Nombre del mentor","Nombre completo del mentor","Mentor","mentor"])),
+    advances:displayText(firstPresent(row,["Avances de la sesión","Avances","avances"])),
+    next:displayText(firstPresent(row,["Tareas y próximos pasos para la empresa","Tareas","tareas"])),
+    source:"legacy"
+  };
+}
+
+function renderCombinedBitacoras(legacy,newRows,permissions){
+  if(!bool(permissions?.viewBitacoras))return '<div class="accomp-empty">No tienes permiso para consultar las bitácoras.</div>';
+  const oldViews=(legacy||[]).map(legacyBitacoraView);
+  const newViews=(newRows||[]).map(newBitacoraView);
+  const items=[...oldViews,...newViews].sort((a,b)=>(a.number||999)-(b.number||999));
+  if(!items.length)return '<div class="bita-empty-simple"><strong>Aún no hay bitácoras registradas</strong>Cuando se complete la primera bitácora, aquí aparecerá el histórico de sesiones.</div>';
+  return `<div class="bita-list">${items.map((b,i)=>{
+    const number=b.number||i+1;
+    const fecha=excelDate(b.date);
+    return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}</article>`;
+  }).join("")}</div>`;
+}
+
+function todayForInput(){
+  const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);
+}
+
+function openNewBitacoraModal(ctx){
+  newBitacoraContext=ctx;
+  $("#bitacoraCompany").textContent=ctx.companyName||ctx.companyId||"Empresa";
+  $("#bitacoraType").textContent=ctx.type==="FINANCIERO"?"Financiera":"Impacto";
+  $("#bitacoraNumber").textContent=`#${ctx.nextNumber}`;
+  $("#bitacoraFecha").value=todayForInput();
+  $("#bitacoraAvances").value="";
+  $("#bitacoraProximos").value="";
+  setInlineError("bitacoraError","");
+  $("#bitacoraBackdrop").classList.add("open");
+  setTimeout(()=>$("#bitacoraAvances")?.focus(),80);
+}
+
+async function submitNewBitacora(event){
+  event.preventDefault();
+  if(!newBitacoraContext||!session?.accessToken)return;
+  const fecha=$("#bitacoraFecha").value;
+  const avances=$("#bitacoraAvances").value.trim();
+  const proximosPasos=$("#bitacoraProximos").value.trim();
+  if(!fecha)return setInlineError("bitacoraError","Selecciona la fecha de la sesión.");
+  if(!avances)return setInlineError("bitacoraError","Escribe los avances de la sesión.");
+  if(!proximosPasos)return setInlineError("bitacoraError","Escribe los compromisos o próximos pasos.");
+  const btn=$("#bitacoraSubmitBtn");
+  setBusy(btn,true,"Guardando…");setInlineError("bitacoraError","");
+  try{
+    const res=await apiPost(FLOW_BITACORAS_URL,{
+      accessToken:session.accessToken,
+      operacion:"CREAR_BITACORA",
+      empresaId:newBitacoraContext.companyId,
+      empresa:newBitacoraContext.companyName,
+      tipoMentoria:newBitacoraContext.type,
+      fechaSesion:`${fecha}T12:00:00`,
+      avances,
+      proximosPasos
+    });
+    if(!res?.ok||String(res?.status||"").toUpperCase()!=="BITACORA_CREADA")throw new Error(res?.message||"No se pudo guardar la bitácora.");
+    const companyId=newBitacoraContext.companyId;
+    $("#bitacoraBackdrop").classList.remove("open");
+    newBitacoraContext=null;
+    toast(`Bitácora ${res?.numeroBitacora||""} guardada correctamente.`);
+    await loadAccompaniment(companyId);
+  }catch(err){
+    console.error("Nueva bitácora",err);
+    setInlineError("bitacoraError",err?.message||"No pudimos guardar la bitácora. Revisa la ejecución del Flow 28.");
+  }finally{setBusy(btn,false)}
+}
+
 function renderAccompaniment(data){
   accompanimentTargetId=String(data?.empresaId||accompanimentTargetId||"");
+  const companyId=accompanimentTargetId;
+  const companyName=String(data?.empresa||data?.empresaId||"Empresa");
   const p=data?.permissions||{};
   const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
+  const type=mentorshipTypeForCompany(data,companyId);
+  const legacy=relevantLegacyBitacoras(data?.bitacoras,type);
+  const newRows=Array.isArray(data?._bitacorasNuevas)?data._bitacorasNuevas:[];
+  const total=legacy.length+newRows.length;
+  const hasFirst=total>0;
+  const nextNumber=hasFirst?Math.max(2,Number(data?._siguienteNumero)||newRows.length+2):1;
+  const canWrite=bool(p.createBitacora)&&(type==="FINANCIERO"||type==="IMPACTO");
+  const roleLabel=type==="FINANCIERO"?"Mentoría financiera":type==="IMPACTO"?"Mentoría de impacto":"Acompañamiento";
 
-  // Primera bitácora según el tipo de mentoría. El mismo Microsoft Form ya contiene
-  // las rutas “Mentor financiero” y “Mentor de impacto”.
-  const showFinancialFirstBitacora=!!FINANCIAL_MENTOR_PROFILE&&financialHasFirstBitacora(data?.empresaId||accompanimentTargetId);
-  const showImpactFirstBitacora=!showFinancialFirstBitacora&&isImpactMentorContext(data);
-  const showFirstBitacora=showFinancialFirstBitacora||showImpactFirstBitacora;
-  const firstFields=showFinancialFirstBitacora?FIRST_BITACORA_FINANCIAL_FIELDS:showImpactFirstBitacora?FIRST_BITACORA_IMPACT_FIELDS:[];
-  const firstBitacoraTitle=showImpactFirstBitacora?"Primera bitácora · Mentor de impacto":"Primera bitácora · Mentor financiero";
-  const firstBitacoraCount=firstFields.length;
+  const primaryAction=canWrite
+    ? hasFirst
+      ? '<button class="btn btn-primary mentor-primary-action" id="newInternalBitacoraBtn" type="button">Diligenciar bitácora</button>'
+      : '<button class="btn btn-primary mentor-primary-action" id="firstBitacoraFormBtn" type="button">Primera bitácora</button>'
+    : "";
+
   const shell=$("#accompShell");
   shell.innerHTML=`
-    <div class="accomp-top">
-      <div class="accomp-company">
-        <strong>${escapeHTML(data?.empresa||data?.empresaId||"Empresa")}</strong>
-        <span>${escapeHTML(data?.empresaId||"")}</span>
+    <div class="mentor-overview">
+      <div>
+        <span class="eyebrow">Acompañamiento</span>
+        <h3>${escapeHTML(companyName)}</h3>
+        <div class="mentor-overview-id">${escapeHTML(companyId)}</div>
+        <div class="mentor-overview-role">${escapeHTML(roleLabel)}</div>
       </div>
-      <div class="permission-row">${permissionHTML(p)}</div>
+      <div class="mentor-overview-side">
+        <div class="mentor-count"><strong>${total}</strong><span>${total===1?"bitácora registrada":"bitácoras registradas"}</span></div>
+        ${primaryAction}
+      </div>
     </div>
-    <div class="accomp-actions">
-      ${showFirstBitacora?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Completar primera bitácora</button>':bool(p.createBitacora)?'<button class="btn btn-primary btn-sm" id="newBitacoraBtn" type="button">Registrar bitácora</button>':""}
-      ${bool(p.correctPrediagnostico)?'<span class="perm on">✓ Corrección autorizada</span>':""}
-      ${showFinancialFirstBitacora?'<span class="perm financial-focus-perm">★ Gestión financiera destacada</span>':showImpactFirstBitacora?'<span class="perm impact-focus-perm">✦ Impacto destacado</span>':""}
-      ${corrections.length?`<span class="perm on">${corrections.length} ${corrections.length===1?"corrección":"correcciones"} en historial</span>`:""}
+    <div class="accomp-simple-meta">
+      ${bool(p.correctPrediagnostico)?'<span>✓ Puedes corregir el prediagnóstico</span>':""}
+      ${corrections.length?`<span>${corrections.length} ${corrections.length===1?"corrección":"correcciones"} registradas</span>`:""}
+      ${hasFirst&&canWrite?`<span>Próxima: bitácora ${nextNumber}</span>`:""}
     </div>
-    ${bool(p.correctPrediagnostico)?'<div class="accomp-note">Las correcciones se guardan como nuevas versiones en <strong>Prediagnostico_Correcciones</strong>. El valor original del Survey permanece intacto y visible en todo momento.</div>':""}
     <div class="accomp-tabs">
       <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
-      ${showFirstBitacora?`<button class="accomp-tab" data-acctab="first">Primera bitácora (${firstBitacoraCount})</button>`:""}
-      <button class="accomp-tab" data-acctab="bita">${showFirstBitacora?"Histórico":"Bitácoras"} (${Array.isArray(data?.bitacoras)?data.bitacoras.length:0})</button>
+      <button class="accomp-tab" data-acctab="bita">Bitácoras (${total})</button>
     </div>
     <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
-    ${showFirstBitacora?`<div class="accomp-panel" id="accompFirst">${renderFirstBitacora(firstFields,firstBitacoraTitle,"Pendiente de diligenciar")}</div>`:""}
-    <div class="accomp-panel" id="accompBita">${renderBitacoras(data?.bitacoras,p)}</div>`;
+    <div class="accomp-panel" id="accompBita">${renderCombinedBitacoras(legacy,newRows,p)}</div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
     $$(".accomp-tab").forEach(x=>x.classList.toggle("active",x===btn));
     $("#accompPred")?.classList.toggle("active",btn.dataset.acctab==="pred");
-    $("#accompFirst")?.classList.toggle("active",btn.dataset.acctab==="first");
     $("#accompBita")?.classList.toggle("active",btn.dataset.acctab==="bita");
   }));
 
   $$("#accompPred [data-correct-key]").forEach(btn=>btn.addEventListener("click",()=>openCorrectionModal(btn.dataset.correctKey)));
 
-  const openForm=()=>{
-    if(!BITACORA_FORM_URL){toast("Falta configurar la URL real del formulario externo de bitácoras.");return;}
+  $("#firstBitacoraFormBtn")?.addEventListener("click",()=>{
+    if(!BITACORA_FORM_URL)return toast("Falta configurar la URL de la primera bitácora.");
     window.open(BITACORA_FORM_URL,"_blank","noopener");
-  };
-  $("#newBitacoraBtn")?.addEventListener("click",openForm);
-  $("#firstBitacoraFormBtn")?.addEventListener("click",openForm);
+  });
+  $("#newInternalBitacoraBtn")?.addEventListener("click",()=>openNewBitacoraModal({companyId,companyName,type,nextNumber}));
 }
 
 async function loadAccompaniment(targetId=""){
@@ -3881,15 +4364,10 @@ async function loadAccompaniment(targetId=""){
     return;
   }
   if(!session?.accessToken)return;
-  if(DEMO_MODE){
-    renderAccompIntro();
-    return toast("Acompañamiento no está disponible en modo demo.");
-  }
+  if(DEMO_MODE){renderAccompIntro();return toast("Acompañamiento no está disponible en modo demo.");}
   const requested=String(targetId||"");
   const own=String(session?.empresaId||"");
-  if(!requested&&!isTangaraCompany(own)){
-    return renderAccompIntro();
-  }
+  if(!requested&&!isTangaraCompany(own))return renderAccompIntro();
   $("#accompShell").innerHTML='<div class="accomp-loading"><span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:8px"></span>Cargando acompañamiento…</div>';
   const payload={accessToken:session.accessToken};
   if(requested&&requested!==own)payload.empresaId=requested;
@@ -3897,6 +4375,19 @@ async function loadAccompaniment(targetId=""){
     const data=await apiPost(FLOW_ACCOMPANIMENT_URL,payload);
     if(!data?.ok)throw Object.assign(new Error(data?.message||"Respuesta no autorizada"),{status:data?.status,data});
     data.correcciones=Array.isArray(data?.correcciones)?data.correcciones:[];
+    data._bitacorasNuevas=[];data._siguienteNumero=0;
+    const companyId=String(data?.empresaId||requested||own||"");
+    const type=mentorshipTypeForCompany(data,companyId);
+    const assigned=!!financialAssignment(companyId);
+    if(assigned&&(type==="FINANCIERO"||type==="IMPACTO")&&flowConfigured(FLOW_BITACORAS_URL)){
+      try{
+        const extra=await apiPost(FLOW_BITACORAS_URL,{accessToken:session.accessToken,operacion:"LISTAR_BITACORAS",empresaId:companyId,tipoMentoria:type});
+        if(extra?.ok&&String(extra?.status||"").toUpperCase()==="BITACORAS_LISTADAS"){
+          data._bitacorasNuevas=normalizeNewBitacoras(extra.bitacoras);
+          data._siguienteNumero=Number(extra.siguienteNumero)||0;
+        }
+      }catch(err){console.warn("No pudimos cargar las bitácoras nuevas",err)}
+    }
     renderAccompaniment(data);
   }catch(err){
     console.error("Acompañamiento",err);
@@ -4151,8 +4642,72 @@ async function revealContact(){
 }
 
 /* ===================== ADMIN ===================== */
+function initSimplifiedAdmin(){
+  const manager=$("#adminAccessManager");
+  if(!manager||$("#adminSimpleNav"))return;
+
+  const sectionHead=$("#adminDashboard .section-head");
+  const metrics=$("#adminDashboard .admin-metrics");
+  const grid=$("#adminDashboard .admin-grid");
+  const accessHead=manager.querySelector(".admin-access-head");
+  const inviteForm=$("#adminInviteForm");
+  const inviteMonitor=$("#adminInviteMonitor");
+  const matrix=$("#adminMentorMatrix");
+  const history=$("#adminMentorHistory");
+  const existingNote=manager.querySelector(".admin-existing-note");
+  const finalNote=$("#adminDashboard > .admin-note");
+
+  const oldPill=manager.firstElementChild;
+  if(oldPill&&/Administración de accesos/i.test(oldPill.textContent||""))oldPill.remove();
+
+  const nav=document.createElement("div");
+  nav.id="adminSimpleNav";
+  nav.className="admin-simple-nav";
+  nav.innerHTML=`<button type="button" data-admin-view="summary" class="active">Resumen</button><button type="button" data-admin-view="access">Invitaciones</button><button type="button" data-admin-view="mentors">Mentores</button><button type="button" data-admin-view="history">Historial</button>`;
+  sectionHead?.insertAdjacentElement("afterend",nav);
+
+  const makeView=(id,title,copy)=>{
+    const v=document.createElement("div");v.id=id;v.className="admin-simple-view";
+    v.innerHTML=`<div class="admin-simple-title"><strong>${title}</strong><span>${copy}</span></div>`;
+    manager.appendChild(v);return v;
+  };
+  const summary=makeView("adminViewSummary","Resumen de Comunidad","Los cuatro datos que necesitas para saber si la comunidad está entrando y usando el portal.");
+  const access=makeView("adminViewAccess","Invitaciones y accesos","Invita personas, revisa quién ya creó su perfil y reenvía accesos pendientes.");
+  const mentors=makeView("adminViewMentors","Asignación de mentores","Consulta y ajusta mentoría financiera e impacto por empresa.");
+  const hist=makeView("adminViewHistory","Historial de cambios","Auditoría de asignaciones y desasignaciones sin mezclarla con la operación diaria.");
+
+  if(metrics)summary.appendChild(metrics);
+  if(grid)summary.appendChild(grid);
+  if(finalNote)summary.appendChild(finalNote);
+  if(accessHead)access.appendChild(accessHead);
+  if(inviteForm)access.appendChild(inviteForm);
+  if(inviteMonitor)access.appendChild(inviteMonitor);
+  if(matrix){
+    if(history&&history.parentElement===matrix)history.remove();
+    mentors.appendChild(matrix);
+  }
+  if(existingNote)mentors.appendChild(existingNote);
+  if(history)hist.appendChild(history);
+
+  summary.classList.add("active");
+  nav.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-admin-view]");
+    if(btn)adminShowView(btn.dataset.adminView);
+  });
+}
+
+function adminShowView(name="summary"){
+  initSimplifiedAdmin();
+  const map={summary:"adminViewSummary",access:"adminViewAccess",mentors:"adminViewMentors",history:"adminViewHistory"};
+  const target=map[name]||map.summary;
+  $$(".admin-simple-view").forEach(v=>v.classList.toggle("active",v.id===target));
+  $$("#adminSimpleNav [data-admin-view]").forEach(b=>b.classList.toggle("active",b.dataset.adminView===name));
+  if(name!=="summary"&&!adminOperationsLoaded&&!adminMentorMatrixLoading)adminLoadMentorMatrix(false);
+}
+
 function setAdminVisible(show){
   adminAuthorized=!!show;
+  if(show)initSimplifiedAdmin();
   $("#adminNavBtn")?.classList.toggle("hidden",!show);
   $("#adminDashboard")?.classList.toggle("hidden",!show);
   if(show){adminRenderCompanyPicker();adminSyncInviteFields();}
@@ -4182,6 +4737,7 @@ function renderAdminDashboard(data){
   $("#adminConexionesMini").textContent=conns;
   $("#adminPerfilesMini").textContent=opens;
   $("#adminActivosMini").textContent=active;
+  if($("#adminRegistrosMini"))$("#adminRegistrosMini").textContent=regs;
 }
 
 
@@ -4777,6 +5333,7 @@ async function adminLoadMentorMatrix(showStatus=true){
   try{
     const data=await apiPostWithRetry(FLOW_ACCESS_ADMIN_URL,{accessToken:session.accessToken,operacion:"LISTAR_GESTION_MENTORES"},1);
     if(!data?.ok||String(data?.status||"").toUpperCase()!=="GESTION_MENTORES_OK")throw new Error(data?.message||"Respuesta inesperada");
+    adminOperationsLoaded=true;
     adminMentorMatrixData={
       empresas:Array.isArray(data.empresas)?data.empresas:[],
       asignaciones:Array.isArray(data.asignaciones)?data.asignaciones:[],
@@ -4921,7 +5478,7 @@ async function loadAdminDashboard(scrollAfter=false){
     }
     setAdminVisible(true);
     renderAdminDashboard(data);
-    adminLoadMentorMatrix(false);
+    adminShowView("summary");
     if(scrollAfter)setTimeout(()=>$("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
   }catch(err){
     if(Number(err?.status)===401){
@@ -5134,7 +5691,7 @@ document.addEventListener("click",async e=>{
   if(tracked)trackChannel(tracked.dataset.trackCompany,tracked.dataset.trackChannel);
 
   const close=e.target.closest("[data-close]");
-  if(close){$("#"+close.dataset.close)?.classList.remove("open");if(close.dataset.close==="correctionBackdrop")correctionTarget=null;}
+  if(close){$("#"+close.dataset.close)?.classList.remove("open");if(close.dataset.close==="correctionBackdrop")correctionTarget=null;if(close.dataset.close==="bitacoraBackdrop")newBitacoraContext=null;}
 
   const back=e.target.closest("[data-public-back]");
   if(back)showPublicPanel(back.dataset.publicBack);
@@ -5211,8 +5768,8 @@ $("#adminNavBtn").addEventListener("click",()=>{
 });
 $("#adminAccessNavBtn")?.addEventListener("click",()=>{
   if(!adminAuthorized)return;
-  $("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"});
-  setTimeout(()=>$("#adminAccessManager")?.scrollIntoView({behavior:"smooth",block:"start"}),220);
+  adminShowView("access");
+  adminScrollToDashboard();
 });
 $("#refreshAdminBtn").addEventListener("click",()=>loadAdminDashboard(false));
 $("#adminInviteRole")?.addEventListener("change",adminSyncInviteFields);
@@ -5311,6 +5868,7 @@ $("#registrationForm").addEventListener("submit",submitRegistration);
 $("#verifyForm").addEventListener("submit",submitVerification);
 $("#recoverForm").addEventListener("submit",submitRecovery);
 $("#correctionForm").addEventListener("submit",submitCorrection);
+$("#bitacoraForm")?.addEventListener("submit",submitNewBitacora);
 $("#verificationCode").addEventListener("input",e=>{
   e.target.value=e.target.value.replace(/\D/g,"").slice(0,6);
 });
@@ -5324,11 +5882,29 @@ boot();
   if(reduce?.matches)return;
   if(!('IntersectionObserver' in window))return;
   const animated=new WeakSet();
-  const selector='.block,.stat,.carousel-card,.company,.connection-stat,.connection-card,.admin-metric,.admin-panel,.pred-section';
+  const selector='.block,.stat,.carousel-card,.company,.connection-stat,.connection-card,.admin-metric,.admin-panel,.pred-section,.mentor-overview,.mentor-count,.bita-card,.firstlog-hero,.firstlog-card,.channel-activity-stat,.admin-simple-title,.admin-invite-monitor,.admin-mentor-matrix,.admin-history,.admin-matrix-kpi,.light-card';
   const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target;io.unobserve(el);const delay=Math.min(Number(el.dataset.tangaraMotionDelay||0),280);el.animate([{opacity:.001,transform:'translate3d(0,18px,0) scale(.992)'},{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:620,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'none'});});},{threshold:.08,rootMargin:'0px 0px -5% 0px'});
   function scan(root=document){const nodes=[];if(root?.matches?.(selector))nodes.push(root);if(root?.querySelectorAll)nodes.push(...root.querySelectorAll(selector));let i=0;nodes.forEach(el=>{if(animated.has(el))return;animated.add(el);el.dataset.tangaraMotionDelay=String(Math.min(i*38,280));i++;io.observe(el);});}
   const start=()=>{scan(document);const mo=new MutationObserver(records=>{records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)scan(n);}));});mo.observe(document.body,{childList:true,subtree:true});};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+</script>
+
+<script id="tangara-secnav-v7">
+(()=>{
+  const nav=document.getElementById('secNav');
+  if(!nav)return;
+  const links=[...nav.querySelectorAll('a')];
+  const targets=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if(!targets.length)return;
+  const setActive=id=>links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(entries=>{
+      const vis=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+      if(vis)setActive(vis.target.id);
+    },{rootMargin:'-140px 0px -60% 0px',threshold:0});
+    targets.forEach(t=>io.observe(t));
+  }
 })();
 </script>
 
