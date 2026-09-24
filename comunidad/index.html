@@ -2554,6 +2554,10 @@ flex-direction:column}
         <div class="bitacora-field"><label for="bitacoraFecha">Fecha de la sesión</label><input id="bitacoraFecha" type="date" required></div>
         <div class="bitacora-field"><label for="bitacoraAvances">Avances de la sesión</label><textarea id="bitacoraAvances" required placeholder="¿Qué se revisó, qué avanzó y qué decisiones se tomaron?"></textarea></div>
         <div class="bitacora-field"><label for="bitacoraProximos">Compromisos y próximos pasos</label><textarea id="bitacoraProximos" required placeholder="¿Qué debe hacer la empresa antes de la siguiente sesión?"></textarea></div>
+        <div id="bitacoraCamposFinancieros" class="hidden" style="display:grid;gap:14px">
+          <div class="bitacora-field"><label for="bitacoraRetos">Retos Identificados</label><textarea id="bitacoraRetos" placeholder="Describe los retos financieros identificados durante la sesión."></textarea></div>
+          <div class="bitacora-field"><label for="bitacoraObservacionesInversion">Observaciones de Cara a Procesos de Inversión</label><textarea id="bitacoraObservacionesInversion" placeholder="Registra las observaciones relevantes para el proceso de inversión."></textarea></div>
+        </div>
         <p class="bitacora-help">No se cargan archivos ni grabaciones. Esta bitácora queda asociada automáticamente a la empresa y a tu tipo de mentoría.</p>
         <div class="bitacora-error hidden" id="bitacoraError"></div>
         <div class="bitacora-actions"><button class="btn btn-soft" type="button" data-close="bitacoraBackdrop">Cancelar</button><button class="btn btn-primary" id="bitacoraSubmitBtn" type="submit">Guardar bitácora</button></div>
@@ -4221,8 +4225,11 @@ function unifiedBitacoraView(row){
     number,
     date:firstPresent(row,["FechaSesion","field_5","Fecha"]),
     mentor:displayText(firstPresent(row,["MentorNombre","field_6","Mentor"])),
+    type:String(firstPresent(row,["TipoMentoria","field_3"])||"").trim().toUpperCase(),
     advances:displayText(firstPresent(row,["Avances","field_8"])),
     next:displayText(firstPresent(row,["ProximosPasos","field_9"])),
+    challenges:displayText(firstPresent(row,["RetosIdentificados"])),
+    investmentObservations:displayText(firstPresent(row,["ObservacionesProcesosInversion"])),
     firstAnswers:displayText(firstPresent(row,["RespuestasPrimeraBitacora"])),
     id:row?.ID||row?.Id||0
   };
@@ -4256,7 +4263,8 @@ function renderUnifiedBitacoras(rows,permissions,state){
     const fecha=excelDate(b.date);
     const first=number===1;
     const answers=first?`<details class="bita-first-details"><summary>Ver evaluación inicial completa</summary><div class="bita-first-body">${renderFirstBitacoraAnswers(b.firstAnswers)}</div></details>`:"";
-    return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}${first?' · Evaluación inicial':''}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${answers}${!first&&b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${!first&&b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}</article>`;
+    const financial=!first&&b.type==="FINANCIERO";
+    return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}${first?' · Evaluación inicial':''}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${answers}${!first&&b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${!first&&b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}${financial&&b.challenges?`<p><b>Retos Identificados:</b> ${escapeHTML(b.challenges)}</p>`:""}${financial&&b.investmentObservations?`<p><b>Observaciones de Cara a Procesos de Inversión:</b> ${escapeHTML(b.investmentObservations)}</p>`:""}</article>`;
   }).join("")}</div>`;
 }
 
@@ -4272,6 +4280,9 @@ function openNewBitacoraModal(ctx){
   $("#bitacoraFecha").value=todayForInput();
   $("#bitacoraAvances").value="";
   $("#bitacoraProximos").value="";
+  $("#bitacoraRetos").value="";
+  $("#bitacoraObservacionesInversion").value="";
+  $("#bitacoraCamposFinancieros").classList.toggle("hidden",ctx.type!=="FINANCIERO");
   setInlineError("bitacoraError","");
   $("#bitacoraBackdrop").classList.add("open");
   setTimeout(()=>$("#bitacoraAvances")?.focus(),80);
@@ -4283,6 +4294,8 @@ async function submitNewBitacora(event){
   const fecha=$("#bitacoraFecha").value;
   const avances=$("#bitacoraAvances").value.trim();
   const proximosPasos=$("#bitacoraProximos").value.trim();
+  const retosIdentificados=$("#bitacoraRetos").value.trim();
+  const observacionesInversion=$("#bitacoraObservacionesInversion").value.trim();
   if(!fecha)return setInlineError("bitacoraError","Selecciona la fecha de la sesión.");
   if(!avances)return setInlineError("bitacoraError","Escribe los avances de la sesión.");
   if(!proximosPasos)return setInlineError("bitacoraError","Escribe los compromisos o próximos pasos.");
@@ -4297,7 +4310,8 @@ async function submitNewBitacora(event){
       tipoMentoria:newBitacoraContext.type,
       fechaSesion:fecha,
       avances,
-      proximosPasos
+      proximosPasos,
+      ...(newBitacoraContext.type==="FINANCIERO"?{retosIdentificados,observacionesInversion}:{})
     });
     if(!res?.ok||String(res?.status||"").toUpperCase()!=="BITACORA_CREADA")throw new Error(res?.message||"No se pudo guardar la bitácora.");
     const companyId=newBitacoraContext.companyId;
