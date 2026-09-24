@@ -1,3 +1,4 @@
+
 <!doctype html>
 <!-- Comunidad Tángara · v6 simplificada · bitácoras internas posteriores a la primera -->
 <html lang="es">
@@ -1730,6 +1731,25 @@ flex-direction:column}
 .bita-list{gap:8px}.bita-card{padding:15px 16px}.bita-head strong{font-size:14px}.bita-card p{margin-top:6px}
 .bita-empty-simple{padding:24px;text-align:center;border:1px dashed rgba(242,123,227,.22);border-radius:14px;color:var(--txt2);background:rgba(255,255,255,.018)}
 .bita-empty-simple strong{display:block;color:#fff;font-size:15px;margin-bottom:5px}
+
+/* Bitácora 1 desde Forms: respuestas completas sin alterar la presentación de las siguientes. */
+.bita-first-details{margin-top:12px;border:1px solid rgba(242,123,227,.22);border-radius:12px;background:rgba(238,70,221,.035);overflow:hidden}
+.bita-first-details>summary{cursor:pointer;list-style:none;padding:12px 14px;color:#F6C8EF;font-weight:750;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bita-first-details>summary::-webkit-details-marker{display:none}
+.bita-first-details>summary:after{content:"⌄";font-size:17px;transition:transform .2s}
+.bita-first-details[open]>summary:after{transform:rotate(180deg)}
+.bita-first-body{padding:0 14px 14px;display:grid;gap:10px}
+.bita-first-intro{font-size:11px;color:#F6A6EB;white-space:pre-wrap;line-height:1.5}
+.bita-first-questions{display:grid;gap:9px}
+.bita-first-question{padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.028);border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
+.bita-first-prompt{font-size:12px;line-height:1.55;font-weight:650;color:#fff}
+.bita-first-answer{margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.bita-first-answer span{display:block;color:#F6A6EB;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;margin-bottom:5px}
+.bita-first-answer p{margin:0!important;color:var(--txt2);font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.bita-first-raw{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;color:var(--txt2)}
+.bita-no-answers{color:var(--txt2);font-size:12px;line-height:1.5}
+.bita-card>p{white-space:pre-wrap;overflow-wrap:anywhere}
+
 
 /* Modal de bitácora */
 .bitacora-modal{width:min(720px,100%)}
@@ -4185,63 +4205,58 @@ function mentorshipTypeForCompany(data,companyId){
   return "";
 }
 
-function bitacoraRowType(row){
-  if(!row||typeof row!=="object")return "";
-  const direct=firstPresent(row,["TipoMentoria","Tipo de mentoría","Tipo de mentoria","Tipo mentoría","Tipo mentoria","RolMentoria","Rol de mentoría","Mentoria","Mentoría"]);
-  let text=normalizeInviteValue(direct);
-  if(!text){
-    text=normalizeInviteValue(Object.entries(row).filter(([k])=>/mentor|mentoria|mentoría|tipo/i.test(k)).map(([,v])=>v).join(" | "));
-  }
-  if(text.includes("FINANC"))return "FINANCIERO";
-  if(text.includes("IMPACT"))return "IMPACTO";
-  return "";
-}
-
-function relevantLegacyBitacoras(items,type){
-  const rows=Array.isArray(items)?items:[];
-  if(!type)return rows;
-  const typed=rows.filter(r=>bitacoraRowType(r));
-  return typed.length?rows.filter(r=>bitacoraRowType(r)===type):rows;
-}
-
-function normalizeNewBitacoras(value){
+// Flow 28 es la fuente única del historial: primera bitácora Forms y bitácoras posteriores.
+function normalizeBitacorasFlow28(value){
   if(Array.isArray(value))return value;
   if(!value)return [];
-  try{const parsed=JSON.parse(String(value));return Array.isArray(parsed)?parsed:[]}catch{return []}
+  try{
+    const parsed=typeof value==="string"?JSON.parse(value):value;
+    return Array.isArray(parsed)?parsed:[];
+  }catch{return []}
 }
 
-function newBitacoraView(row){
+function unifiedBitacoraView(row){
+  const number=Number(firstPresent(row,["NumeroBitacora","field_4"]))||0;
   return {
-    number:Number(firstPresent(row,["NumeroBitacora","field_4"]))||0,
+    number,
     date:firstPresent(row,["FechaSesion","field_5","Fecha"]),
     mentor:displayText(firstPresent(row,["MentorNombre","field_6","Mentor"])),
     advances:displayText(firstPresent(row,["Avances","field_8"])),
     next:displayText(firstPresent(row,["ProximosPasos","field_9"])),
-    source:"new"
+    firstAnswers:displayText(firstPresent(row,["RespuestasPrimeraBitacora"])),
+    id:row?.ID||row?.Id||0
   };
 }
 
-function legacyBitacoraView(row,index){
-  return {
-    number:index+1,
-    date:firstPresent(row,["Fecha de la sesión","Fecha","fecha"]),
-    mentor:displayText(firstPresent(row,["Nombre del mentor","Nombre completo del mentor","Mentor","mentor"])),
-    advances:displayText(firstPresent(row,["Avances de la sesión","Avances","avances"])),
-    next:displayText(firstPresent(row,["Tareas y próximos pasos para la empresa","Tareas","tareas"])),
-    source:"legacy"
-  };
+function renderFirstBitacoraAnswers(value){
+  const raw=String(value||"").trim();
+  if(!raw)return '<p class="bita-no-answers">La evaluación inicial está registrada, pero no tiene respuestas disponibles.</p>';
+  // Conservar los enunciados y niveles seleccionados, separando las preguntas para facilitar lectura.
+  const blocks=raw.replace(/\r/g,"").split(/\n(?=\s*\d{1,2}\.\s*(?:¿|[A-ZÁÉÍÓÚÑ]))/u);
+  const questions=blocks.filter(b=>/^\s*\d{1,2}\.\s/.test(b));
+  const intro=blocks.filter(b=>!/^\s*\d{1,2}\.\s/.test(b)).join("\n").trim();
+  if(!questions.length)return `<div class="bita-first-raw">${escapeHTML(raw)}</div>`;
+  return `${intro?`<div class="bita-first-intro">${escapeHTML(intro)}</div>`:""}<div class="bita-first-questions">${questions.map(block=>{
+    const position=block.indexOf("Respuesta:");
+    if(position<0)return `<div class="bita-first-question">${escapeHTML(block.trim())}</div>`;
+    const prompt=block.slice(0,position).trim();
+    const answer=block.slice(position+"Respuesta:".length).trim();
+    return `<div class="bita-first-question"><div class="bita-first-prompt">${escapeHTML(prompt)}</div><div class="bita-first-answer"><span>Respuesta seleccionada</span><p>${escapeHTML(answer||"Sin respuesta registrada")}</p></div></div>`;
+  }).join("")}</div>`;
 }
 
-function renderCombinedBitacoras(legacy,newRows,permissions){
+function renderUnifiedBitacoras(rows,permissions,state){
   if(!bool(permissions?.viewBitacoras))return '<div class="accomp-empty">No tienes permiso para consultar las bitácoras.</div>';
-  const oldViews=(legacy||[]).map(legacyBitacoraView);
-  const newViews=(newRows||[]).map(newBitacoraView);
-  const items=[...oldViews,...newViews].sort((a,b)=>(a.number||999)-(b.number||999));
+  if(state==="error")return '<div class="accomp-empty">No pudimos consultar el historial de bitácoras. Actualiza esta sección para reintentar; tus registros no se han borrado.</div>';
+  if(state!=="ok")return '<div class="accomp-empty">El historial no está disponible para este perfil.</div>';
+  const items=(rows||[]).map(unifiedBitacoraView).sort((a,b)=>(a.number||999)-(b.number||999)||String(a.date||"").localeCompare(String(b.date||"")));
   if(!items.length)return '<div class="bita-empty-simple"><strong>Aún no hay bitácoras registradas</strong>Cuando se complete la primera bitácora, aquí aparecerá el histórico de sesiones.</div>';
   return `<div class="bita-list">${items.map((b,i)=>{
     const number=b.number||i+1;
     const fecha=excelDate(b.date);
-    return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}</article>`;
+    const first=number===1;
+    const answers=first?`<details class="bita-first-details"><summary>Ver evaluación inicial completa</summary><div class="bita-first-body">${renderFirstBitacoraAnswers(b.firstAnswers)}</div></details>`:"";
+    return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}${first?' · Evaluación inicial':''}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${answers}${!first&&b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${!first&&b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}</article>`;
   }).join("")}</div>`;
 }
 
@@ -4276,11 +4291,11 @@ async function submitNewBitacora(event){
   try{
     const res=await apiPost(FLOW_BITACORAS_URL,{
       accessToken:session.accessToken,
-      operacion:"CREAR_BITACORA",
+      operacion:"CREAR",
       empresaId:newBitacoraContext.companyId,
       empresa:newBitacoraContext.companyName,
       tipoMentoria:newBitacoraContext.type,
-      fechaSesion:`${fecha}T12:00:00`,
+      fechaSesion:fecha,
       avances,
       proximosPasos
     });
@@ -4303,12 +4318,12 @@ function renderAccompaniment(data){
   const p=data?.permissions||{};
   const corrections=Array.isArray(data?.correcciones)?data.correcciones:[];
   const type=mentorshipTypeForCompany(data,companyId);
-  const legacy=relevantLegacyBitacoras(data?.bitacoras,type);
-  const newRows=Array.isArray(data?._bitacorasNuevas)?data._bitacorasNuevas:[];
-  const total=legacy.length+newRows.length;
-  const hasFirst=total>0;
-  const nextNumber=hasFirst?Math.max(2,Number(data?._siguienteNumero)||newRows.length+2):1;
-  const canWrite=bool(p.createBitacora)&&(type==="FINANCIERO"||type==="IMPACTO");
+  const rows=Array.isArray(data?._bitacorasLista)?data._bitacorasLista:[];
+  const bitacorasReady=data?._bitacorasEstado==="ok";
+  const total=bitacorasReady?rows.length:0;
+  const hasFirst=bitacorasReady&&rows.some(r=>Number(firstPresent(r,["NumeroBitacora","field_4"]))===1);
+  const nextNumber=bitacorasReady?Math.max(2,Number(data?._siguienteNumero)||2):2;
+  const canWrite=bitacorasReady&&bool(p.createBitacora)&&(type==="FINANCIERO"||type==="IMPACTO");
   const roleLabel=type==="FINANCIERO"?"Mentoría financiera":type==="IMPACTO"?"Mentoría de impacto":"Acompañamiento";
 
   const primaryAction=canWrite
@@ -4327,7 +4342,7 @@ function renderAccompaniment(data){
         <div class="mentor-overview-role">${escapeHTML(roleLabel)}</div>
       </div>
       <div class="mentor-overview-side">
-        <div class="mentor-count"><strong>${total}</strong><span>${total===1?"bitácora registrada":"bitácoras registradas"}</span></div>
+        <div class="mentor-count"><strong>${bitacorasReady?total:"—"}</strong><span>${bitacorasReady?(total===1?"bitácora registrada":"bitácoras registradas"):"historial no disponible"}</span></div>
         ${primaryAction}
       </div>
     </div>
@@ -4338,10 +4353,10 @@ function renderAccompaniment(data){
     </div>
     <div class="accomp-tabs">
       <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
-      <button class="accomp-tab" data-acctab="bita">Bitácoras (${total})</button>
+      <button class="accomp-tab" data-acctab="bita">Bitácoras (${bitacorasReady?total:"—"})</button>
     </div>
     <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
-    <div class="accomp-panel" id="accompBita">${renderCombinedBitacoras(legacy,newRows,p)}</div>`;
+    <div class="accomp-panel" id="accompBita">${renderUnifiedBitacoras(rows,p,data?._bitacorasEstado)}</div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
     $$(".accomp-tab").forEach(x=>x.classList.toggle("active",x===btn));
@@ -4375,18 +4390,20 @@ async function loadAccompaniment(targetId=""){
     const data=await apiPost(FLOW_ACCOMPANIMENT_URL,payload);
     if(!data?.ok)throw Object.assign(new Error(data?.message||"Respuesta no autorizada"),{status:data?.status,data});
     data.correcciones=Array.isArray(data?.correcciones)?data.correcciones:[];
-    data._bitacorasNuevas=[];data._siguienteNumero=0;
+    data._bitacorasLista=[];data._siguienteNumero=0;data._bitacorasEstado="unavailable";
     const companyId=String(data?.empresaId||requested||own||"");
     const type=mentorshipTypeForCompany(data,companyId);
     const assigned=!!financialAssignment(companyId);
     if(assigned&&(type==="FINANCIERO"||type==="IMPACTO")&&flowConfigured(FLOW_BITACORAS_URL)){
+      data._bitacorasEstado="error";
       try{
-        const extra=await apiPost(FLOW_BITACORAS_URL,{accessToken:session.accessToken,operacion:"LISTAR_BITACORAS",empresaId:companyId,tipoMentoria:type});
+        const extra=await apiPost(FLOW_BITACORAS_URL,{accessToken:session.accessToken,operacion:"LISTAR",empresaId:companyId,tipoMentoria:type});
         if(extra?.ok&&String(extra?.status||"").toUpperCase()==="BITACORAS_LISTADAS"){
-          data._bitacorasNuevas=normalizeNewBitacoras(extra.bitacoras);
+          data._bitacorasLista=normalizeBitacorasFlow28(extra.bitacoras);
           data._siguienteNumero=Number(extra.siguienteNumero)||0;
-        }
-      }catch(err){console.warn("No pudimos cargar las bitácoras nuevas",err)}
+          data._bitacorasEstado="ok";
+        }else console.warn("Flow 28 devolvió una respuesta inesperada",extra?.status);
+      }catch(err){console.warn("No pudimos cargar el historial de bitácoras desde Flow 28",err)}
     }
     renderAccompaniment(data);
   }catch(err){
