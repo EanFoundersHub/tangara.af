@@ -2027,10 +2027,10 @@ flex-direction:column}
 <style id="tangara-admin-bitacoras-v1">
 /* Administración · seguimiento de primera bitácora y sesiones posteriores */
 .admin-bitacoras-shell{display:grid;gap:14px}
-.admin-bitacoras-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.admin-bitacoras-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .admin-bitacoras-kpi{padding:15px 16px;border-radius:14px;background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));border:1px solid rgba(242,123,227,.18)}
 .admin-bitacoras-kpi strong{display:block;font-size:27px;line-height:1;color:#fff}.admin-bitacoras-kpi span{display:block;margin-top:7px;font-size:10px;color:var(--txt2);line-height:1.35}.admin-bitacoras-kpi small{display:block;margin-top:4px;font-size:8.8px;color:var(--txt3)}
-.admin-bitacoras-toolbar{display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(170px,.55fr) auto;gap:9px;align-items:center}
+.admin-bitacoras-toolbar{display:grid;grid-template-columns:minmax(220px,1.25fr) minmax(155px,.48fr) minmax(190px,.62fr) auto;gap:9px;align-items:center}
 .admin-bitacoras-toolbar input,.admin-bitacoras-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
 .admin-bitacoras-toolbar select option{color:#2B1530}
 .admin-bitacoras-switch{display:inline-flex;gap:4px;padding:4px;border:1px solid rgba(242,123,227,.16);border-radius:11px;background:rgba(255,255,255,.02);width:max-content}
@@ -4876,8 +4876,9 @@ function adminResolvedFirstBitacoras(rows){
     .map(row=>({row,owner:adminResolveFirstBitacoraMentor(row,all)}));
 }
 
-function adminBitacoraMentorGroups(rows){
+function adminBitacoraMentorGroups(rows,typeFilter=""){
   const filtered=rows||[];
+  const requestedType=normalizeInviteValue(typeFilter||"");
   const map=new Map();
 
   const ensureGroup=(candidate)=>{
@@ -4890,13 +4891,43 @@ function adminBitacoraMentorGroups(rows){
         firstRows:[],
         later:[],
         empresas:new Set(),
-        associationSources:new Set()
+        assignedEmpresas:new Set(),
+        assignedTypes:new Set(),
+        associationSources:new Set(),
+        assigned:false
       });
     }
     return map.get(candidate.key);
   };
 
-  // Las posteriores sí tienen dueño histórico explícito y se atribuyen directamente.
+  // 1. Sembrar TODOS los mentores con asignación activa.
+  // Así también aparecen quienes aún no han registrado ninguna bitácora posterior.
+  if(typeof adminMatrixAssignments==="function"){
+    adminMatrixAssignments()
+      .filter(a=>a.active&&(!requestedType||normalizeInviteValue(a.type)===requestedType))
+      .forEach(a=>{
+        const email=String(a.email||"").trim().toLowerCase();
+        const nombre=String(a.name||a.email||"").trim();
+        const key=adminMentorIdentityKey(email,nombre);
+        if(!key)return;
+
+        const g=ensureGroup({key,email,nombre});
+        g.assigned=true;
+
+        const empresaId=String(a.companyId||"").trim();
+        const tipo=normalizeInviteValue(a.type);
+        if(empresaId){
+          g.empresas.add(empresaId);
+          g.assignedEmpresas.add(empresaId);
+        }
+        if(tipo)g.assignedTypes.add(tipo);
+
+        if(!g.nombre&&nombre)g.nombre=nombre;
+        if(!g.email&&email)g.email=email;
+      });
+  }
+
+  // 2. Las posteriores tienen dueño histórico explícito.
   filtered.filter(b=>Number(b.number)>=2).forEach(b=>{
     const candidate=adminMentorCandidateFromRow(b);
     if(!candidate)return;
@@ -4905,7 +4936,7 @@ function adminBitacoraMentorGroups(rows){
     if(b.empresaId)g.empresas.add(String(b.empresaId));
   });
 
-  // Las primeras se resuelven con prioridad:
+  // 3. Las primeras se resuelven con prioridad:
   // directa -> continuidad con posteriores -> única asignación activa actual.
   adminResolvedFirstBitacoras(filtered).forEach(({row,owner})=>{
     if(!owner||owner.ambiguous||!owner.key)return;
@@ -4920,6 +4951,12 @@ function adminBitacoraMentorGroups(rows){
     const latest=adminBitacoraLatest([...g.firstRows,...g.later]);
     const derived=g.firstRows.filter(b=>b._mentorAssociationSource!=="DIRECTA").length;
     const direct=g.firstRows.filter(b=>b._mentorAssociationSource==="DIRECTA").length;
+
+    // "Arrancó" = ya registró al menos una bitácora posterior.
+    // La primera viene normalizada desde Forms y no prueba que el mentor haya iniciado sesiones.
+    const started=g.later.length>0;
+    const notStarted=g.assigned&&!started;
+
     return {
       ...g,
       first:g.firstRows,
@@ -4927,15 +4964,21 @@ function adminBitacoraMentorGroups(rows){
       firstCompanies,
       derivedFirstCount:derived,
       directFirstCount:direct,
-      latest
+      latest,
+      started,
+      notStarted
     };
-  }).sort((a,b)=>
-    b.later.length-a.later.length ||
-    b.firstCoverageCount-a.firstCoverageCount ||
-    a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"})
-  );
+  }).sort((a,b)=>{
+    // Primero asignados sin arrancar, porque son los que requieren atención.
+    if(a.notStarted&&!b.notStarted)return -1;
+    if(!a.notStarted&&b.notStarted)return 1;
+    if(a.assigned&&!b.assigned)return -1;
+    if(!a.assigned&&b.assigned)return 1;
+    return b.later.length-a.later.length ||
+      b.firstCoverageCount-a.firstCoverageCount ||
+      a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"});
+  });
 }
-
 function adminUnresolvedFirstBitacoras(rows){
   return adminResolvedFirstBitacoras(rows).filter(x=>!x.owner||x.owner.ambiguous);
 }
@@ -4946,11 +4989,27 @@ function adminBitacoraViewMarkup(){
       <div class="admin-bitacoras-kpi"><strong id="adminBitaFirstCount">–</strong><span>Primeras bitácoras registradas</span><small>NumeroBitacora = 1 · normalizadas desde Forms</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaLaterCount">–</strong><span>Bitácoras posteriores</span><small>NumeroBitacora ≥ 2 · seguimiento en Comunidad</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaCompaniesCount">–</strong><span>Empresas con primera bitácora</span><small>Al menos una evaluación inicial registrada</small></div>
-      <div class="admin-bitacoras-kpi"><strong id="adminBitaMentorsCount">–</strong><span>Mentores con registros</span><small>Identificados en las bitácoras</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaAssignedMentorsCount">–</strong><span>Mentores asignados</span><small>Asignaciones activas en la matriz</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaStartedMentorsCount">–</strong><span>Mentores que arrancaron</span><small>Con al menos una bitácora posterior</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaNotStartedMentorsCount">–</strong><span>Asignados sin arrancar</span><small>Asignados, pero con 0 bitácoras posteriores</small></div>
     </div>
     <div class="admin-bitacoras-toolbar">
       <input id="adminBitacoraSearch" autocomplete="off" placeholder="Buscar empresa, mentor, correo o ID…">
-      <select id="adminBitacoraType"><option value="">Todas las mentorías</option><option value="FINANCIERO">Financiera</option><option value="IMPACTO">Impacto</option></select>
+      <select id="adminBitacoraType">
+        <option value="">Todas las mentorías</option>
+        <option value="FINANCIERO">Financiera</option>
+        <option value="IMPACTO">Impacto</option>
+      </select>
+      <select id="adminBitacoraProgress" aria-label="Filtrar empresas por avance de bitácoras">
+        <option value="">Todas las empresas</option>
+        <option value="HAS_ANY">Con alguna bitácora</option>
+        <option value="NONE">Sin bitácoras</option>
+        <option value="HAS_FIRST">Con primera bitácora</option>
+        <option value="FIRST_ONLY">Solo primera bitácora</option>
+        <option value="POST_1">1 bitácora posterior</option>
+        <option value="POST_2">2 bitácoras posteriores</option>
+        <option value="POST_3_PLUS">3 o más posteriores</option>
+      </select>
       <div class="admin-bitacoras-switch"><button type="button" class="active" data-bita-mode="company">Por empresa</button><button type="button" data-bita-mode="mentor">Por mentor</button></div>
     </div>
     <div class="admin-bitacoras-status" id="adminBitacoraStatus"></div>
@@ -4981,10 +5040,16 @@ function adminBitacoraSummary(rows){
   const later=(rows||[]).filter(b=>Number(b.number)>=2);
   const companies=new Set(first.map(b=>b.empresaId).filter(Boolean));
   const mentors=adminBitacoraMentorGroups(rows||[]);
+  const assigned=mentors.filter(g=>g.assigned);
+  const started=assigned.filter(g=>g.started);
+  const notStarted=assigned.filter(g=>g.notStarted);
+
   if($("#adminBitaFirstCount"))$("#adminBitaFirstCount").textContent=first.length;
   if($("#adminBitaLaterCount"))$("#adminBitaLaterCount").textContent=later.length;
   if($("#adminBitaCompaniesCount"))$("#adminBitaCompaniesCount").textContent=companies.size+" / "+COMPANIES.length;
-  if($("#adminBitaMentorsCount"))$("#adminBitaMentorsCount").textContent=mentors.length;
+  if($("#adminBitaAssignedMentorsCount"))$("#adminBitaAssignedMentorsCount").textContent=assigned.length;
+  if($("#adminBitaStartedMentorsCount"))$("#adminBitaStartedMentorsCount").textContent=started.length;
+  if($("#adminBitaNotStartedMentorsCount"))$("#adminBitaNotStartedMentorsCount").textContent=notStarted.length;
 }
 
 function adminFirstStatusHTML(group){
@@ -5089,9 +5154,141 @@ function adminMentorsCellHTML(group,typeFilter){
   }).join("");
 }
 
+
+function adminCompanyMatchesProgress(group,filterValue){
+  const value=String(filterValue||"").trim().toUpperCase();
+  if(!value)return true;
+
+  const total=Number(group?.total||0);
+  const firstCount=(group?.first||[]).length;
+  const laterCount=(group?.later||[]).length;
+
+  if(value==="HAS_ANY")return total>0;
+  if(value==="NONE")return total===0;
+  if(value==="HAS_FIRST")return firstCount>0;
+  if(value==="FIRST_ONLY")return firstCount>0&&laterCount===0;
+  if(value==="POST_1")return laterCount===1;
+  if(value==="POST_2")return laterCount===2;
+  if(value==="POST_3_PLUS")return laterCount>=3;
+
+  return true;
+}
+
+function adminUpdateProgressFilterOptions(groups){
+  const select=$("#adminBitacoraProgress");
+  if(!select)return;
+
+  const current=select.value;
+  const counts={
+    HAS_ANY:0,
+    NONE:0,
+    HAS_FIRST:0,
+    FIRST_ONLY:0,
+    POST_1:0,
+    POST_2:0,
+    POST_3_PLUS:0
+  };
+
+  (groups||[]).forEach(g=>{
+    if(adminCompanyMatchesProgress(g,"HAS_ANY"))counts.HAS_ANY++;
+    if(adminCompanyMatchesProgress(g,"NONE"))counts.NONE++;
+    if(adminCompanyMatchesProgress(g,"HAS_FIRST"))counts.HAS_FIRST++;
+    if(adminCompanyMatchesProgress(g,"FIRST_ONLY"))counts.FIRST_ONLY++;
+    if(adminCompanyMatchesProgress(g,"POST_1"))counts.POST_1++;
+    if(adminCompanyMatchesProgress(g,"POST_2"))counts.POST_2++;
+    if(adminCompanyMatchesProgress(g,"POST_3_PLUS"))counts.POST_3_PLUS++;
+  });
+
+  const labels={
+    "":"Todas las empresas",
+    HAS_ANY:`Con alguna bitácora (${counts.HAS_ANY})`,
+    NONE:`Sin bitácoras (${counts.NONE})`,
+    HAS_FIRST:`Con primera bitácora (${counts.HAS_FIRST})`,
+    FIRST_ONLY:`Solo primera bitácora (${counts.FIRST_ONLY})`,
+    POST_1:`1 bitácora posterior (${counts.POST_1})`,
+    POST_2:`2 bitácoras posteriores (${counts.POST_2})`,
+    POST_3_PLUS:`3 o más posteriores (${counts.POST_3_PLUS})`
+  };
+
+  [...select.options].forEach(opt=>{
+    if(labels[opt.value]!==undefined)opt.textContent=labels[opt.value];
+  });
+
+  select.value=current;
+}
+
+
+function adminConfigureBitacoraProgressForMode(){
+  const select=$("#adminBitacoraProgress");
+  if(!select)return;
+
+  const currentMode=adminBitacorasMode;
+  const previous=String(select.dataset.mode||"");
+  if(previous===currentMode)return;
+
+  if(currentMode==="mentor"){
+    select.innerHTML=`
+      <option value="">Todos los mentores</option>
+      <option value="ASSIGNED">Solo asignados</option>
+      <option value="STARTED">Ya arrancaron</option>
+      <option value="NOT_STARTED">Asignados sin arrancar</option>
+    `;
+    select.setAttribute("aria-label","Filtrar mentores por estado de inicio");
+    select.title="Filtra mentores según su estado de arranque.";
+  }else{
+    select.innerHTML=`
+      <option value="">Todas las empresas</option>
+      <option value="HAS_ANY">Con alguna bitácora</option>
+      <option value="NONE">Sin bitácoras</option>
+      <option value="HAS_FIRST">Con primera bitácora</option>
+      <option value="FIRST_ONLY">Solo primera bitácora</option>
+      <option value="POST_1">1 bitácora posterior</option>
+      <option value="POST_2">2 bitácoras posteriores</option>
+      <option value="POST_3_PLUS">3 o más posteriores</option>
+    `;
+    select.setAttribute("aria-label","Filtrar empresas por avance de bitácoras");
+    select.title="Filtra empresas según su avance de bitácoras.";
+  }
+
+  select.dataset.mode=currentMode;
+  select.value="";
+}
+
+function adminMentorMatchesStartFilter(group,filterValue){
+  const value=String(filterValue||"").trim().toUpperCase();
+  if(!value)return true;
+  if(value==="ASSIGNED")return !!group.assigned;
+  if(value==="STARTED")return !!group.assigned&&!!group.started;
+  if(value==="NOT_STARTED")return !!group.notStarted;
+  return true;
+}
+
+function adminUpdateMentorStartFilterOptions(groups){
+  const select=$("#adminBitacoraProgress");
+  if(!select||adminBitacorasMode!=="mentor")return;
+
+  const current=select.value;
+  const assigned=(groups||[]).filter(g=>g.assigned).length;
+  const started=(groups||[]).filter(g=>g.assigned&&g.started).length;
+  const notStarted=(groups||[]).filter(g=>g.notStarted).length;
+
+  const labels={
+    "":`Todos los mentores (${(groups||[]).length})`,
+    ASSIGNED:`Solo asignados (${assigned})`,
+    STARTED:`Ya arrancaron (${started})`,
+    NOT_STARTED:`Asignados sin arrancar (${notStarted})`
+  };
+
+  [...select.options].forEach(opt=>{
+    if(labels[opt.value]!==undefined)opt.textContent=labels[opt.value];
+  });
+  select.value=current;
+}
+
 function renderAdminBitacoras(){
   const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
   if(!body||!head)return;
+  adminConfigureBitacoraProgressForMode();
   adminBitacoraSummary(adminBitacorasData);
   backend?.classList.toggle("hidden",adminBitacorasLoaded);
   const q=String($("#adminBitacoraSearch")?.value||"").trim().toLowerCase();
@@ -5116,8 +5313,16 @@ function renderAdminBitacoras(){
     return;
   }
   if(adminBitacorasMode==="mentor"){
-    const groups=adminBitacoraMentorGroups(filteredRows).filter(g=>!q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId)].join(" ").toLowerCase().includes(q));
-    head.innerHTML='<tr><th>Mentor</th><th>Primeras asociadas</th><th>Posteriores</th><th>Empresa</th><th>Última sesión</th></tr>';
+    const allMentorGroups=adminBitacoraMentorGroups(filteredRows,type);
+    adminUpdateMentorStartFilterOptions(allMentorGroups);
+    const mentorStartFilter=String($("#adminBitacoraProgress")?.value||"").trim();
+
+    const groups=allMentorGroups.filter(g=>{
+      if(!adminMentorMatchesStartFilter(g,mentorStartFilter))return false;
+      return !q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId),...g.assignedEmpresas].join(" ").toLowerCase().includes(q);
+    });
+
+    head.innerHTML='<tr><th>Mentor</th><th>Estado</th><th>Primeras asociadas</th><th>Posteriores</th><th>Empresa</th><th>Última sesión</th></tr>';
     body.innerHTML=groups.length?groups.map(g=>{
       const companies=adminMentorCompanyNames(g);
       const sourceLabels=[];
@@ -5126,31 +5331,58 @@ function renderAdminBitacoras(){
       const companiesHTML=companies.length
         ? companies.map(c=>`<div><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.id)}</small></div>`).join("")
         : '<span class="admin-bita-chip pending">Sin empresa</span>';
+
+      const statusHTML=g.notStarted
+        ? '<span class="admin-bita-chip alert">Sin arrancar</span>'
+        : (g.assigned&&g.started
+            ? '<span class="admin-bita-chip ok">En marcha</span>'
+            : '<span class="admin-bita-chip pending">Histórico</span>');
+
       return `<tr>
         <td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:""}</td>
+        <td>${statusHTML}</td>
         <td><span class="admin-bita-chip ${g.firstCoverageCount?"ok":"pending"}">${g.firstCoverageCount}</span>${sourceLabels.length?`<small>${escapeHTML(sourceLabels.join(" · "))}</small>`:""}</td>
         <td>${adminLaterStatusHTML(g.later)}</td>
         <td>${companiesHTML}</td>
         <td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td>
       </tr>`;
-    }).join(""):'<tr><td colspan="5" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
+    }).join(""):'<tr><td colspan="6" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
+
+    const assigned=allMentorGroups.filter(g=>g.assigned).length;
+    const started=allMentorGroups.filter(g=>g.assigned&&g.started).length;
+    const notStarted=allMentorGroups.filter(g=>g.notStarted).length;
     const unresolved=adminUnresolvedFirstBitacoras(filteredRows).length;
-    if(status)status.textContent=`${groups.length} mentor(es) · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es) · ${unresolved} primera(s) aún sin asociación inequívoca.`;
+    const filterLabel=$("#adminBitacoraProgress")?.selectedOptions?.[0]?.textContent||"";
+    const filterSuffix=mentorStartFilter?` · filtro: ${filterLabel}`:"";
+    if(status)status.textContent=`${assigned} mentor(es) asignado(s) · ${started} ya arrancaron · ${notStarted} aún no arrancan · ${unresolved} primera(s) sin asociación inequívoca${filterSuffix}.`;
   }else{
-    const groups=adminBitacoraCompanyGroups(filteredRows).filter(g=>{
+    const allCompanyGroups=adminBitacoraCompanyGroups(filteredRows);
+    adminUpdateProgressFilterOptions(allCompanyGroups);
+
+    const progress=String($("#adminBitacoraProgress")?.value||"").trim();
+
+    const groups=allCompanyGroups.filter(g=>{
+      if(!adminCompanyMatchesProgress(g,progress))return false;
+
       const mentorText=adminCompanyAssignedMentors(g,type).map(m=>`${m.name} ${m.email}`).join(" ");
       return !q||[g.empresa,g.empresaId,mentorText,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q);
     });
     head.innerHTML='<tr><th>Empresa</th><th>Mentor</th><th>Primera bitácora</th><th>Bitácoras posteriores</th><th>Total</th><th>Última sesión</th><th>Control</th></tr>';
     body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.empresa)}</strong><small>${escapeHTML(g.empresaId)}</small></td><td>${adminMentorsCellHTML(g,type)}</td><td>${adminFirstStatusHTML(g)}</td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td><td>${g.anomalies.length?`<span class="admin-bita-chip alert">Revisar ${escapeHTML(g.anomalies.map(adminBitacoraTypeLabel).join(", "))}</span>`:(g.first.length?'<span class="admin-bita-chip ok">En curso</span>':'<span class="admin-bita-chip pending">Sin iniciar</span>')}</td></tr>`).join(""):'<tr><td colspan="7" class="admin-bitacoras-empty">No hay empresas que coincidan con los filtros.</td></tr>';
     const withFirst=groups.filter(g=>g.first.length).length;
-    if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es).`;
+    const progressLabel=$("#adminBitacoraProgress")?.selectedOptions?.[0]?.textContent||"";
+    const suffix=progress?` · filtro: ${progressLabel}`:"";
+    if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${groups.reduce((n,g)=>n+g.later.length,0)} bitácora(s) posterior(es)${suffix}.`;
   }
 }
 
 function adminSetBitacoraMode(mode){
   adminBitacorasMode=mode==="mentor"?"mentor":"company";
   $$("#adminViewBitacoras [data-bita-mode]").forEach(b=>b.classList.toggle("active",b.dataset.bitaMode===adminBitacorasMode));
+
+  const progress=$("#adminBitacoraProgress");
+  if(progress)progress.dataset.mode="";
+
   renderAdminBitacoras();
 }
 
@@ -5211,7 +5443,7 @@ function initSimplifiedAdmin(){
     if(e.target.matches("#adminBitacoraSearch"))renderAdminBitacoras();
   });
   bitacoras.addEventListener("change",e=>{
-    if(e.target.matches("#adminBitacoraType"))renderAdminBitacoras();
+    if(e.target.matches("#adminBitacoraType,#adminBitacoraProgress"))renderAdminBitacoras();
   });
 
   summary.classList.add("active");
