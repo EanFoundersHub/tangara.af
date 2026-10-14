@@ -2023,6 +2023,30 @@ flex-direction:column}
 }
 </style>
 
+
+<style id="tangara-admin-bitacoras-v1">
+/* Administración · seguimiento de primera bitácora y sesiones posteriores */
+.admin-bitacoras-shell{display:grid;gap:14px}
+.admin-bitacoras-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.admin-bitacoras-kpi{padding:15px 16px;border-radius:14px;background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));border:1px solid rgba(242,123,227,.18)}
+.admin-bitacoras-kpi strong{display:block;font-size:27px;line-height:1;color:#fff}.admin-bitacoras-kpi span{display:block;margin-top:7px;font-size:10px;color:var(--txt2);line-height:1.35}.admin-bitacoras-kpi small{display:block;margin-top:4px;font-size:8.8px;color:var(--txt3)}
+.admin-bitacoras-toolbar{display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(170px,.55fr) auto;gap:9px;align-items:center}
+.admin-bitacoras-toolbar input,.admin-bitacoras-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
+.admin-bitacoras-toolbar select option{color:#2B1530}
+.admin-bitacoras-switch{display:inline-flex;gap:4px;padding:4px;border:1px solid rgba(242,123,227,.16);border-radius:11px;background:rgba(255,255,255,.02);width:max-content}
+.admin-bitacoras-switch button{border:0;background:transparent;color:var(--txt2);padding:8px 11px;border-radius:8px;font-size:10.5px;font-weight:750}.admin-bitacoras-switch button.active{background:rgba(238,70,221,.16);color:#fff}
+.admin-bitacoras-status{min-height:18px;font-size:10.5px;color:var(--txt2);line-height:1.45}.admin-bitacoras-status.warn{color:#FFDCA0}.admin-bitacoras-status.ok{color:#B9F5D0}
+.admin-bitacoras-wrap{overflow:auto;border:1px solid rgba(242,123,227,.14);border-radius:13px;background:rgba(7,3,12,.16);max-height:610px}
+.admin-bitacoras-table{width:100%;min-width:940px;border-collapse:separate;border-spacing:0;font-size:10.5px}
+.admin-bitacoras-table th{position:sticky;top:0;z-index:3;text-align:left;padding:10px 11px;background:#24102e;color:#F4C4EE;border-bottom:1px solid rgba(242,123,227,.20);font-size:8.8px;letter-spacing:.055em;text-transform:uppercase}
+.admin-bitacoras-table td{vertical-align:middle;padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--txt2)}.admin-bitacoras-table tr:last-child td{border-bottom:0}.admin-bitacoras-table td strong{color:#fff;font-weight:700}.admin-bitacoras-table td small{display:block;margin-top:3px;color:var(--txt3);font-size:8.8px}
+.admin-bita-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);font-size:8.8px;font-weight:750;white-space:nowrap;margin:2px 4px 2px 0}.admin-bita-chip.ok{border-color:rgba(143,230,182,.24);background:rgba(143,230,182,.07);color:#B9F5D0}.admin-bita-chip.pending{border-color:rgba(255,212,139,.20);background:rgba(255,212,139,.06);color:#FFDCA0}.admin-bita-chip.fin{border-color:rgba(242,123,227,.24);color:#F7D6F2}.admin-bita-chip.imp{border-color:rgba(143,230,182,.22);color:#CFF7DF}.admin-bita-chip.alert{border-color:rgba(255,154,168,.26);background:rgba(255,154,168,.07);color:#FFB4C7}
+.admin-bitacoras-empty{padding:26px!important;text-align:center;color:var(--txt2)!important;line-height:1.55}.admin-bitacoras-backend{padding:15px 16px;border-radius:12px;background:rgba(255,212,139,.055);border:1px solid rgba(255,212,139,.18);color:var(--txt2);font-size:11px;line-height:1.55}.admin-bitacoras-backend strong{color:#fff}
+.admin-bitacoras-anomaly{padding:11px 13px;border-radius:11px;background:rgba(255,154,168,.055);border:1px solid rgba(255,154,168,.16);color:#FFC2CA;font-size:10.5px;line-height:1.45}
+@media(max-width:900px){.admin-bitacoras-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-bitacoras-toolbar{grid-template-columns:1fr 1fr}.admin-bitacoras-switch{grid-column:1/-1}}
+@media(max-width:600px){.admin-bitacoras-kpis{grid-template-columns:1fr 1fr}.admin-bitacoras-toolbar{grid-template-columns:1fr}.admin-bitacoras-switch{grid-column:auto;width:100%;display:grid;grid-template-columns:1fr 1fr}.admin-bitacoras-switch button{width:100%}}
+</style>
+
 </head>
 <body>
 
@@ -3249,6 +3273,9 @@ let activityPending=new Set();
 let activitySeen=new Set();
 let adminAuthorized=false;
 let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial:[],contactos:[]};
+let adminBitacorasData=[];
+let adminBitacorasLoaded=false;
+let adminBitacorasMode="company";
 let adminMentorMatrixLoading=false;
 let adminOperationsLoaded=false;
 let correctionTarget=null;
@@ -4695,6 +4722,211 @@ async function revealContact(){
 }
 
 /* ===================== ADMIN ===================== */
+function normalizeAdminBitacora(row){
+  row=row&&typeof row==="object"?row:{};
+  const base=unifiedBitacoraView(row);
+
+  // Mapeo real confirmado desde ObtenerBitacorasAdmin / Bitacoras_Tangara:
+  // field_1 = EmpresaID
+  // field_2 = EmpresaNombre
+  // field_3 = TipoMentoria
+  // field_4 = NumeroBitacora
+  // field_5 = FechaSesion
+  // field_6 = MentorNombre
+  // field_7 = MentorEmail
+  // field_8 = Avances
+  // field_9 = ProximosPasos
+  const empresaId=String(firstPresent(row,["EmpresaID","empresaId","EmpresaId","field_1"])||"").trim();
+  const company=companyById(empresaId);
+  const empresa=String(firstPresent(row,["EmpresaNombre","Empresa","empresa","field_2"])||company?.name||empresaId||"Empresa sin identificar").trim();
+  const mentorEmail=String(firstPresent(row,["MentorEmail","EmailMentor","mentorEmail","emailMentor","field_7"])||"").trim().toLowerCase();
+  const mentorNombre=String(base.mentor||firstPresent(row,["MentorNombre","mentorNombre","Mentor","field_6"])||"").trim();
+  const type=normalizeInviteValue(base.type||firstPresent(row,["TipoMentoria","tipoMentoria","field_3"]));
+  return {...base,raw:row,empresaId,empresa,mentorEmail,mentorNombre,type};
+}
+
+function adminBitacoraTime(value){
+  if(value===null||value===undefined||value==="")return 0;
+  if(typeof value==="number"&&Number.isFinite(value)){
+    // Fechas serializadas desde Excel/Forms.
+    if(value>20000&&value<80000)return Math.round((value-25569)*86400000);
+    return value;
+  }
+  const n=Date.parse(String(value));
+  return Number.isFinite(n)?n:0;
+}
+
+function adminBitacoraLatest(rows){
+  return (rows||[]).slice().sort((a,b)=>adminBitacoraTime(b.date)-adminBitacoraTime(a.date))[0]||null;
+}
+
+function adminBitacoraTypeLabel(type){
+  const t=normalizeInviteValue(type);
+  return t==="FINANCIERO"?"Financiera":t==="IMPACTO"?"Impacto":t||"Sin tipo";
+}
+
+function adminBitacoraRowsForType(rows,type){
+  const t=normalizeInviteValue(type);
+  return !t?(rows||[]):(rows||[]).filter(x=>normalizeInviteValue(x.type)===t);
+}
+
+function adminBitacoraCompanyGroups(rows){
+  const base=new Map(COMPANIES.map(c=>[c.id,{empresaId:c.id,empresa:c.name,rows:[]}]))
+  ;(rows||[]).forEach(b=>{
+    const id=String(b.empresaId||"").trim();
+    if(!id)return;
+    if(!base.has(id))base.set(id,{empresaId:id,empresa:b.empresa||id,rows:[]});
+    base.get(id).rows.push(b);
+  });
+  return [...base.values()].map(g=>{
+    const first=g.rows.filter(b=>Number(b.number)===1);
+    const later=g.rows.filter(b=>Number(b.number)>=2);
+    const firstTypes=new Set(first.map(b=>normalizeInviteValue(b.type)).filter(Boolean));
+    const laterTypes=new Set(later.map(b=>normalizeInviteValue(b.type)).filter(Boolean));
+    const anomalies=[...laterTypes].filter(t=>!firstTypes.has(t));
+    const latest=adminBitacoraLatest(g.rows);
+    return {...g,first,later,firstTypes,laterTypes,anomalies,latest,total:g.rows.length};
+  });
+}
+
+function adminBitacoraMentorGroups(rows){
+  const map=new Map();
+  ;(rows||[]).forEach(b=>{
+    const email=String(b.mentorEmail||"").trim().toLowerCase();
+    const name=String(b.mentorNombre||b.mentor||"").trim();
+
+    // Algunas primeras bitácoras históricas normalizadas desde Forms no traen
+    // field_6/field_7. No las atribuimos a un mentor por inferencia: quedan
+    // visibles en un grupo de control para no falsear el histórico.
+    const key=email||normalizeMentorIdentity(name)||"__SIN_MENTOR__";
+    const displayName=(name||email||"Sin mentor identificado");
+
+    if(!map.has(key))map.set(key,{
+      key,
+      email,
+      nombre:displayName,
+      rows:[],
+      empresas:new Set(),
+      sinIdentidad:key==="__SIN_MENTOR__"
+    });
+
+    const g=map.get(key);
+    g.rows.push(b);
+    if(b.empresaId)g.empresas.add(b.empresaId);
+    if(g.sinIdentidad===false&&!g.nombre&&name)g.nombre=name;
+  });
+
+  return [...map.values()].map(g=>{
+    const first=g.rows.filter(b=>Number(b.number)===1);
+    const later=g.rows.filter(b=>Number(b.number)>=2);
+    return {...g,first,later,total:g.rows.length,latest:adminBitacoraLatest(g.rows)};
+  }).sort((a,b)=>{
+    if(a.sinIdentidad&&!b.sinIdentidad)return 1;
+    if(!a.sinIdentidad&&b.sinIdentidad)return -1;
+    return b.total-a.total||a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"});
+  });
+}
+
+function adminBitacoraViewMarkup(){
+  return `<div class="admin-bitacoras-shell">
+    <div class="admin-bitacoras-kpis">
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaFirstCount">–</strong><span>Primeras bitácoras registradas</span><small>NumeroBitacora = 1 · normalizadas desde Forms</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaLaterCount">–</strong><span>Bitácoras posteriores</span><small>NumeroBitacora ≥ 2 · seguimiento en Comunidad</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaCompaniesCount">–</strong><span>Empresas con primera bitácora</span><small>Al menos una evaluación inicial registrada</small></div>
+      <div class="admin-bitacoras-kpi"><strong id="adminBitaMentorsCount">–</strong><span>Mentores con registros</span><small>Identificados en las bitácoras</small></div>
+    </div>
+    <div class="admin-bitacoras-toolbar">
+      <input id="adminBitacoraSearch" autocomplete="off" placeholder="Buscar empresa, mentor, correo o ID…">
+      <select id="adminBitacoraType"><option value="">Todas las mentorías</option><option value="FINANCIERO">Financiera</option><option value="IMPACTO">Impacto</option></select>
+      <div class="admin-bitacoras-switch"><button type="button" class="active" data-bita-mode="company">Por empresa</button><button type="button" data-bita-mode="mentor">Por mentor</button></div>
+    </div>
+    <div class="admin-bitacoras-status" id="adminBitacoraStatus"></div>
+    <div class="admin-bitacoras-anomaly hidden" id="adminBitacoraAnomaly"></div>
+    <div class="admin-bitacoras-backend hidden" id="adminBitacoraBackend"><strong>Falta la última pieza del backend.</strong> El INDEX ya está preparado. FLOW_ADMIN_URL debe devolver un arreglo <code>bitacoras</code> con los registros de <code>Bitacoras_Tangara</code>.</div>
+    <div class="admin-bitacoras-wrap"><table class="admin-bitacoras-table"><thead id="adminBitacoraHead"></thead><tbody id="adminBitacoraBody"><tr><td class="admin-bitacoras-empty">Cargando seguimiento…</td></tr></tbody></table></div>
+  </div>`;
+}
+
+function adminLoadBitacorasFromDashboard(data){
+  const candidates=[data?.bitacoras,data?.bitacorasAdmin,data?.registrosBitacora,data?.registrosBitacoras];
+  const raw=candidates.find(Array.isArray);
+  adminBitacorasLoaded=Array.isArray(raw);
+
+  // SharePoint puede devolver filas vacías o incompletas. Para el tablero solo
+  // contamos registros reales de Tángara con número de bitácora válido.
+  adminBitacorasData=adminBitacorasLoaded
+    ? raw
+        .map(normalizeAdminBitacora)
+        .filter(b=>/^TAN-\d+$/i.test(String(b.empresaId||""))&&Number(b.number)>=1)
+    : [];
+
+  renderAdminBitacoras();
+}
+
+function adminBitacoraSummary(rows){
+  const first=(rows||[]).filter(b=>Number(b.number)===1);
+  const later=(rows||[]).filter(b=>Number(b.number)>=2);
+  const companies=new Set(first.map(b=>b.empresaId).filter(Boolean));
+  const mentors=new Set((rows||[]).map(b=>b.mentorEmail||normalizeMentorIdentity(b.mentorNombre||b.mentor)).filter(Boolean));
+  if($("#adminBitaFirstCount"))$("#adminBitaFirstCount").textContent=first.length;
+  if($("#adminBitaLaterCount"))$("#adminBitaLaterCount").textContent=later.length;
+  if($("#adminBitaCompaniesCount"))$("#adminBitaCompaniesCount").textContent=companies.size+" / "+COMPANIES.length;
+  if($("#adminBitaMentorsCount"))$("#adminBitaMentorsCount").textContent=mentors.size;
+}
+
+function adminFirstStatusHTML(group){
+  const fin=group.first.some(b=>normalizeInviteValue(b.type)==="FINANCIERO");
+  const imp=group.first.some(b=>normalizeInviteValue(b.type)==="IMPACTO");
+  if(!fin&&!imp)return '<span class="admin-bita-chip pending">Pendiente</span>';
+  return `${fin?'<span class="admin-bita-chip ok fin">✓ Financiera</span>':""}${imp?'<span class="admin-bita-chip ok imp">✓ Impacto</span>':""}`;
+}
+
+function adminLaterStatusHTML(rows){
+  const fin=(rows||[]).filter(b=>normalizeInviteValue(b.type)==="FINANCIERO").length;
+  const imp=(rows||[]).filter(b=>normalizeInviteValue(b.type)==="IMPACTO").length;
+  if(!fin&&!imp)return '<span class="admin-bita-chip pending">0 posteriores</span>';
+  return `${fin?`<span class="admin-bita-chip fin">Fin ${fin}</span>`:""}${imp?`<span class="admin-bita-chip imp">Imp ${imp}</span>`:""}<span class="admin-bita-chip ok">Total ${fin+imp}</span>`;
+}
+
+function renderAdminBitacoras(){
+  const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
+  if(!body||!head)return;
+  adminBitacoraSummary(adminBitacorasData);
+  backend?.classList.toggle("hidden",adminBitacorasLoaded);
+  const q=String($("#adminBitacoraSearch")?.value||"").trim().toLowerCase();
+  const type=normalizeInviteValue($("#adminBitacoraType")?.value||"");
+  const filteredRows=adminBitacoraRowsForType(adminBitacorasData,type);
+  const anomalyCount=adminBitacoraCompanyGroups(filteredRows).reduce((n,g)=>n+g.anomalies.length,0);
+  if(anomaly){
+    anomaly.classList.toggle("hidden",!anomalyCount);
+    anomaly.textContent=anomalyCount?`${anomalyCount} proceso(s) tienen bitácoras posteriores sin una primera bitácora del mismo tipo de mentoría. Conviene revisar la normalización desde Forms.`:"";
+  }
+  if(!adminBitacorasLoaded){
+    head.innerHTML='<tr><th>Seguimiento</th></tr>';
+    body.innerHTML='<tr><td class="admin-bitacoras-empty">La interfaz está lista, pero el flujo administrativo todavía no está enviando los registros de Bitacoras_Tangara.</td></tr>';
+    if(status)status.textContent="Esperando datos de bitácoras desde FLOW_ADMIN_URL.";
+    return;
+  }
+  if(adminBitacorasMode==="mentor"){
+    const groups=adminBitacoraMentorGroups(filteredRows).filter(g=>!q||[g.nombre,g.email,...g.rows.map(r=>r.empresa),...g.rows.map(r=>r.empresaId)].join(" ").toLowerCase().includes(q));
+    head.innerHTML='<tr><th>Mentor</th><th>Primeras bitácoras</th><th>Posteriores</th><th>Empresas</th><th>Total</th><th>Última sesión</th></tr>';
+    body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:(g.sinIdentidad?'<small>Primeras bitácoras históricas sin field_6 / field_7</small>':"")}</td><td><span class="admin-bita-chip ${g.first.length?"ok":"pending"}">${g.first.length}</span></td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.empresas.size}</strong><small>${escapeHTML([...g.empresas].join(", "))}</small></td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td></tr>`).join(""):'<tr><td colspan="6" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
+    if(status)status.textContent=`${groups.length} mentor(es) · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es) en el filtro actual.`;
+  }else{
+    const groups=adminBitacoraCompanyGroups(filteredRows).filter(g=>!q||[g.empresa,g.empresaId,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q));
+    head.innerHTML='<tr><th>Empresa</th><th>Primera bitácora</th><th>Bitácoras posteriores</th><th>Total</th><th>Última sesión</th><th>Control</th></tr>';
+    body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.empresa)}</strong><small>${escapeHTML(g.empresaId)}</small></td><td>${adminFirstStatusHTML(g)}</td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td><td>${g.anomalies.length?`<span class="admin-bita-chip alert">Revisar ${escapeHTML(g.anomalies.map(adminBitacoraTypeLabel).join(", "))}</span>`:(g.first.length?'<span class="admin-bita-chip ok">En curso</span>':'<span class="admin-bita-chip pending">Sin iniciar</span>')}</td></tr>`).join(""):'<tr><td colspan="6" class="admin-bitacoras-empty">No hay empresas que coincidan con los filtros.</td></tr>';
+    const withFirst=groups.filter(g=>g.first.length).length;
+    if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es).`;
+  }
+}
+
+function adminSetBitacoraMode(mode){
+  adminBitacorasMode=mode==="mentor"?"mentor":"company";
+  $$("#adminViewBitacoras [data-bita-mode]").forEach(b=>b.classList.toggle("active",b.dataset.bitaMode===adminBitacorasMode));
+  renderAdminBitacoras();
+}
+
 function initSimplifiedAdmin(){
   const manager=$("#adminAccessManager");
   if(!manager||$("#adminSimpleNav"))return;
@@ -4716,7 +4948,7 @@ function initSimplifiedAdmin(){
   const nav=document.createElement("div");
   nav.id="adminSimpleNav";
   nav.className="admin-simple-nav";
-  nav.innerHTML=`<button type="button" data-admin-view="summary" class="active">Resumen</button><button type="button" data-admin-view="access">Invitaciones</button><button type="button" data-admin-view="mentors">Mentores</button><button type="button" data-admin-view="history">Historial</button>`;
+  nav.innerHTML=`<button type="button" data-admin-view="summary" class="active">Resumen</button><button type="button" data-admin-view="bitacoras">Bitácoras</button><button type="button" data-admin-view="access">Invitaciones</button><button type="button" data-admin-view="mentors">Mentores</button><button type="button" data-admin-view="history">Historial</button>`;
   sectionHead?.insertAdjacentElement("afterend",nav);
 
   const makeView=(id,title,copy)=>{
@@ -4725,6 +4957,8 @@ function initSimplifiedAdmin(){
     manager.appendChild(v);return v;
   };
   const summary=makeView("adminViewSummary","Resumen de Comunidad","Los cuatro datos que necesitas para saber si la comunidad está entrando y usando el portal.");
+  const bitacoras=makeView("adminViewBitacoras","Seguimiento de bitácoras","Distingue la primera bitácora normalizada desde Forms de las sesiones posteriores, por empresa y por mentor.");
+  bitacoras.insertAdjacentHTML("beforeend",adminBitacoraViewMarkup());
   const access=makeView("adminViewAccess","Invitaciones y accesos","Invita personas, revisa quién ya creó su perfil y reenvía accesos pendientes.");
   const mentors=makeView("adminViewMentors","Asignación de mentores","Consulta y ajusta mentoría financiera e impacto por empresa.");
   const hist=makeView("adminViewHistory","Historial de cambios","Auditoría de asignaciones y desasignaciones sin mezclarla con la operación diaria.");
@@ -4742,6 +4976,17 @@ function initSimplifiedAdmin(){
   if(existingNote)mentors.appendChild(existingNote);
   if(history)hist.appendChild(history);
 
+  bitacoras.addEventListener("click",e=>{
+    const mode=e.target.closest("[data-bita-mode]");
+    if(mode)return adminSetBitacoraMode(mode.dataset.bitaMode);
+  });
+  bitacoras.addEventListener("input",e=>{
+    if(e.target.matches("#adminBitacoraSearch"))renderAdminBitacoras();
+  });
+  bitacoras.addEventListener("change",e=>{
+    if(e.target.matches("#adminBitacoraType"))renderAdminBitacoras();
+  });
+
   summary.classList.add("active");
   nav.addEventListener("click",e=>{
     const btn=e.target.closest("[data-admin-view]");
@@ -4751,11 +4996,12 @@ function initSimplifiedAdmin(){
 
 function adminShowView(name="summary"){
   initSimplifiedAdmin();
-  const map={summary:"adminViewSummary",access:"adminViewAccess",mentors:"adminViewMentors",history:"adminViewHistory"};
+  const map={summary:"adminViewSummary",bitacoras:"adminViewBitacoras",access:"adminViewAccess",mentors:"adminViewMentors",history:"adminViewHistory"};
   const target=map[name]||map.summary;
   $$(".admin-simple-view").forEach(v=>v.classList.toggle("active",v.id===target));
   $$("#adminSimpleNav [data-admin-view]").forEach(b=>b.classList.toggle("active",b.dataset.adminView===name));
-  if(name!=="summary"&&!adminOperationsLoaded&&!adminMentorMatrixLoading)adminLoadMentorMatrix(false);
+  if(name==="bitacoras")renderAdminBitacoras();
+  if(["access","mentors","history"].includes(name)&&!adminOperationsLoaded&&!adminMentorMatrixLoading)adminLoadMentorMatrix(false);
 }
 
 function setAdminVisible(show){
@@ -5529,9 +5775,11 @@ async function loadAdminDashboard(scrollAfter=false){
       setAdminVisible(false);
       return;
     }
+    const currentView=$("#adminSimpleNav [data-admin-view].active")?.dataset?.adminView||"summary";
     setAdminVisible(true);
     renderAdminDashboard(data);
-    adminShowView("summary");
+    adminLoadBitacorasFromDashboard(data);
+    adminShowView(scrollAfter?"summary":currentView);
     if(scrollAfter)setTimeout(()=>$("#adminDashboard")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
   }catch(err){
     if(Number(err?.status)===401){
