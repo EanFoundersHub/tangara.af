@@ -2030,7 +2030,7 @@ flex-direction:column}
 .admin-bitacoras-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .admin-bitacoras-kpi{padding:15px 16px;border-radius:14px;background:linear-gradient(145deg,rgba(238,70,221,.10),rgba(255,255,255,.025));border:1px solid rgba(242,123,227,.18)}
 .admin-bitacoras-kpi strong{display:block;font-size:27px;line-height:1;color:#fff}.admin-bitacoras-kpi span{display:block;margin-top:7px;font-size:10px;color:var(--txt2);line-height:1.35}.admin-bitacoras-kpi small{display:block;margin-top:4px;font-size:8.8px;color:var(--txt3)}
-.admin-bitacoras-toolbar{display:grid;grid-template-columns:minmax(220px,1.25fr) minmax(155px,.48fr) minmax(190px,.62fr) auto;gap:9px;align-items:center}
+.admin-bitacoras-toolbar{display:grid;grid-template-columns:minmax(210px,1.15fr) minmax(145px,.42fr) minmax(180px,.56fr) minmax(185px,.58fr) auto;gap:9px;align-items:center}
 .admin-bitacoras-toolbar input,.admin-bitacoras-toolbar select{width:100%;min-height:40px;border-radius:10px;border:1px solid rgba(242,123,227,.20);background:rgba(255,255,255,.035);color:#fff;padding:0 11px;outline:none}
 .admin-bitacoras-toolbar select option{color:#2B1530}
 .admin-bitacoras-switch{display:inline-flex;gap:4px;padding:4px;border:1px solid rgba(242,123,227,.16);border-radius:11px;background:rgba(255,255,255,.02);width:max-content}
@@ -4957,11 +4957,27 @@ function adminBitacoraMentorGroups(rows,typeFilter=""){
     const started=g.later.length>0;
     const notStarted=g.assigned&&!started;
 
+    const assignedBase=g.assigned&&g.assignedEmpresas.size
+      ? new Set(g.assignedEmpresas)
+      : new Set(g.empresas);
+
+    const assignedFirstCompanies=new Set(
+      [...firstCompanies].filter(id=>assignedBase.has(id))
+    );
+
+    const assignedCompanyCount=assignedBase.size;
+    const assignedFirstCount=assignedFirstCompanies.size;
+    const assignedMissingFirstCount=Math.max(0,assignedCompanyCount-assignedFirstCount);
+
     return {
       ...g,
       first:g.firstRows,
       firstCoverageCount:firstCompanies.size,
       firstCompanies,
+      assignedCompanyCount,
+      assignedFirstCount,
+      assignedMissingFirstCount,
+      assignedFirstCompanies,
       derivedFirstCount:derived,
       directFirstCount:direct,
       latest,
@@ -5009,6 +5025,11 @@ function adminBitacoraViewMarkup(){
         <option value="POST_1">1 bitácora posterior</option>
         <option value="POST_2">2 bitácoras posteriores</option>
         <option value="POST_3_PLUS">3 o más posteriores</option>
+      </select>
+      <select id="adminBitacoraFirstStatus" aria-label="Filtrar por estado de primera bitácora">
+        <option value="">Estado 1ª bitácora: todas</option>
+        <option value="FIRST_YES">Con primera bitácora</option>
+        <option value="FIRST_NO">Sin primera bitácora</option>
       </select>
       <div class="admin-bitacoras-switch"><button type="button" class="active" data-bita-mode="company">Por empresa</button><button type="button" data-bita-mode="mentor">Por mentor</button></div>
     </div>
@@ -5285,6 +5306,72 @@ function adminUpdateMentorStartFilterOptions(groups){
   select.value=current;
 }
 
+
+function adminCompanyMatchesFirstFilter(group,filterValue){
+  const value=String(filterValue||"").trim().toUpperCase();
+  if(!value)return true;
+
+  const hasFirst=(group?.first||[]).length>0;
+  if(value==="FIRST_YES")return hasFirst;
+  if(value==="FIRST_NO")return !hasFirst;
+  return true;
+}
+
+function adminMentorMatchesFirstFilter(group,filterValue){
+  const value=String(filterValue||"").trim().toUpperCase();
+  if(!value)return true;
+
+  const assignedTotal=Number(group?.assignedCompanyCount||0);
+  const withFirst=Number(group?.assignedFirstCount||0);
+  const missing=Number(group?.assignedMissingFirstCount||0);
+
+  if(value==="FIRST_YES")return withFirst>0;
+  if(value==="FIRST_NO")return assignedTotal>0&&withFirst===0;
+  if(value==="FIRST_COMPLETE")return assignedTotal>0&&missing===0;
+  if(value==="FIRST_PENDING")return assignedTotal>0&&missing>0;
+
+  return true;
+}
+
+function adminConfigureFirstStatusFilter(groups){
+  const select=$("#adminBitacoraFirstStatus");
+  if(!select)return;
+
+  const current=select.value;
+
+  if(adminBitacorasMode==="mentor"){
+    const all=groups||[];
+    const withAny=all.filter(g=>adminMentorMatchesFirstFilter(g,"FIRST_YES")).length;
+    const withNone=all.filter(g=>adminMentorMatchesFirstFilter(g,"FIRST_NO")).length;
+    const complete=all.filter(g=>adminMentorMatchesFirstFilter(g,"FIRST_COMPLETE")).length;
+    const pending=all.filter(g=>adminMentorMatchesFirstFilter(g,"FIRST_PENDING")).length;
+
+    select.innerHTML=`
+      <option value="">Estado 1ª bitácora: todos (${all.length})</option>
+      <option value="FIRST_YES">Con al menos una 1ª bitácora (${withAny})</option>
+      <option value="FIRST_NO">Sin ninguna 1ª bitácora (${withNone})</option>
+      <option value="FIRST_COMPLETE">1ª completa en todas sus empresas (${complete})</option>
+      <option value="FIRST_PENDING">Con alguna 1ª pendiente (${pending})</option>
+    `;
+    select.title="Filtra mentores según la cobertura de primera bitácora en sus empresas asignadas.";
+  }else{
+    const all=groups||[];
+    const withFirst=all.filter(g=>adminCompanyMatchesFirstFilter(g,"FIRST_YES")).length;
+    const withoutFirst=all.filter(g=>adminCompanyMatchesFirstFilter(g,"FIRST_NO")).length;
+
+    select.innerHTML=`
+      <option value="">Estado 1ª bitácora: todas (${all.length})</option>
+      <option value="FIRST_YES">Con primera bitácora (${withFirst})</option>
+      <option value="FIRST_NO">Sin primera bitácora (${withoutFirst})</option>
+    `;
+    select.title="Filtra empresas según tengan o no registrada la primera bitácora.";
+  }
+
+  // Conservamos el filtro si sigue existiendo en el modo actual.
+  const stillExists=[...select.options].some(opt=>opt.value===current);
+  select.value=stillExists?current:"";
+}
+
 function renderAdminBitacoras(){
   const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
   if(!body||!head)return;
@@ -5315,10 +5402,14 @@ function renderAdminBitacoras(){
   if(adminBitacorasMode==="mentor"){
     const allMentorGroups=adminBitacoraMentorGroups(filteredRows,type);
     adminUpdateMentorStartFilterOptions(allMentorGroups);
+    adminConfigureFirstStatusFilter(allMentorGroups);
+
     const mentorStartFilter=String($("#adminBitacoraProgress")?.value||"").trim();
+    const firstStatusFilter=String($("#adminBitacoraFirstStatus")?.value||"").trim();
 
     const groups=allMentorGroups.filter(g=>{
       if(!adminMentorMatchesStartFilter(g,mentorStartFilter))return false;
+      if(!adminMentorMatchesFirstFilter(g,firstStatusFilter))return false;
       return !q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId),...g.assignedEmpresas].join(" ").toLowerCase().includes(q);
     });
 
@@ -5341,7 +5432,10 @@ function renderAdminBitacoras(){
       return `<tr>
         <td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:""}</td>
         <td>${statusHTML}</td>
-        <td><span class="admin-bita-chip ${g.firstCoverageCount?"ok":"pending"}">${g.firstCoverageCount}</span>${sourceLabels.length?`<small>${escapeHTML(sourceLabels.join(" · "))}</small>`:""}</td>
+        <td>
+          <span class="admin-bita-chip ${g.assignedMissingFirstCount===0&&g.assignedCompanyCount?"ok":"pending"}">${g.assignedFirstCount} / ${g.assignedCompanyCount}</span>
+          <small>${g.assignedMissingFirstCount?`${g.assignedMissingFirstCount} pendiente${g.assignedMissingFirstCount===1?"":"s"}`:"Cobertura completa"}${sourceLabels.length?` · ${escapeHTML(sourceLabels.join(" · "))}`:""}</small>
+        </td>
         <td>${adminLaterStatusHTML(g.later)}</td>
         <td>${companiesHTML}</td>
         <td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td>
@@ -5352,17 +5446,24 @@ function renderAdminBitacoras(){
     const started=allMentorGroups.filter(g=>g.assigned&&g.started).length;
     const notStarted=allMentorGroups.filter(g=>g.notStarted).length;
     const unresolved=adminUnresolvedFirstBitacoras(filteredRows).length;
-    const filterLabel=$("#adminBitacoraProgress")?.selectedOptions?.[0]?.textContent||"";
-    const filterSuffix=mentorStartFilter?` · filtro: ${filterLabel}`:"";
+    const startLabel=$("#adminBitacoraProgress")?.selectedOptions?.[0]?.textContent||"";
+    const firstLabel=$("#adminBitacoraFirstStatus")?.selectedOptions?.[0]?.textContent||"";
+    const filters=[];
+    if(mentorStartFilter)filters.push(startLabel);
+    if(firstStatusFilter)filters.push(firstLabel);
+    const filterSuffix=filters.length?` · filtros: ${filters.join(" + ")}`:"";
     if(status)status.textContent=`${assigned} mentor(es) asignado(s) · ${started} ya arrancaron · ${notStarted} aún no arrancan · ${unresolved} primera(s) sin asociación inequívoca${filterSuffix}.`;
   }else{
     const allCompanyGroups=adminBitacoraCompanyGroups(filteredRows);
     adminUpdateProgressFilterOptions(allCompanyGroups);
+    adminConfigureFirstStatusFilter(allCompanyGroups);
 
     const progress=String($("#adminBitacoraProgress")?.value||"").trim();
+    const firstStatusFilter=String($("#adminBitacoraFirstStatus")?.value||"").trim();
 
     const groups=allCompanyGroups.filter(g=>{
       if(!adminCompanyMatchesProgress(g,progress))return false;
+      if(!adminCompanyMatchesFirstFilter(g,firstStatusFilter))return false;
 
       const mentorText=adminCompanyAssignedMentors(g,type).map(m=>`${m.name} ${m.email}`).join(" ");
       return !q||[g.empresa,g.empresaId,mentorText,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q);
@@ -5371,7 +5472,11 @@ function renderAdminBitacoras(){
     body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.empresa)}</strong><small>${escapeHTML(g.empresaId)}</small></td><td>${adminMentorsCellHTML(g,type)}</td><td>${adminFirstStatusHTML(g)}</td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td><td>${g.anomalies.length?`<span class="admin-bita-chip alert">Revisar ${escapeHTML(g.anomalies.map(adminBitacoraTypeLabel).join(", "))}</span>`:(g.first.length?'<span class="admin-bita-chip ok">En curso</span>':'<span class="admin-bita-chip pending">Sin iniciar</span>')}</td></tr>`).join(""):'<tr><td colspan="7" class="admin-bitacoras-empty">No hay empresas que coincidan con los filtros.</td></tr>';
     const withFirst=groups.filter(g=>g.first.length).length;
     const progressLabel=$("#adminBitacoraProgress")?.selectedOptions?.[0]?.textContent||"";
-    const suffix=progress?` · filtro: ${progressLabel}`:"";
+    const firstLabel=$("#adminBitacoraFirstStatus")?.selectedOptions?.[0]?.textContent||"";
+    const filters=[];
+    if(progress)filters.push(progressLabel);
+    if(firstStatusFilter)filters.push(firstLabel);
+    const suffix=filters.length?` · filtros: ${filters.join(" + ")}`:"";
     if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${groups.reduce((n,g)=>n+g.later.length,0)} bitácora(s) posterior(es)${suffix}.`;
   }
 }
@@ -5382,6 +5487,8 @@ function adminSetBitacoraMode(mode){
 
   const progress=$("#adminBitacoraProgress");
   if(progress)progress.dataset.mode="";
+  const firstStatus=$("#adminBitacoraFirstStatus");
+  if(firstStatus)firstStatus.value="";
 
   renderAdminBitacoras();
 }
@@ -5443,7 +5550,7 @@ function initSimplifiedAdmin(){
     if(e.target.matches("#adminBitacoraSearch"))renderAdminBitacoras();
   });
   bitacoras.addEventListener("change",e=>{
-    if(e.target.matches("#adminBitacoraType,#adminBitacoraProgress"))renderAdminBitacoras();
+    if(e.target.matches("#adminBitacoraType,#adminBitacoraProgress,#adminBitacoraFirstStatus"))renderAdminBitacoras();
   });
 
   summary.classList.add("active");
