@@ -4789,42 +4789,155 @@ function adminBitacoraCompanyGroups(rows){
   });
 }
 
+function adminMentorIdentityKey(email,name){
+  const e=String(email||"").trim().toLowerCase();
+  const n=normalizeMentorIdentity(name);
+  return e||n;
+}
+
+function adminMentorCandidateFromRow(row){
+  const email=String(row?.mentorEmail||"").trim().toLowerCase();
+  const nombre=String(row?.mentorNombre||row?.mentor||"").trim();
+  const key=adminMentorIdentityKey(email,nombre);
+  return key?{key,email,nombre:nombre||email}:null;
+}
+
+function adminResolveFirstBitacoraMentor(firstRow,allRows){
+  const direct=adminMentorCandidateFromRow(firstRow);
+  if(direct)return {...direct,source:"DIRECTA"};
+
+  const empresaId=String(firstRow?.empresaId||"").trim();
+  const tipo=normalizeInviteValue(firstRow?.type);
+  if(!empresaId||!tipo)return null;
+
+  // 1. Evidencia histórica más fuerte disponible:
+  //    bitácoras posteriores de la misma empresa + tipo con mentor identificado.
+  const later=(allRows||[])
+    .filter(b=>
+      Number(b.number)>=2 &&
+      String(b.empresaId||"").trim()===empresaId &&
+      normalizeInviteValue(b.type)===tipo
+    )
+    .map(b=>({row:b,candidate:adminMentorCandidateFromRow(b)}))
+    .filter(x=>x.candidate);
+
+  const laterByKey=new Map();
+  later.forEach(x=>{
+    if(!laterByKey.has(x.candidate.key))laterByKey.set(x.candidate.key,x.candidate);
+  });
+
+  if(laterByKey.size===1){
+    return {...[...laterByKey.values()][0],source:"CONTINUIDAD"};
+  }
+
+  // Si hubo más de un mentor posterior, no reescribimos el pasado por adivinación.
+  // La matriz/historial debe resolver ese caso.
+  if(laterByKey.size>1){
+    return {ambiguous:true,source:"MULTIPLES_MENTORES_POSTERIORES",empresaId,tipo};
+  }
+
+  // 2. Respaldo operativo: asignación ACTIVA actual de la matriz.
+  //    Se usa solo cuando existe un único mentor activo para empresa + tipo.
+  const assignments=typeof adminMatrixAssignments==="function"
+    ? adminMatrixAssignments().filter(a=>
+        a.active &&
+        String(a.companyId||"").trim()===empresaId &&
+        normalizeInviteValue(a.type)===tipo
+      )
+    : [];
+
+  const assignmentByKey=new Map();
+  assignments.forEach(a=>{
+    const key=adminMentorIdentityKey(a.email,a.name);
+    if(key&&!assignmentByKey.has(key)){
+      assignmentByKey.set(key,{
+        key,
+        email:String(a.email||"").trim().toLowerCase(),
+        nombre:String(a.name||a.email||"").trim()
+      });
+    }
+  });
+
+  if(assignmentByKey.size===1){
+    return {...[...assignmentByKey.values()][0],source:"MATRIZ_ACTIVA"};
+  }
+
+  if(assignmentByKey.size>1){
+    return {ambiguous:true,source:"MULTIPLES_ASIGNACIONES_ACTIVAS",empresaId,tipo};
+  }
+
+  return null;
+}
+
+function adminResolvedFirstBitacoras(rows){
+  const all=rows||[];
+  return all
+    .filter(b=>Number(b.number)===1)
+    .map(row=>({row,owner:adminResolveFirstBitacoraMentor(row,all)}));
+}
+
 function adminBitacoraMentorGroups(rows){
+  const filtered=rows||[];
   const map=new Map();
-  ;(rows||[]).forEach(b=>{
-    const email=String(b.mentorEmail||"").trim().toLowerCase();
-    const name=String(b.mentorNombre||b.mentor||"").trim();
 
-    // Algunas primeras bitácoras históricas normalizadas desde Forms no traen
-    // field_6/field_7. No las atribuimos a un mentor por inferencia: quedan
-    // visibles en un grupo de control para no falsear el histórico.
-    const key=email||normalizeMentorIdentity(name)||"__SIN_MENTOR__";
-    const displayName=(name||email||"Sin mentor identificado");
+  const ensureGroup=(candidate)=>{
+    if(!candidate?.key)return null;
+    if(!map.has(candidate.key)){
+      map.set(candidate.key,{
+        key:candidate.key,
+        email:String(candidate.email||"").trim().toLowerCase(),
+        nombre:String(candidate.nombre||candidate.email||"Mentor").trim(),
+        firstRows:[],
+        later:[],
+        empresas:new Set(),
+        associationSources:new Set()
+      });
+    }
+    return map.get(candidate.key);
+  };
 
-    if(!map.has(key))map.set(key,{
-      key,
-      email,
-      nombre:displayName,
-      rows:[],
-      empresas:new Set(),
-      sinIdentidad:key==="__SIN_MENTOR__"
-    });
+  // Las posteriores sí tienen dueño histórico explícito y se atribuyen directamente.
+  filtered.filter(b=>Number(b.number)>=2).forEach(b=>{
+    const candidate=adminMentorCandidateFromRow(b);
+    if(!candidate)return;
+    const g=ensureGroup(candidate);
+    g.later.push(b);
+    if(b.empresaId)g.empresas.add(String(b.empresaId));
+  });
 
-    const g=map.get(key);
-    g.rows.push(b);
-    if(b.empresaId)g.empresas.add(b.empresaId);
-    if(g.sinIdentidad===false&&!g.nombre&&name)g.nombre=name;
+  // Las primeras se resuelven con prioridad:
+  // directa -> continuidad con posteriores -> única asignación activa actual.
+  adminResolvedFirstBitacoras(filtered).forEach(({row,owner})=>{
+    if(!owner||owner.ambiguous||!owner.key)return;
+    const g=ensureGroup(owner);
+    g.firstRows.push({...row,_mentorAssociationSource:owner.source});
+    g.associationSources.add(owner.source);
+    if(row.empresaId)g.empresas.add(String(row.empresaId));
   });
 
   return [...map.values()].map(g=>{
-    const first=g.rows.filter(b=>Number(b.number)===1);
-    const later=g.rows.filter(b=>Number(b.number)>=2);
-    return {...g,first,later,total:g.rows.length,latest:adminBitacoraLatest(g.rows)};
-  }).sort((a,b)=>{
-    if(a.sinIdentidad&&!b.sinIdentidad)return 1;
-    if(!a.sinIdentidad&&b.sinIdentidad)return -1;
-    return b.total-a.total||a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"});
-  });
+    const firstCompanies=new Set(g.firstRows.map(b=>String(b.empresaId||"")).filter(Boolean));
+    const latest=adminBitacoraLatest([...g.firstRows,...g.later]);
+    const derived=g.firstRows.filter(b=>b._mentorAssociationSource!=="DIRECTA").length;
+    const direct=g.firstRows.filter(b=>b._mentorAssociationSource==="DIRECTA").length;
+    return {
+      ...g,
+      first:g.firstRows,
+      firstCoverageCount:firstCompanies.size,
+      firstCompanies,
+      derivedFirstCount:derived,
+      directFirstCount:direct,
+      latest
+    };
+  }).sort((a,b)=>
+    b.later.length-a.later.length ||
+    b.firstCoverageCount-a.firstCoverageCount ||
+    a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"})
+  );
+}
+
+function adminUnresolvedFirstBitacoras(rows){
+  return adminResolvedFirstBitacoras(rows).filter(x=>!x.owner||x.owner.ambiguous);
 }
 
 function adminBitacoraViewMarkup(){
@@ -4867,11 +4980,11 @@ function adminBitacoraSummary(rows){
   const first=(rows||[]).filter(b=>Number(b.number)===1);
   const later=(rows||[]).filter(b=>Number(b.number)>=2);
   const companies=new Set(first.map(b=>b.empresaId).filter(Boolean));
-  const mentors=new Set((rows||[]).map(b=>b.mentorEmail||normalizeMentorIdentity(b.mentorNombre||b.mentor)).filter(Boolean));
+  const mentors=adminBitacoraMentorGroups(rows||[]);
   if($("#adminBitaFirstCount"))$("#adminBitaFirstCount").textContent=first.length;
   if($("#adminBitaLaterCount"))$("#adminBitaLaterCount").textContent=later.length;
   if($("#adminBitaCompaniesCount"))$("#adminBitaCompaniesCount").textContent=companies.size+" / "+COMPANIES.length;
-  if($("#adminBitaMentorsCount"))$("#adminBitaMentorsCount").textContent=mentors.size;
+  if($("#adminBitaMentorsCount"))$("#adminBitaMentorsCount").textContent=mentors.length;
 }
 
 function adminFirstStatusHTML(group){
@@ -4897,9 +5010,16 @@ function renderAdminBitacoras(){
   const type=normalizeInviteValue($("#adminBitacoraType")?.value||"");
   const filteredRows=adminBitacoraRowsForType(adminBitacorasData,type);
   const anomalyCount=adminBitacoraCompanyGroups(filteredRows).reduce((n,g)=>n+g.anomalies.length,0);
+  const unresolvedFirst=adminUnresolvedFirstBitacoras(filteredRows);
   if(anomaly){
-    anomaly.classList.toggle("hidden",!anomalyCount);
-    anomaly.textContent=anomalyCount?`${anomalyCount} proceso(s) tienen bitácoras posteriores sin una primera bitácora del mismo tipo de mentoría. Conviene revisar la normalización desde Forms.`:"";
+    const messages=[];
+    if(anomalyCount)messages.push(`${anomalyCount} proceso(s) tienen bitácoras posteriores sin una primera bitácora del mismo tipo de mentoría.`);
+    if(unresolvedFirst.length){
+      const ids=[...new Set(unresolvedFirst.map(x=>String(x.row?.empresaId||"")).filter(Boolean))];
+      messages.push(`${unresolvedFirst.length} primera(s) bitácora(s) aún no pueden asociarse de forma inequívoca a un mentor${ids.length?` (${ids.join(", ")})`:""}.`);
+    }
+    anomaly.classList.toggle("hidden",messages.length===0);
+    anomaly.textContent=messages.join(" ");
   }
   if(!adminBitacorasLoaded){
     head.innerHTML='<tr><th>Seguimiento</th></tr>';
@@ -4908,10 +5028,23 @@ function renderAdminBitacoras(){
     return;
   }
   if(adminBitacorasMode==="mentor"){
-    const groups=adminBitacoraMentorGroups(filteredRows).filter(g=>!q||[g.nombre,g.email,...g.rows.map(r=>r.empresa),...g.rows.map(r=>r.empresaId)].join(" ").toLowerCase().includes(q));
-    head.innerHTML='<tr><th>Mentor</th><th>Primeras bitácoras</th><th>Posteriores</th><th>Empresas</th><th>Total</th><th>Última sesión</th></tr>';
-    body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:(g.sinIdentidad?'<small>Primeras bitácoras históricas sin field_6 / field_7</small>':"")}</td><td><span class="admin-bita-chip ${g.first.length?"ok":"pending"}">${g.first.length}</span></td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.empresas.size}</strong><small>${escapeHTML([...g.empresas].join(", "))}</small></td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td></tr>`).join(""):'<tr><td colspan="6" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
-    if(status)status.textContent=`${groups.length} mentor(es) · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es) en el filtro actual.`;
+    const groups=adminBitacoraMentorGroups(filteredRows).filter(g=>!q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId)].join(" ").toLowerCase().includes(q));
+    head.innerHTML='<tr><th>Mentor</th><th>Primeras asociadas</th><th>Posteriores</th><th>Empresas</th><th>Última sesión</th></tr>';
+    body.innerHTML=groups.length?groups.map(g=>{
+      const totalEmpresas=g.empresas.size;
+      const sourceLabels=[];
+      if(g.directFirstCount)sourceLabels.push(`${g.directFirstCount} directa${g.directFirstCount===1?"":"s"}`);
+      if(g.derivedFirstCount)sourceLabels.push(`${g.derivedFirstCount} asociada${g.derivedFirstCount===1?"":"s"} por continuidad/matriz`);
+      return `<tr>
+        <td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:""}</td>
+        <td><span class="admin-bita-chip ${g.firstCoverageCount?"ok":"pending"}">${g.firstCoverageCount}</span>${sourceLabels.length?`<small>${escapeHTML(sourceLabels.join(" · "))}</small>`:""}</td>
+        <td>${adminLaterStatusHTML(g.later)}</td>
+        <td><strong>${totalEmpresas}</strong><small>${escapeHTML([...g.empresas].join(", "))}</small></td>
+        <td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td>
+      </tr>`;
+    }).join(""):'<tr><td colspan="5" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
+    const unresolved=adminUnresolvedFirstBitacoras(filteredRows).length;
+    if(status)status.textContent=`${groups.length} mentor(es) · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es) · ${unresolved} primera(s) aún sin asociación inequívoca.`;
   }else{
     const groups=adminBitacoraCompanyGroups(filteredRows).filter(g=>!q||[g.empresa,g.empresaId,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q));
     head.innerHTML='<tr><th>Empresa</th><th>Primera bitácora</th><th>Bitácoras posteriores</th><th>Total</th><th>Última sesión</th><th>Control</th></tr>';
@@ -5000,7 +5133,10 @@ function adminShowView(name="summary"){
   const target=map[name]||map.summary;
   $$(".admin-simple-view").forEach(v=>v.classList.toggle("active",v.id===target));
   $$("#adminSimpleNav [data-admin-view]").forEach(b=>b.classList.toggle("active",b.dataset.adminView===name));
-  if(name==="bitacoras")renderAdminBitacoras();
+  if(name==="bitacoras"){
+    renderAdminBitacoras();
+    if(!adminOperationsLoaded&&!adminMentorMatrixLoading)adminLoadMentorMatrix(false);
+  }
   if(["access","mentors","history"].includes(name)&&!adminOperationsLoaded&&!adminMentorMatrixLoading)adminLoadMentorMatrix(false);
 }
 
@@ -5644,6 +5780,7 @@ async function adminLoadMentorMatrix(showStatus=true){
     adminRenderMentorMatrix();
     adminRenderHistory();
     adminRenderInvitationMonitor();
+    renderAdminBitacoras();
     if(showStatus)adminMatrixSetStatus("Matriz actualizada.","ok"); else adminMatrixSetStatus("");
   }catch(err){
     console.error("Error cargando matriz de mentores",err);
