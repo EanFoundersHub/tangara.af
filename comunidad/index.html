@@ -5001,6 +5001,94 @@ function adminLaterStatusHTML(rows){
   return `${fin?`<span class="admin-bita-chip fin">Fin ${fin}</span>`:""}${imp?`<span class="admin-bita-chip imp">Imp ${imp}</span>`:""}<span class="admin-bita-chip ok">Total ${fin+imp}</span>`;
 }
 
+function adminCompanyDisplayName(empresaId,rows){
+  const id=String(empresaId||"").trim();
+  const company=companyById(id);
+  if(company?.name)return company.name;
+  const fromRows=(rows||[]).find(r=>String(r.empresaId||"").trim()===id&&r.empresa);
+  return fromRows?.empresa||id||"Empresa sin identificar";
+}
+
+function adminMentorCompanyNames(group){
+  return [...(group?.empresas||[])].map(id=>({
+    id,
+    name:adminCompanyDisplayName(id,[...(group?.first||[]),...(group?.later||[])])
+  }));
+}
+
+function adminCompanyAssignedMentors(group,typeFilter){
+  const empresaId=String(group?.empresaId||"").trim();
+  const type=normalizeInviteValue(typeFilter||"");
+  const byKey=new Map();
+
+  // Preferimos la matriz activa para mostrar el mentor asignado actualmente.
+  if(typeof adminMatrixAssignments==="function"){
+    adminMatrixAssignments()
+      .filter(a=>
+        a.active &&
+        String(a.companyId||"").trim()===empresaId &&
+        (!type||normalizeInviteValue(a.type)===type)
+      )
+      .forEach(a=>{
+        const email=String(a.email||"").trim().toLowerCase();
+        const name=String(a.name||a.email||"").trim();
+        const key=adminMentorIdentityKey(email,name);
+        if(key&&!byKey.has(key)){
+          byKey.set(key,{
+            key,
+            name:name||email,
+            email,
+            type:normalizeInviteValue(a.type),
+            source:"MATRIZ"
+          });
+        }
+      });
+  }
+
+  // Si la matriz todavía no cargó o no hay asignación, usamos evidencia histórica.
+  if(!byKey.size){
+    (group?.rows||[]).forEach(r=>{
+      const c=adminMentorCandidateFromRow(r);
+      if(!c)return;
+      if(!type||normalizeInviteValue(r.type)===type){
+        if(!byKey.has(c.key))byKey.set(c.key,{
+          key:c.key,
+          name:c.nombre||c.email,
+          email:c.email||"",
+          type:normalizeInviteValue(r.type),
+          source:"BITACORA"
+        });
+      }
+    });
+
+    (group?.first||[]).forEach(r=>{
+      if(type&&normalizeInviteValue(r.type)!==type)return;
+      const owner=adminResolveFirstBitacoraMentor(r,adminBitacorasData);
+      if(owner?.key&&!owner.ambiguous&&!byKey.has(owner.key)){
+        byKey.set(owner.key,{
+          key:owner.key,
+          name:owner.nombre||owner.email,
+          email:owner.email||"",
+          type:normalizeInviteValue(r.type),
+          source:owner.source
+        });
+      }
+    });
+  }
+
+  return [...byKey.values()];
+}
+
+function adminMentorsCellHTML(group,typeFilter){
+  const mentors=adminCompanyAssignedMentors(group,typeFilter);
+  if(!mentors.length)return '<span class="admin-bita-chip pending">Sin mentor asignado</span>';
+
+  return mentors.map(m=>{
+    const typeLabel=m.type?adminBitacoraTypeLabel(m.type):"";
+    return `<div><strong>${escapeHTML(m.name||m.email||"Mentor")}</strong>${typeLabel?`<small>${escapeHTML(typeLabel)}${m.email?` · ${escapeHTML(m.email)}`:""}</small>`:(m.email?`<small>${escapeHTML(m.email)}</small>`:"")}</div>`;
+  }).join("");
+}
+
 function renderAdminBitacoras(){
   const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
   if(!body||!head)return;
@@ -5029,26 +5117,32 @@ function renderAdminBitacoras(){
   }
   if(adminBitacorasMode==="mentor"){
     const groups=adminBitacoraMentorGroups(filteredRows).filter(g=>!q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId)].join(" ").toLowerCase().includes(q));
-    head.innerHTML='<tr><th>Mentor</th><th>Primeras asociadas</th><th>Posteriores</th><th>Empresas</th><th>Última sesión</th></tr>';
+    head.innerHTML='<tr><th>Mentor</th><th>Primeras asociadas</th><th>Posteriores</th><th>Empresa</th><th>Última sesión</th></tr>';
     body.innerHTML=groups.length?groups.map(g=>{
-      const totalEmpresas=g.empresas.size;
+      const companies=adminMentorCompanyNames(g);
       const sourceLabels=[];
       if(g.directFirstCount)sourceLabels.push(`${g.directFirstCount} directa${g.directFirstCount===1?"":"s"}`);
       if(g.derivedFirstCount)sourceLabels.push(`${g.derivedFirstCount} asociada${g.derivedFirstCount===1?"":"s"} por continuidad/matriz`);
+      const companiesHTML=companies.length
+        ? companies.map(c=>`<div><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.id)}</small></div>`).join("")
+        : '<span class="admin-bita-chip pending">Sin empresa</span>';
       return `<tr>
         <td><strong>${escapeHTML(g.nombre||"Mentor")}</strong>${g.email?`<small>${escapeHTML(g.email)}</small>`:""}</td>
         <td><span class="admin-bita-chip ${g.firstCoverageCount?"ok":"pending"}">${g.firstCoverageCount}</span>${sourceLabels.length?`<small>${escapeHTML(sourceLabels.join(" · "))}</small>`:""}</td>
         <td>${adminLaterStatusHTML(g.later)}</td>
-        <td><strong>${totalEmpresas}</strong><small>${escapeHTML([...g.empresas].join(", "))}</small></td>
+        <td>${companiesHTML}</td>
         <td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td>
       </tr>`;
     }).join(""):'<tr><td colspan="5" class="admin-bitacoras-empty">No hay mentores que coincidan con los filtros.</td></tr>';
     const unresolved=adminUnresolvedFirstBitacoras(filteredRows).length;
     if(status)status.textContent=`${groups.length} mentor(es) · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es) · ${unresolved} primera(s) aún sin asociación inequívoca.`;
   }else{
-    const groups=adminBitacoraCompanyGroups(filteredRows).filter(g=>!q||[g.empresa,g.empresaId,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q));
-    head.innerHTML='<tr><th>Empresa</th><th>Primera bitácora</th><th>Bitácoras posteriores</th><th>Total</th><th>Última sesión</th><th>Control</th></tr>';
-    body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.empresa)}</strong><small>${escapeHTML(g.empresaId)}</small></td><td>${adminFirstStatusHTML(g)}</td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td><td>${g.anomalies.length?`<span class="admin-bita-chip alert">Revisar ${escapeHTML(g.anomalies.map(adminBitacoraTypeLabel).join(", "))}</span>`:(g.first.length?'<span class="admin-bita-chip ok">En curso</span>':'<span class="admin-bita-chip pending">Sin iniciar</span>')}</td></tr>`).join(""):'<tr><td colspan="6" class="admin-bitacoras-empty">No hay empresas que coincidan con los filtros.</td></tr>';
+    const groups=adminBitacoraCompanyGroups(filteredRows).filter(g=>{
+      const mentorText=adminCompanyAssignedMentors(g,type).map(m=>`${m.name} ${m.email}`).join(" ");
+      return !q||[g.empresa,g.empresaId,mentorText,...g.rows.map(r=>r.mentorNombre),...g.rows.map(r=>r.mentorEmail)].join(" ").toLowerCase().includes(q);
+    });
+    head.innerHTML='<tr><th>Empresa</th><th>Mentor</th><th>Primera bitácora</th><th>Bitácoras posteriores</th><th>Total</th><th>Última sesión</th><th>Control</th></tr>';
+    body.innerHTML=groups.length?groups.map(g=>`<tr><td><strong>${escapeHTML(g.empresa)}</strong><small>${escapeHTML(g.empresaId)}</small></td><td>${adminMentorsCellHTML(g,type)}</td><td>${adminFirstStatusHTML(g)}</td><td>${adminLaterStatusHTML(g.later)}</td><td><strong>${g.total}</strong></td><td>${escapeHTML(g.latest?excelDate(g.latest.date):"—")}</td><td>${g.anomalies.length?`<span class="admin-bita-chip alert">Revisar ${escapeHTML(g.anomalies.map(adminBitacoraTypeLabel).join(", "))}</span>`:(g.first.length?'<span class="admin-bita-chip ok">En curso</span>':'<span class="admin-bita-chip pending">Sin iniciar</span>')}</td></tr>`).join(""):'<tr><td colspan="7" class="admin-bitacoras-empty">No hay empresas que coincidan con los filtros.</td></tr>';
     const withFirst=groups.filter(g=>g.first.length).length;
     if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${filteredRows.filter(b=>Number(b.number)>=2).length} bitácora(s) posterior(es).`;
   }
