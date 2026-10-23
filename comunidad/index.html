@@ -2045,6 +2045,10 @@ flex-direction:column}
 .admin-bitacoras-anomaly{padding:11px 13px;border-radius:11px;background:rgba(255,154,168,.055);border:1px solid rgba(255,154,168,.16);color:#FFC2CA;font-size:10.5px;line-height:1.45}
 @media(max-width:900px){.admin-bitacoras-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-bitacoras-toolbar{grid-template-columns:1fr 1fr}.admin-bitacoras-switch{grid-column:1/-1}}
 @media(max-width:600px){.admin-bitacoras-kpis{grid-template-columns:1fr 1fr}.admin-bitacoras-toolbar{grid-template-columns:1fr}.admin-bitacoras-switch{grid-column:auto;width:100%;display:grid;grid-template-columns:1fr 1fr}.admin-bitacoras-switch button{width:100%}}
+/* Consulta transparente de las asignaciones devueltas por el flujo autenticado. */
+.mentor-assignment-details{display:inline-block;flex-basis:100%;margin-top:3px;font-size:10.5px;color:var(--txt2)}
+.mentor-assignment-details summary{cursor:pointer;color:#F6A6EB;font-weight:650;width:max-content;max-width:100%}
+.mentor-assignment-details span{display:block;margin-top:6px;line-height:1.6;overflow-wrap:anywhere}
 </style>
 
 </head>
@@ -2232,11 +2236,11 @@ flex-direction:column}
     <section class="hero">
       <img class="hero-bird" src="../assets/hero-bird-network.png" alt="">
       <div class="hero-inner">
-        <span class="chip chip-mag">46 empresas · cohorte Tángara</span>
+        <span class="chip chip-mag">48 empresas · cohorte Tángara</span>
         <h1>Conecta con empresas que están revolucionando la <em>innovación climática</em> en América Latina.</h1>
         <p class="lead">Directorio, conexiones y seguimiento del proceso de acompañamiento en un solo espacio privado.</p>
         <div class="hero-stats" aria-label="Tángara en cifras">
-          <div class="stat"><strong>46</strong><span>empresas seleccionadas</span></div>
+          <div class="stat"><strong>48</strong><span>empresas seleccionadas</span></div>
           <div class="stat"><strong>4</strong><span>verticales climáticas</span></div>
           <div class="stat"><strong>67%</strong><span>ya conversa con inversionistas</span></div>
           <div class="stat"><strong>USD 5,25 M</strong><span>levantados en 24 meses</span></div>
@@ -2658,12 +2662,13 @@ function sessionMentorEmail(){
   return String(session?.email||session?.correo||session?.EmailUsuario||session?.emailUsuario||session?.field_6||session?.field_5||"").trim().toLowerCase();
 }
 function normalizeMentorAssignment(raw){
+  // Las asignaciones deben venir del flujo autenticado; no se crean permisos en el navegador.
   if(typeof raw==="string"){
-    return {empresaId:String(raw),tipoMentoria:""};
+    return {empresaId:String(raw).trim().toUpperCase(),tipoMentoria:""};
   }
   raw=raw&&typeof raw==="object"?raw:{};
   return {
-    empresaId:String(raw.empresaId||raw.EmpresaID||raw.field_5||raw.Title||""),
+    empresaId:String(raw.empresaId||raw.EmpresaID||raw.empresaID||raw.field_5||raw.Title||"").trim().toUpperCase(),
     tipoMentoria:String(raw.tipoMentoria||raw.TipoMentoria||raw.tipo||raw.rolMentoria||raw.RolMentoria||"").trim().toUpperCase()
   };
 }
@@ -2714,6 +2719,12 @@ async function loadFinancialMentorProfileFromBackend(){
     if(status!=="MENTOR_ASSIGNMENTS"&&role!=="MENTOR"&&!raw.length)return;
     const assignments=raw.map(normalizeMentorAssignment).filter(x=>/^TAN-\d+$/i.test(x.empresaId));
     if(!assignments.length)return;
+    const uniqueIds=[...new Set(assignments.map(x=>x.empresaId))];
+    if(uniqueIds.length!==raw.length){
+      console.warn("Tángara: el flujo de asignaciones devolvió registros duplicados o IDs inválidos.",{
+        recibidos:raw.length,validos:assignments.length,empresasDistintas:uniqueIds.length,empresaIds:uniqueIds
+      });
+    }
 
     session._mentorAssignments=assignments;
     session._mentorNombre=data?.mentorNombre||data?.nombreMentor||session?.nombre||"Mentor";
@@ -3214,6 +3225,26 @@ const COMPANIES=[
     "summary": "CurubaTech brinda asistencia técnica remota vía WhatsApp con agrónomos certificados para mejorar la productividad agrícola, reducir el uso de agroquímicos y disminuir las visitas en campo, fortaleciendo cadenas trazables y prácticas más sostenibles.",
     "clients": "Empresas (B2B)",
     "website": "https://curuba.tech/en/"
+  },
+  {
+    "id": "TAN-47",
+    "name": "Hakuna Movilidad SAS",
+    "vertical": "Transición energética y descarbonización",
+    "city": "Medellín",
+    "department": "Antioquia",
+    "summary": "Hakuna Movilidad SAS (Runni) ofrece bicicletas eléctricas de diseño propio para repartidores mediante suscripción y estaciones de intercambio de baterías.",
+    "clients": "Consumidores finales (B2C)",
+    "website": "https://www.runni.co"
+  },
+  {
+    "id": "TAN-48",
+    "name": "Biotec Water Solutions SAPI de CV",
+    "vertical": "Economía circular",
+    "city": "Ciudad de México",
+    "department": "",
+    "summary": "Biotec Water Solutions (microTERRA) cultiva Lemna en aguas de invernaderos para remover contaminantes y producir ingredientes naturales para la industria alimentaria.",
+    "clients": "Empresas (B2B)",
+    "website": "https://www.microterra.com/"
   }
 ];
 
@@ -3652,6 +3683,11 @@ function openApp(){
   $("#userName").textContent=session?.nombre||"Participante";
   $("#userCompany").textContent=session?.empresa||session?.empresaId||"Tángara";
   $("#userAvatar").textContent=initials(session?.nombre||session?.empresa);
+  // La presentación de la cohorte se actualiza con las fichas realmente cargadas.
+  const cohortBadge=$(".hero .chip");
+  if(cohortBadge)cohortBadge.textContent=`${COMPANIES.length} empresas · cohorte Tángara`;
+  const cohortTotal=$(".hero-stats .stat:first-child strong");
+  if(cohortTotal)cohortTotal.textContent=String(COMPANIES.length);
   buildFilters();
   renderCarousel();
   renderCards();
@@ -3681,13 +3717,18 @@ function syncMentorDirectoryUI(){
   btn?.classList.remove("hidden");
   if(btn)btn.textContent=FINANCIAL_DIRECTORY_FULL?"Ver solo mis asignadas":"Ver directorio completo";
   if(note){
+    const assigned=financialAssignedIds();
+    const catalog=new Set(COMPANIES.map(c=>c.id));
+    const unknown=assigned.filter(id=>!catalog.has(id));
     note.classList.remove("hidden");
-    note.innerHTML=FINANCIAL_DIRECTORY_FULL
-      ? `<span class="perm on">Directorio completo: 46 empresas</span><span>Tu acompañamiento sigue limitado a ${financialAssignedIds().length} empresas asignadas.</span>`
-      : `<span class="perm on">${financialAssignedIds().length} empresas asignadas</span><span>Puedes explorar el directorio completo sin ampliar tus permisos de acompañamiento.</span>`;
+    note.innerHTML=(FINANCIAL_DIRECTORY_FULL
+      ? `<span class="perm on">Directorio completo: ${COMPANIES.length} empresas</span><span>Tu acompañamiento sigue limitado a ${assigned.length} empresas asignadas.</span>`
+      : `<span class="perm on">${assigned.length} empresas asignadas</span><span>Puedes explorar el directorio completo sin ampliar tus permisos de acompañamiento.</span>`)
+      + (unknown.length?`<span style="color:var(--warn)">${unknown.length} empresa(s) asignada(s) sin ficha en el catálogo: ${unknown.map(escapeHTML).join(', ')}.</span>`:"")
+      + `<details class="mentor-assignment-details"><summary>Ver IDs recibidos del sistema</summary><span>${assigned.map(escapeHTML).join(' · ')}</span></details>`;
   }
   if(copy)copy.textContent=FINANCIAL_DIRECTORY_FULL
-    ? "Explora las 46 empresas de la cohorte. El acompañamiento continúa disponible únicamente para tus asignaciones."
+    ? `Explora las ${COMPANIES.length} empresas de la cohorte. El acompañamiento continúa disponible únicamente para tus asignaciones.`
     : "Estas son las empresas que acompañas como mentor. Puedes abrir el directorio completo cuando quieras.";
 }
 
@@ -6614,7 +6655,11 @@ $("#accompNavBtn").addEventListener("click",()=>{
   window.setTimeout(()=>loadAccompaniment(""),180);
 });
 
-$("#refreshAccompBtn").addEventListener("click",()=>loadAccompaniment(accompanimentTargetId||""));
+$("#refreshAccompBtn").addEventListener("click",async()=>{
+  // Renovar primero la lista del mentor para reflejar cambios recientes de SharePoint / Flow 23.
+  await loadFinancialMentorProfileFromBackend();
+  await loadAccompaniment(accompanimentTargetId||"");
+});
 $("#refreshConnectionsBtn").addEventListener("click",loadConnections);
 
 $$(".connection-tab").forEach(btn=>btn.addEventListener("click",()=>{
