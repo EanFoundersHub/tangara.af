@@ -2051,6 +2051,46 @@ flex-direction:column}
 .mentor-assignment-details span{display:block;margin-top:6px;line-height:1.6;overflow-wrap:anywhere}
 </style>
 
+
+<style id="tangara-ecosistema-v1">
+/* Módulo estático de representantes. Aislado de autorización, sesiones, flujos y bitácoras. */
+#representantes{border-top:1px solid rgba(238,70,221,.12)}
+.ecos-head{align-items:center}
+.ecos-head>div{max-width:810px}
+.ecos-head h2{margin:7px 0 5px}
+.ecos-head p{margin-top:8px}
+.ecos-snapshot{padding:20px;border:1px solid rgba(242,123,227,.26);border-radius:20px;background:linear-gradient(155deg,rgba(238,70,221,.10),rgba(37,16,51,.75) 45%,rgba(17,6,27,.45));box-shadow:0 25px 60px rgba(10,3,18,.14)}
+.ecos-kpis{display:grid;grid-template-columns:1fr 1fr 1.45fr;gap:10px;margin-bottom:21px}
+.ecos-kpi{display:flex;flex-direction:column;justify-content:center;min-height:103px;padding:16px 19px;border:1px solid rgba(242,123,227,.20);border-radius:14px;background:rgba(255,255,255,.035)}
+.ecos-kpi strong{font-size:34px;line-height:1;color:#FBD6F5;font-weight:800;letter-spacing:-.04em}
+.ecos-kpi span{margin-top:9px;font-size:11px;line-height:1.35;color:var(--txt2)}
+.ecos-kpi-status strong{font-size:20px;color:#FFE0AD;letter-spacing:-.015em}
+.ecos-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px 12px}
+.ecos-toolbar strong{font-size:12.5px;color:#fff}
+.ecos-toolbar span{font-size:11px;color:var(--txt3)}
+.ecos-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.ecos-persona{display:flex;gap:11px;align-items:flex-start;min-height:98px;padding:15px 12px;border:1px solid rgba(242,123,227,.18);border-radius:12px;background:linear-gradient(135deg,rgba(238,70,221,.065),rgba(255,255,255,.025));min-width:0}
+.ecos-num{flex:0 0 29px;height:29px;display:grid;place-items:center;border-radius:8px;background:rgba(238,70,221,.13);border:1px solid rgba(242,123,227,.22);color:#F6A6EB;font-size:10px;font-weight:800}
+.ecos-data{display:grid;gap:5px;min-width:0}
+.ecos-data strong{font-size:12.5px;line-height:1.25;color:#fff;overflow-wrap:anywhere}
+.ecos-data span{font-size:11px;color:#F6A6EB;line-height:1.3;overflow-wrap:anywhere}
+.ecos-data small{font-size:9.5px;line-height:1.3;color:var(--txt3)}
+.ecos-footnote{margin-top:17px;border:1px solid rgba(255,212,139,.18);border-radius:12px;padding:12px 14px;background:rgba(255,212,139,.045);color:var(--txt2);font-size:11px;line-height:1.55}
+.ecos-footnote strong{color:#FFE0AD}
+.ecos-signature{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;font-size:10px;color:var(--txt3)}
+.ecos-signature span:first-child{font-weight:800;color:#F6A6EB;letter-spacing:.12em}
+.ecos-signature b{font-size:9px;font-weight:550;letter-spacing:0;color:var(--txt2)}
+/* Vista de captura: conserva la marca y solo esta sección, sin modificar otras vistas permanentemente. */
+body.ecos-capture #appView .sec-nav,body.ecos-capture #appView .hero,body.ecos-capture #appView #cohorte,body.ecos-capture #appView #acompanamiento,body.ecos-capture #appView #solicitudes,body.ecos-capture #appView #adminDashboard,body.ecos-capture #appView #directorio,body.ecos-capture .feedback-float{display:none!important}
+body.ecos-capture #appView .top-actions{display:none!important}
+body.ecos-capture #representantes{padding-top:25px}
+body.ecos-capture .ecos-snapshot{box-shadow:none}
+@media(max-width:1050px){.ecos-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:790px){.ecos-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ecos-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ecos-kpi-status{grid-column:1/-1}}
+@media(max-width:560px){.ecos-grid{grid-template-columns:1fr}.ecos-snapshot{padding:13px}.ecos-persona{min-height:72px}.ecos-head{align-items:flex-start}.ecos-kpi{min-height:88px;padding:13px}.ecos-kpi strong{font-size:29px}.ecos-kpi-status strong{font-size:17px}.ecos-signature{font-size:9px}}
+@media print{#appView .topbar,#appView .sec-nav,#appView .hero,#appView #cohorte,#appView #acompanamiento,#appView #solicitudes,#appView #adminDashboard,#appView #directorio,.feedback-float{display:none!important}#appView,#representantes{display:block!important}#representantes{padding:0!important}.ecos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ecos-persona{break-inside:avoid}body{background:#190824!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+
 </head>
 <body>
 
@@ -2229,6 +2269,7 @@ flex-direction:column}
       <a href="#directorio">Directorio</a>
       <a href="#acompanamiento">Acompañamiento</a>
       <a href="#solicitudes">Contactos</a>
+      <a href="#representantes">Representantes</a>
     </div>
   </nav>
 
@@ -2312,6 +2353,46 @@ flex-direction:column}
         </div>
         <div class="connection-panel active" id="panelReceived"></div>
         <div class="connection-panel" id="panelSent"></div>
+      </div>
+    </section>
+
+
+    <!-- Ecosistema: directorio estático para captura, NO representa accesos ni actividad validada -->
+    <section class="block ecos-section" id="representantes" aria-labelledby="ecosTitle">
+      <div class="section-head ecos-head">
+        <div><span class="eyebrow">Red de aliados y actores estratégicos</span><h2 id="ecosTitle">Representantes vinculados a Tángara</h2><p>Consolidado de organizaciones aliadas, inversionistas, mentores y actores del ecosistema registrados o habilitados en Comunidad Tángara.</p></div>
+        <button type="button" class="btn btn-soft btn-sm" id="ecosCaptureBtn" aria-pressed="false">↗ Modo captura</button>
+      </div>
+      <div class="ecos-snapshot" aria-label="Consolidado de representantes">
+        <div class="ecos-kpis">
+          <div class="ecos-kpi"><strong>19</strong><span>representantes identificados</span></div>
+          <div class="ecos-kpi"><strong>16</strong><span>denominaciones de organizaciones</span></div>
+          <div class="ecos-kpi ecos-kpi-status"><strong>Por verificar</strong><span>ingresos e interacciones individuales</span></div>
+        </div>
+        <div class="ecos-toolbar"><strong>Directorio consolidado</strong><span>19 contactos identificados · Datos de referencia</span></div>
+        <div class="ecos-grid">
+          <article class="ecos-persona"><span class="ecos-num">01</span><div class="ecos-data"><strong>Sebastián Escobar</strong><span>Globali</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">02</span><div class="ecos-data"><strong>Margarita Martínez</strong><span>NESST</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">03</span><div class="ecos-data"><strong>Ana Prieto</strong><span>B Venture Capital</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">04</span><div class="ecos-data"><strong>María Eugenia Rianudo</strong><span>Universidad Ean</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">05</span><div class="ecos-data"><strong>Samantha Alfonso</strong><span>TierraLabs</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">06</span><div class="ecos-data"><strong>María Fernanda Sánchez</strong><span>TierraLabs</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">07</span><div class="ecos-data"><strong>Camila López</strong><span>Módulo Género</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">08</span><div class="ecos-data"><strong>Jacinta Dillon</strong><span>Pro Mujer</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">09</span><div class="ecos-data"><strong>Christian Daube</strong><span>Climate KIC</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">10</span><div class="ecos-data"><strong>Yoshiko Sakai</strong><span>Tec de Monterrey</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">11</span><div class="ecos-data"><strong>Jennifer Villalba</strong><span>GIZ</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">12</span><div class="ecos-data"><strong>Fabiola Moreno</strong><span>GIZ Colombia</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">13</span><div class="ecos-data"><strong>Luisa Ladrón de Guevara</strong><span>Epic Angels</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">14</span><div class="ecos-data"><strong>José Alba</strong><span>Universidad Ean</span><small>Decano de la Facultad de Administración, Finanzas y Economía</small></div></article>
+          <article class="ecos-persona"><span class="ecos-num">15</span><div class="ecos-data"><strong>Isabela Echeverry</strong><span>BID Lab</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">16</span><div class="ecos-data"><strong>Sergio Cadavid</strong><span>Fondo Impacta</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">17</span><div class="ecos-data"><strong>Eloísa Vela</strong><span>Connect Bogotá</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">18</span><div class="ecos-data"><strong>Camilo Mejía</strong><span>Biointropic</span></div></article>
+          <article class="ecos-persona"><span class="ecos-num">19</span><div class="ecos-data"><strong>Katia Méndez</strong><span>Biointropic</span></div></article>
+        </div>
+        <div class="ecos-footnote"><strong>Nota sobre el alcance del dato:</strong> este listado consolida registros de Comunidad y contactos habilitados en la plataforma. Algunos registros están pendientes de verificación. La identificación de un representante no implica que haya ingresado, abierto perfiles o establecido conexiones.</div>
+        <div class="ecos-signature"><span>TÁNGARA <b>Investment Readiness</b></span><span>Vinculación del ecosistema · Consolidado informativo</span></div>
       </div>
     </section>
 
@@ -6821,6 +6902,20 @@ boot();
     },{rootMargin:'-140px 0px -60% 0px',threshold:0});
     targets.forEach(t=>io.observe(t));
   }
+})();
+</script>
+
+
+<script id="tangara-ecosistema-capture-v1">
+(()=>{
+  const btn=document.getElementById("ecosCaptureBtn");
+  if(!btn)return;
+  btn.addEventListener("click",()=>{
+    const active=document.body.classList.toggle("ecos-capture");
+    btn.textContent=active?"← Volver a Comunidad":"↗ Modo captura";
+    btn.setAttribute("aria-pressed",String(active));
+    window.scrollTo({top:0,behavior:"instant"});
+  });
 })();
 </script>
 
