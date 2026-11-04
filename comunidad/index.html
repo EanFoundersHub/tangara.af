@@ -2053,7 +2053,9 @@ flex-direction:column}
 
 
 <style id="tangara-ecosistema-v1">
-/* Módulo estático de representantes. Aislado de autorización, sesiones, flujos y bitácoras. */
+/* Representantes: visibilidad condicionada a autorización administrativa validada. */
+body:not(.tangara-admin-authorized) #representantes,
+body:not(.tangara-admin-authorized) #representantesNavLink{display:none!important}
 #representantes{border-top:1px solid rgba(238,70,221,.12)}
 .ecos-head{align-items:center}
 .ecos-head>div{max-width:810px}
@@ -2270,7 +2272,7 @@ body.ecos-capture .ecos-snapshot{box-shadow:none}
       <a href="#directorio">Directorio</a>
       <a href="#acompanamiento">Acompañamiento</a>
       <a href="#solicitudes">Contactos</a>
-      <a href="#representantes">Representantes</a>
+      <a href="#representantes" id="representantesNavLink" class="hidden">Representantes</a>
     </div>
   </nav>
 
@@ -2359,7 +2361,7 @@ body.ecos-capture .ecos-snapshot{box-shadow:none}
 
 
     <!-- Ecosistema: directorio estático para captura, NO representa accesos ni actividad validada -->
-    <section class="block ecos-section" id="representantes" aria-labelledby="ecosTitle">
+    <section class="block ecos-section hidden" id="representantes" aria-labelledby="ecosTitle">
       <div class="section-head ecos-head">
         <div><span class="eyebrow">Red de aliados y actores estratégicos</span><h2 id="ecosTitle">Representantes vinculados a Tángara</h2><p>Consolidado de organizaciones aliadas, inversionistas, mentores y actores del ecosistema registrados o habilitados en Comunidad Tángara.</p></div>
         <button type="button" class="btn btn-soft btn-sm" id="ecosCaptureBtn" aria-pressed="false">↗ Modo captura</button>
@@ -5697,7 +5699,16 @@ function adminShowView(name="summary"){
 }
 
 function setAdminVisible(show){
+  // Autorización real de Flow 07, no una lista manual de correos.
   adminAuthorized=!!show;
+  document.body.classList.toggle("tangara-admin-authorized",adminAuthorized);
+  $("#representantesNavLink")?.classList.toggle("hidden",!adminAuthorized);
+  $("#representantes")?.classList.toggle("hidden",!adminAuthorized);
+  if(!adminAuthorized){
+    document.body.classList.remove("ecos-capture");
+    const capture=$("#ecosCaptureBtn");
+    if(capture){capture.textContent="↗ Modo captura";capture.setAttribute("aria-pressed","false");}
+  }
   if(show)initSimplifiedAdmin();
   $("#adminNavBtn")?.classList.toggle("hidden",!show);
   $("#adminDashboard")?.classList.toggle("hidden",!show);
@@ -6912,6 +6923,7 @@ boot();
   const btn=document.getElementById("ecosCaptureBtn");
   if(!btn)return;
   btn.addEventListener("click",()=>{
+    if(!document.body.classList.contains("tangara-admin-authorized"))return;
     const active=document.body.classList.toggle("ecos-capture");
     btn.textContent=active?"← Volver a Comunidad":"↗ Modo captura";
     btn.setAttribute("aria-pressed",String(active));
