@@ -269,6 +269,11 @@ function renderAdminCloseComparisons(){
     panel.className="tg-admin-comparison-section";
     host.appendChild(panel);
   }
+  // El filtro "Con mentorías" muestra solo seguimiento; el detalle de
+  // resultados de cierre corresponde a "Todas" o "Con cierre".
+  const quick=typeof adminBitacorasQuickFilter==="string"?adminBitacorasQuickFilter:"ALL";
+  panel.classList.toggle("hidden",quick==="MENTORIAS");
+  if(quick==="MENTORIAS")return;
   const all=Array.isArray(adminBitacorasData)?adminBitacorasData:[];
   const type=String(document.getElementById("adminBitacoraType")?.value||"").toUpperCase();
   const search=String(document.getElementById("adminBitacoraSearch")?.value||"").trim().toLowerCase();
