@@ -5172,7 +5172,16 @@ function adminBitacoraViewMarkup(){
       <div class="admin-bitacoras-kpi"><strong id="adminBitaAssignedMentorsCount">–</strong><span>Mentores asignados</span><small>Asignaciones activas en la matriz</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaStartedMentorsCount">–</strong><span>Mentores que arrancaron</span><small>Con al menos una bitácora posterior</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaNotStartedMentorsCount">–</strong><span>Asignados sin arrancar</span><small>Asignados, pero con 0 bitácoras posteriores</small></div>
+      <button type="button" class="admin-bitacoras-kpi admin-bita-double-toggle" id="adminBitaDoubleToggle" aria-expanded="false" aria-controls="adminBitaDoublePanel">
+        <strong id="adminBitaDoubleCount">–</strong>
+        <span>Empresas con dos evaluaciones del mismo enfoque</span>
+        <small>Dos primeras o primera + cierre · Haz clic para ver empresas</small>
+        <span class="admin-bita-double-cta">Ver empresas <span aria-hidden="true">▾</span></span>
+      </button>
     </div>
+    <section id="adminBitaDoublePanel" class="admin-bita-double-panel hidden" aria-label="Empresas con doble medición del mismo enfoque">
+      <div id="adminBitaDoubleList"></div>
+    </section>
     <div class="admin-bita-quick-filter" role="group" aria-label="Filtrar el seguimiento por mentorías o cierre">
       <span class="admin-bita-quick-label">Mostrar</span>
       <button type="button" data-bita-quick="ALL" class="active" aria-pressed="true">Todas</button>
@@ -5226,6 +5235,88 @@ function adminLoadBitacorasFromDashboard(data){
   renderAdminBitacoras();
 }
 
+
+/*
+ * Dos evaluaciones del mismo enfoque pueden existir en dos modelos:
+ * - dos registros únicos de número 1 (señal de posible evaluación de salida);
+ * - primera bitácora + cierre guardado (identificado mediante marcador o avances).
+ * No se equiparan los duplicados a cierres confirmados.
+ */
+function adminDoubleEvaluationGroups(rows){
+  const groups=new Map();
+  for(const row of (rows||[])){
+    const companyId=String(row?.empresaId||"").trim();
+    const type=normalizeInviteValue(row?.type||"");
+    const number=Number(row?.number);
+    if(!/^TAN-\d+$/i.test(companyId)||!["FINANCIERO","IMPACTO"].includes(type))continue;
+    if(number!==1&&!(number>=2&&adminBitacoraIsClose(row)))continue;
+    const key=companyId+"|"+type;
+    if(!groups.has(key))groups.set(key,{companyId,type,first:[],closing:[],seenIds:new Set(),rows:[]});
+    const group=groups.get(key);
+    const id=Number(row?.id)||Number(row?.raw?.ID)||Number(row?.raw?.Id)||0;
+    if(id>0){
+      if(group.seenIds.has(id))continue;
+      group.seenIds.add(id);
+    }
+    group.rows.push(row);
+    if(number===1)group.first.push(row);
+    else group.closing.push(row);
+  }
+  return [...groups.values()]
+    .filter(g=>g.first.length>=2||(g.first.length>=1&&g.closing.length>=1))
+    .map(g=>({
+      ...g,
+      companyName:companyById(g.companyId)?.name||g.rows.find(x=>x.empresa)?.empresa||g.companyId,
+      confirmed:g.first.length>=1&&g.closing.length>=1,
+      duplicateFirst:g.first.length>=2
+    }))
+    .sort((a,b)=>a.companyName.localeCompare(b.companyName,"es",{sensitivity:"base"})||a.type.localeCompare(b.type));
+}
+function adminRenderDoubleEvaluationCard(rows){
+  const groups=adminDoubleEvaluationGroups(rows);
+  const distinctCompanies=new Set(groups.map(g=>g.companyId)).size;
+  const metric=$("#adminBitaDoubleCount");
+  if(metric)metric.textContent=adminBitacorasLoaded?distinctCompanies:"–";
+  const list=$("#adminBitaDoubleList");
+  if(!list)return;
+  const toggle=$("#adminBitaDoubleToggle");
+  if(toggle)toggle.disabled=!adminBitacorasLoaded;
+  if(!adminBitacorasLoaded){
+    list.innerHTML='<div class="admin-bita-double-empty">No hay datos administrativos cargados para calcular este indicador.</div>';
+    return;
+  }
+  if(!groups.length){
+    list.innerHTML='<div class="admin-bita-double-head"><strong>Empresas con doble evaluación</strong><span>0 empresas</span></div><div class="admin-bita-double-empty">No se identifican todavía dos primeras bitácoras del mismo enfoque ni parejas de primera + cierre.</div>';
+    return;
+  }
+  const confirmed=groups.filter(g=>g.confirmed).length;
+  const inferred=groups.filter(g=>g.duplicateFirst&&!g.confirmed).length;
+  list.innerHTML=`
+    <div class="admin-bita-double-head">
+      <div><strong>Empresas con dos evaluaciones del mismo enfoque</strong><p>Se contabilizan empresas únicas. Una empresa puede aparecer en Finanzas y en Impacto.</p></div>
+      <span>${distinctCompanies} empresa(s) · ${groups.length} enfoque(s)</span>
+    </div>
+    <div class="admin-bita-double-breakdown">
+      <span><b>${confirmed}</b> enfoque(s) con cierre registrado</span>
+      <span><b>${inferred}</b> enfoque(s) con dos primeras, por verificar</span>
+    </div>
+    <div class="admin-bita-double-list">${groups.map(g=>{
+      const typeLabel=g.type==="FINANCIERO"?"Financiera":"Impacto";
+      const status=g.confirmed?"Cierre registrado":"Dos primeras · verificar cierre";
+      const className=g.confirmed?"confirmed":"review";
+      const dates=g.rows.map(r=>excelDate(r.date)).filter(Boolean);
+      const lastDate=dates.length?dates[dates.length-1]:"";
+      return `<article class="admin-bita-double-company">
+        <div><strong>${escapeHTML(g.companyName)}</strong><small>${escapeHTML(g.companyId)} · ${escapeHTML(typeLabel)}</small></div>
+        <div class="admin-bita-double-meta">
+          <span class="admin-bita-double-state ${className}">${escapeHTML(status)}</span>
+          <small>${g.first.length} primera(s) · ${g.closing.length} cierre(s)${lastDate?" · Fecha registrada: "+escapeHTML(lastDate):""}</small>
+        </div>
+      </article>`;
+    }).join("")}</div>
+    <p class="admin-bita-double-note">Dos bitácoras numeradas como primera dentro de un mismo enfoque sugieren una segunda evaluación, pero no prueban por sí solas que el cierre esté confirmado. La etiqueta “Cierre registrado” exige un registro de cierre identificado.</p>`;
+}
+
 function adminBitacoraSummary(rows){
   const first=(rows||[]).filter(b=>Number(b.number)===1);
   const later=(rows||[]).filter(b=>Number(b.number)>=2);
@@ -5241,6 +5332,7 @@ function adminBitacoraSummary(rows){
   if($("#adminBitaAssignedMentorsCount"))$("#adminBitaAssignedMentorsCount").textContent=assigned.length;
   if($("#adminBitaStartedMentorsCount"))$("#adminBitaStartedMentorsCount").textContent=started.length;
   if($("#adminBitaNotStartedMentorsCount"))$("#adminBitaNotStartedMentorsCount").textContent=notStarted.length;
+  adminRenderDoubleEvaluationCard(rows);
 }
 
 function adminFirstStatusHTML(group){
@@ -5720,6 +5812,15 @@ function initSimplifiedAdmin(){
   if(history)hist.appendChild(history);
 
   bitacoras.addEventListener("click",e=>{
+    const toggle=e.target.closest("#adminBitaDoubleToggle");
+    if(toggle){
+      const panel=$("#adminBitaDoublePanel");
+      const expanding=toggle.getAttribute("aria-expanded")!=="true";
+      toggle.setAttribute("aria-expanded",String(expanding));
+      panel?.classList.toggle("hidden",!expanding);
+      if(expanding)panel?.scrollIntoView({behavior:"smooth",block:"nearest"});
+      return;
+    }
     const quick=e.target.closest("[data-bita-quick]");
     if(quick){
       adminBitacorasQuickFilter=quick.dataset.bitaQuick||"ALL";
