@@ -6,51 +6,127 @@ const html=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"
 let current=null;
 let sending=false;
 
+
+function closeRowView(row){
+  // El panel administrativo trabaja con filas normalizadas, mientras el mentor
+  // recibe filas originales de Flow 28. Admitir ambos sin crear permisos nuevos.
+  const raw=row?.raw||row;
+  const parsed=unifiedBitacoraView(raw);
+  return {
+    ...parsed,
+    number:parsed.number||Number(row?.number)||0,
+    type:parsed.type||String(row?.type||"").toUpperCase(),
+    date:parsed.date||row?.date||"",
+    mentor:parsed.mentor||row?.mentorNombre||"",
+    firstAnswers:parsed.firstAnswers||row?.firstAnswers||"",
+    additionalObservations:parsed.additionalObservations||row?.additionalObservations||""
+  };
+}
 function decodeClose(row){
-  const v=unifiedBitacoraView(row);
+  const v=closeRowView(row);
   const raw=String(v.additionalObservations||"").trim();
   if(!raw.startsWith(MARKER))return null;
   try{
     const info=JSON.parse(raw.slice(MARKER.length));
     if(info?.schema!=="TANGARA_CIERRE_V1"||!Array.isArray(info?.respuestas))return null;
     return {info,view:v};
-  }catch(e){console.warn("Tángara: la evaluación final no se pudo interpretar.",e);return null;}
+  }catch(e){
+    console.warn("Tángara: evaluación final no interpretable.",e);
+    return null;
+  }
 }
+
 function closeEntries(rows){return (Array.isArray(rows)?rows:[]).map(decodeClose).filter(Boolean);}
 
+
 function firstScores(rows,mentorType){
-  const initial=(rows||[]).map(unifiedBitacoraView).find(b=>b.number===1&&(b.type===mentorType||!b.type));
+  const type=String(mentorType||"").toUpperCase();
+  const initial=(rows||[]).map(closeRowView).find(b=>
+    b.number===1&&(b.type===type||!b.type)
+  );
   if(!initial?.firstAnswers)return {};
-  const blocks=initial.firstAnswers.replace(/\r/g,"").split(/\n(?=\s*\d{1,2}\.\s*(?:¿|[A-ZÁÉÍÓÚÑ]))/u);
+  const blocks=String(initial.firstAnswers).replace(/\r/g,"")
+    .split(/\n(?=\s*\d{1,2}\.\s*(?:¿|[A-ZÁÉÍÓÚÑ]))/u);
   const scores={};
   for(const block of blocks){
     const n=block.match(/^\s*(\d{1,2})\.\s/);
     const response=block.match(/Respuesta:\s*([^\n]+)/i);
     if(!n||!response)continue;
-    // Sólo se compara una puntuación explícita al inicio de la respuesta.
-    const rating=response[1].trim().match(/^(?:nivel\s*)?([1-5])(?=\s|[.)\-–:]|$)/i);
+    const value=response[1].trim();
+    const explicit=value.match(/^(?:nivel|calificaci[oó]n|puntaje)?\s*[:=\-–]?\s*([1-5])(?:\s|[.)\-–:]|$)/i);
+    const labeled=value.match(/\b(?:nivel|calificaci[oó]n|puntaje)\s*[:=\-–]?\s*([1-5])\b/i);
+    const rating=explicit||labeled;
     if(rating)scores[Number(n[1])]=Number(rating[1]);
   }
   return scores;
 }
-function renderCloseEntry(entry,first){
-  const info=entry.info,v=entry.view;
-  const grades=info.respuestas.filter(x=>Number(x.puntuacion)>=1&&Number(x.puntuacion)<=5);
-  const avg=grades.length?(grades.reduce((sum,x)=>sum+Number(x.puntuacion),0)/grades.length):null;
+function compareRows(info,initial){
   const fields=info.tipoMentoria==="FINANCIERO"?FIRST_BITACORA_FINANCIAL_FIELDS:FIRST_BITACORA_IMPACT_FIELDS;
-  const cards=fields.map((field,i)=>{
+  return fields.map((field,index)=>{
     const answer=info.respuestas.find(x=>x.codigo===field.code);
-    if(!answer)return "";
-    const score=Number(answer.puntuacion);
-    const baseline=first[i+1];
-    const delta=Number.isFinite(baseline)?`<span class="tg-close-delta">Inicial ${baseline}/5 · Cambio ${score-baseline>0?"+":""}${score-baseline}</span>`:"";
-    return `<div class="tg-close-answer"><div class="tg-close-answer-top"><span>${html(field.code)}</span><strong>${html(score)}/5</strong>${delta}</div><p>${html(field.title)}</p>${answer.evidencia?`<small><b>Evidencia de cierre:</b> ${html(answer.evidencia)}</small>`:""}</div>`;
-  }).join("");
-  return `<article class="bita-card tg-close-history"><div class="bita-head"><strong>✓ Bitácora de cierre · ${html(info.tipoMentoria==="FINANCIERO"?"Financiera":"Impacto")}</strong><span>${html(excelDate(v.date||info.fecha))}</span></div>
-  <p><b>Mentor:</b> ${html(v.mentor||"Mentor registrado")} · <b>Resultado final:</b> ${avg===null?"Sin puntaje":avg.toFixed(2).replace(".",",")+"/5"}</p>
-  <details class="bita-first-details"><summary>Ver las mismas preguntas y resultados de cierre</summary><div class="bita-first-body"><div class="tg-close-answers">${cards}</div>
-  ${info.conclusion?`<div class="tg-close-summary"><strong>Conclusión al cierre</strong><p>${html(info.conclusion)}</p></div>`:""}</div></details></article>`;
+    const fin=Number(answer?.puntuacion);
+    const ini=Number(initial[index+1]);
+    return {
+      field,
+      initial:ini>=1&&ini<=5?ini:null,
+      final:fin>=1&&fin<=5?fin:null,
+      evidence:String(answer?.evidencia||"")
+    };
+  });
 }
+function renderComparisonBars(rows){
+  return rows.map(({field,initial,final,evidence})=>{
+    const delta=initial!==null&&final!==null?final-initial:null;
+    const state=delta>0?"up":delta<0?"down":"flat";
+    const deltaText=delta===null?"Sin comparación inicial":delta>0?"Avance +"+delta:delta<0?"Variación "+delta:"Sin cambio";
+    return `<div class="tg-compare-card">
+      <div class="tg-compare-head"><span class="tg-compare-code">${html(field.code)}</span><span class="tg-compare-delta ${delta===null?"missing":state}">${html(deltaText)}</span></div>
+      <p class="tg-compare-title">${html(field.title)}</p>
+      <div class="tg-compare-bars">
+        <div class="tg-compare-bar-row">
+          <div class="tg-compare-labels"><span>Ingreso</span><strong>${initial===null?"Sin dato":initial+"/5"}</strong></div>
+          <div class="tg-compare-track"><div class="tg-compare-fill initial" style="width:${initial===null?0:initial*20}%"></div></div>
+        </div>
+        <div class="tg-compare-bar-row">
+          <div class="tg-compare-labels"><span>Cierre</span><strong>${final===null?"Sin dato":final+"/5"}</strong></div>
+          <div class="tg-compare-track"><div class="tg-compare-fill final" style="width:${final===null?0:final*20}%"></div></div>
+        </div>
+      </div>
+      ${evidence?`<small class="tg-compare-evidence"><b>Evidencia de cierre:</b> ${html(evidence)}</small>`:""}
+    </div>`;
+  }).join("");
+}
+function renderCloseEntry(entry,initial){
+  const info=entry.info,v=entry.view;
+  const rows=compareRows(info,initial);
+  const validFinal=rows.filter(r=>r.final!==null);
+  const pairs=rows.filter(r=>r.initial!==null&&r.final!==null);
+  const initialAvg=pairs.length?pairs.reduce((sum,r)=>sum+r.initial,0)/pairs.length:null;
+  const comparableFinalAvg=pairs.length?pairs.reduce((sum,r)=>sum+r.final,0)/pairs.length:null;
+  const finalAvg=validFinal.length?validFinal.reduce((sum,r)=>sum+r.final,0)/validFinal.length:null;
+  const delta=initialAvg!==null?(comparableFinalAvg-initialAvg):null;
+  const fmt=n=>n===null?"—":n.toFixed(2).replace(".",",");
+  const deltaFmt=delta===null?"—":(delta>0?"+":"")+fmt(delta);
+  const note=pairs.length<rows.length
+    ?`<p class="tg-close-comparison-note">Solo ${pairs.length} de ${rows.length} preguntas tienen calificación inicial y final comparables. Los faltantes se indican como “Sin dato”.</p>`
+    :"";
+  return `<article class="bita-card tg-close-history">
+    <div class="bita-head"><strong>✓ Bitácora de cierre · ${html(info.tipoMentoria==="FINANCIERO"?"Financiera":"Impacto")}</strong><span>${html(excelDate(v.date||info.fecha))}</span></div>
+    <div class="tg-close-summary-strip">
+      <div><small>Promedio ingreso comparable</small><strong>${fmt(initialAvg)}${initialAvg===null?"":"/5"}</strong></div>
+      <div><small>Promedio cierre</small><strong>${fmt(finalAvg)}${finalAvg===null?"":"/5"}</strong></div>
+      <div><small>Variación promedio comparable</small><strong class="${delta===null?"":delta>0?"up":delta<0?"down":"flat"}">${deltaFmt}</strong></div>
+      <div><small>Preguntas comparables</small><strong>${pairs.length} / ${rows.length}</strong></div>
+    </div>
+    <p><b>Mentor:</b> ${html(v.mentor||"Mentor registrado")}</p>${note}
+    <details class="bita-first-details" open><summary>Comparación pregunta por pregunta · Ingreso vs cierre</summary>
+      <div class="bita-first-body"><div class="tg-compare-grid">${renderComparisonBars(rows)}</div>
+        ${info.conclusion?`<div class="tg-close-summary-box"><strong>Conclusión de la mentoría</strong><p>${html(info.conclusion)}</p></div>`:""}
+      </div>
+    </details>
+  </article>`;
+}
+
 function ensureModal(){
   if(q("tgCloseBackdrop"))return;
   const wrapper=document.createElement("div");
@@ -174,6 +250,53 @@ renderUnifiedBitacoras=function(rows,permissions,state){
   const initial=firstScores(ordinary,sample);
   return rendered+`<div class="tg-close-history-wrap"><h3>Evaluación final del acompañamiento</h3>${closure.map(entry=>renderCloseEntry(entry,firstScores(ordinary,entry.info.tipoMentoria))).join("")}</div>`;
 };
+
+function renderAdminCloseComparisons(){
+  // Solo usar los registros que el flujo administrativo autenticado ya entregó.
+  if(!adminAuthorized)return;
+  const host=document.querySelector("#adminViewBitacoras .admin-bitacoras-shell");
+  if(!host)return;
+  let panel=document.getElementById("tgAdminCloseComparisons");
+  if(!panel){
+    panel=document.createElement("section");
+    panel.id="tgAdminCloseComparisons";
+    panel.className="tg-admin-comparison-section";
+    host.appendChild(panel);
+  }
+  const all=Array.isArray(adminBitacorasData)?adminBitacorasData:[];
+  const type=String(document.getElementById("adminBitacoraType")?.value||"").toUpperCase();
+  const search=String(document.getElementById("adminBitacoraSearch")?.value||"").trim().toLowerCase();
+  const entries=all.map(row=>({row,close:decodeClose(row)}))
+    .filter(({row,close})=>close&&(!type||close.info.tipoMentoria===type)&&(
+       !search||[row.empresa,row.empresaId,row.mentorNombre,row.mentorEmail].join(" ").toLowerCase().includes(search)
+    ));
+  let main="";
+  if(!adminBitacorasLoaded){
+    main='<p class="tg-admin-compare-notice">El flujo administrativo todavía no devolvió el historial de bitácoras; no se puede calcular el avance.</p>';
+  }else if(!entries.length){
+    const missing=all.some(r=>/BITÁCORA DE CIERRE/i.test(r.advances||"")&&!decodeClose(r));
+    main=missing
+      ?'<p class="tg-admin-compare-notice">Hay registros marcados como cierre, pero la respuesta del flujo administrativo no contiene el campo completo de observaciones con sus puntajes. Para mostrar el comparativo, Flow 07 debe incluir ObservacionesAdicionales y RespuestasPrimeraBitacora.</p>'
+      :'<p class="tg-admin-compare-notice">No hay bitácoras de cierre comparables con los filtros actuales.</p>';
+  }else{
+    main=entries.map(({row,close})=>{
+      const related=all.filter(r=>r.empresaId===row.empresaId);
+      const first=firstScores(related,close.info.tipoMentoria);
+      const companyName=row.empresa||companyById(row.empresaId)?.name||row.empresaId;
+      return `<details class="tg-admin-compare-company">
+        <summary><strong>${html(companyName)}</strong><span>${html(row.empresaId)} · ${html(close.info.tipoMentoria==="FINANCIERO"?"Financiera":"Impacto")} · Ver barras de avance</span></summary>
+        <div class="tg-admin-compare-body">${renderCloseEntry(close,first)}</div>
+      </details>`;
+    }).join("");
+  }
+  panel.innerHTML=`<div class="tg-admin-compare-title"><div><span class="eyebrow">Evaluación de resultados</span><h3>Ingreso vs cierre · Avance por pregunta</h3><p>Comparativo individual de las mentorías finalizadas. La información se toma de las bitácoras disponibles en el tablero administrativo.</p></div><span class="tg-admin-comparison-count">${entries.length} cierre(s)</span></div>${main}`;
+}
+const originalAdminBitacoras=renderAdminBitacoras;
+renderAdminBitacoras=function(){
+  originalAdminBitacoras();
+  renderAdminCloseComparisons();
+};
+
 const originalAccompaniment=renderAccompaniment;
 renderAccompaniment=function(data){
   originalAccompaniment(data);
