@@ -5545,7 +5545,7 @@ function adminConfigureFirstStatusFilter(groups){
 function renderAdminBitacoras(){
   const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
   if(!body||!head)return;
-  $("#adminViewBitacoras [data-bita-quick]").forEach(btn=>{
+  $$("#adminViewBitacoras [data-bita-quick]").forEach(btn=>{
     const active=btn.dataset.bitaQuick===adminBitacorasQuickFilter;
     btn.classList.toggle("active",active);
     btn.setAttribute("aria-pressed",String(active));
