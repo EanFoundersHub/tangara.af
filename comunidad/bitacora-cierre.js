@@ -230,6 +230,7 @@ async function saveClose(e){
     toast("Bitácora de cierre guardada en el historial de la empresa.");
     current=null;
     await loadAccompaniment(id);
+    q("accompShell")?.querySelector('[data-acctab="base"]')?.click();
   }catch(err){
     console.error("Bitácora de cierre:",err);
     const error=q("tgCloseError");
@@ -241,16 +242,21 @@ async function saveClose(e){
 }
 const originalHistory=renderUnifiedBitacoras;
 renderUnifiedBitacoras=function(rows,permissions,state){
+  // Bitácoras conserva únicamente las sesiones de seguimiento.
+  // La primera bitácora y el cierre con su comparativo se muestran en Línea base.
   if(!bool(permissions?.viewBitacoras)||state!=="ok")return originalHistory(rows,permissions,state);
-  const closure=closeEntries(rows);
-  if(!closure.length)return originalHistory(rows,permissions,state);
-  const ordinary=(rows||[]).filter(r=>!decodeClose(r));
-  const rendered=originalHistory(ordinary,permissions,state);
-  const sample=closure[0].info.tipoMentoria;
-  const initial=firstScores(ordinary,sample);
-  return rendered+`<div class="tg-close-history-wrap"><h3>Evaluación final del acompañamiento</h3>${closure.map(entry=>renderCloseEntry(entry,firstScores(ordinary,entry.info.tipoMentoria))).join("")}</div>`;
+  const sessions=(rows||[]).filter(row=>!decodeClose(row));
+  return originalHistory(sessions,permissions,state);
 };
 
+function renderBaselineComparisons(rows,permissions,state){
+  if(!bool(permissions?.viewBitacoras))return '<div class="accomp-empty">No tienes permiso para consultar los resultados de cierre.</div>';
+  if(state!=="ok")return '<div class="accomp-empty">La comparación se mostrará cuando el historial de bitácoras esté disponible.</div>';
+  const closure=closeEntries(rows);
+  if(!closure.length)return '<div class="tg-baseline-comparison-empty"><strong>Comparación ingreso vs. salida</strong><p>Aún no hay una bitácora de cierre registrada. Cuando se complete la evaluación final, aparecerán aquí las barras de cada pregunta, el resultado al ingreso y la variación alcanzada.</p></div>';
+  return '<div class="tg-close-history-wrap"><h3>Ingreso vs. salida · Avance por pregunta</h3><p class="tg-baseline-compare-help">La primera bitácora se compara con la evaluación final del mismo tipo de mentoría. Las barras reflejan valores de 1 a 5.</p>'
+    +closure.map(entry=>renderCloseEntry(entry,firstScores(rows,entry.info.tipoMentoria))).join('')+'</div>';
+};
 function renderAdminCloseComparisons(){
   // Solo usar los registros que el flujo administrativo autenticado ya entregó.
   if(!adminAuthorized)return;
@@ -300,6 +306,10 @@ renderAdminBitacoras=function(){
 const originalAccompaniment=renderAccompaniment;
 renderAccompaniment=function(data){
   originalAccompaniment(data);
+  const base=q("accompLineaBaseComparison");
+  if(base){
+    base.innerHTML=renderBaselineComparisons(data?._bitacorasLista||[],data?.permissions||{},data?._bitacorasEstado);
+  }
   if(data?._bitacorasEstado!=="ok")return;
   const companyId=String(data?.empresaId||"");
   const type=mentorshipTypeForCompany(data,companyId);
@@ -308,7 +318,7 @@ renderAccompaniment=function(data){
   const hasFirst=rows.some(r=>{const v=unifiedBitacoraView(r);return v.number===1&&(v.type===type||!v.type)});
   if(!hasFirst)return;
   const completed=closeEntries(rows).some(x=>x.info.tipoMentoria===type);
-  const area=q("accompShell")?.querySelector(".mentor-overview-side");
+  const area=q("accompLineaBaseActions");
   if(!area)return;
   const permission=bool(data?.permissions?.createBitacora);
   if(completed){
@@ -319,8 +329,8 @@ renderAccompaniment=function(data){
   }else if(permission){
     const btn=document.createElement("button");
     btn.type="button";
-    btn.className="btn btn-soft mentor-primary-action tg-close-open";
-    btn.textContent="Bitácora de cierre";
+    btn.className="btn btn-primary tg-close-open";
+    btn.textContent="Completar bitácora de cierre";
     btn.addEventListener("click",()=>openClose(data,type));
     area.appendChild(btn);
   }
