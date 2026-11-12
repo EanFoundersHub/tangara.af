@@ -3391,6 +3391,7 @@ let adminMentorMatrixData={empresas:[],asignaciones:[],invitaciones:[],historial
 let adminBitacorasData=[];
 let adminBitacorasLoaded=false;
 let adminBitacorasMode="company";
+let adminBitacorasQuickFilter="ALL";
 let adminMentorMatrixLoading=false;
 let adminOperationsLoaded=false;
 let correctionTarget=null;
@@ -5144,6 +5145,24 @@ function adminUnresolvedFirstBitacoras(rows){
   return adminResolvedFirstBitacoras(rows).filter(x=>!x.owner||x.owner.ambiguous);
 }
 
+// Filtro de resultados: detecta sesiones de mentoría y cierre sin modificar datos ni permisos.
+function adminBitacoraIsClose(row){
+  const raw=row?.raw||row||{};
+  const title=String(firstPresent(raw,["Avances","field_8"])||row?.advances||"").trim();
+  const observation=String(firstPresent(raw,["ObservacionesAdicionales"])||row?.additionalObservations||"").trim();
+  return observation.startsWith("TANGARA_CIERRE_V1")||/^BIT[ÁA]CORA DE CIERRE\b/i.test(title);
+}
+function adminBitacoraMatchesQuickFilter(rows,filter){
+  if(filter==="ALL")return true;
+  const later=(rows||[]).filter(b=>Number(b.number)>=2);
+  if(filter==="MENTORIAS")return later.some(b=>!adminBitacoraIsClose(b));
+  if(filter==="CIERRE")return later.some(adminBitacoraIsClose);
+  return true;
+}
+function adminBitacoraQuickLabel(){
+  return adminBitacorasQuickFilter==="MENTORIAS"?"Con mentorías":adminBitacorasQuickFilter==="CIERRE"?"Con cierre":"Todas";
+}
+
 function adminBitacoraViewMarkup(){
   return `<div class="admin-bitacoras-shell">
     <div class="admin-bitacoras-kpis">
@@ -5153,6 +5172,12 @@ function adminBitacoraViewMarkup(){
       <div class="admin-bitacoras-kpi"><strong id="adminBitaAssignedMentorsCount">–</strong><span>Mentores asignados</span><small>Asignaciones activas en la matriz</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaStartedMentorsCount">–</strong><span>Mentores que arrancaron</span><small>Con al menos una bitácora posterior</small></div>
       <div class="admin-bitacoras-kpi"><strong id="adminBitaNotStartedMentorsCount">–</strong><span>Asignados sin arrancar</span><small>Asignados, pero con 0 bitácoras posteriores</small></div>
+    </div>
+    <div class="admin-bita-quick-filter" role="group" aria-label="Filtrar el seguimiento por mentorías o cierre">
+      <span class="admin-bita-quick-label">Mostrar</span>
+      <button type="button" data-bita-quick="ALL" class="active" aria-pressed="true">Todas</button>
+      <button type="button" data-bita-quick="MENTORIAS" aria-pressed="false">Con mentorías</button>
+      <button type="button" data-bita-quick="CIERRE" aria-pressed="false">Con cierre</button>
     </div>
     <div class="admin-bitacoras-toolbar">
       <input id="adminBitacoraSearch" autocomplete="off" placeholder="Buscar empresa, mentor, correo o ID…">
@@ -5520,6 +5545,11 @@ function adminConfigureFirstStatusFilter(groups){
 function renderAdminBitacoras(){
   const body=$("#adminBitacoraBody"),head=$("#adminBitacoraHead"),status=$("#adminBitacoraStatus"),backend=$("#adminBitacoraBackend"),anomaly=$("#adminBitacoraAnomaly");
   if(!body||!head)return;
+  $("#adminViewBitacoras [data-bita-quick]").forEach(btn=>{
+    const active=btn.dataset.bitaQuick===adminBitacorasQuickFilter;
+    btn.classList.toggle("active",active);
+    btn.setAttribute("aria-pressed",String(active));
+  });
   adminConfigureBitacoraProgressForMode();
   adminBitacoraSummary(adminBitacorasData);
   backend?.classList.toggle("hidden",adminBitacorasLoaded);
@@ -5553,6 +5583,7 @@ function renderAdminBitacoras(){
     const firstStatusFilter=String($("#adminBitacoraFirstStatus")?.value||"").trim();
 
     const groups=allMentorGroups.filter(g=>{
+      if(!adminBitacoraMatchesQuickFilter(g.later,adminBitacorasQuickFilter))return false;
       if(!adminMentorMatchesStartFilter(g,mentorStartFilter))return false;
       if(!adminMentorMatchesFirstFilter(g,firstStatusFilter))return false;
       return !q||[g.nombre,g.email,...g.first.map(r=>r.empresa),...g.first.map(r=>r.empresaId),...g.later.map(r=>r.empresa),...g.later.map(r=>r.empresaId),...g.assignedEmpresas].join(" ").toLowerCase().includes(q);
@@ -5597,7 +5628,7 @@ function renderAdminBitacoras(){
     if(mentorStartFilter)filters.push(startLabel);
     if(firstStatusFilter)filters.push(firstLabel);
     const filterSuffix=filters.length?` · filtros: ${filters.join(" + ")}`:"";
-    if(status)status.textContent=`${assigned} mentor(es) asignado(s) · ${started} ya arrancaron · ${notStarted} aún no arrancan · ${unresolved} primera(s) sin asociación inequívoca${filterSuffix}.`;
+    if(status)status.textContent=`${groups.length} mentor(es) visibles · ${assigned} asignados · ${started} ya arrancaron · ${notStarted} aún no arrancan · ${unresolved} primera(s) sin asociación inequívoca · Mostrar: ${adminBitacoraQuickLabel()}${filterSuffix}.`;
   }else{
     const allCompanyGroups=adminBitacoraCompanyGroups(filteredRows);
     adminUpdateProgressFilterOptions(allCompanyGroups);
@@ -5607,6 +5638,7 @@ function renderAdminBitacoras(){
     const firstStatusFilter=String($("#adminBitacoraFirstStatus")?.value||"").trim();
 
     const groups=allCompanyGroups.filter(g=>{
+      if(!adminBitacoraMatchesQuickFilter(g.rows,adminBitacorasQuickFilter))return false;
       if(!adminCompanyMatchesProgress(g,progress))return false;
       if(!adminCompanyMatchesFirstFilter(g,firstStatusFilter))return false;
 
@@ -5622,7 +5654,7 @@ function renderAdminBitacoras(){
     if(progress)filters.push(progressLabel);
     if(firstStatusFilter)filters.push(firstLabel);
     const suffix=filters.length?` · filtros: ${filters.join(" + ")}`:"";
-    if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${groups.reduce((n,g)=>n+g.later.length,0)} bitácora(s) posterior(es)${suffix}.`;
+    if(status)status.textContent=`${groups.length} empresa(s) visibles · ${withFirst} con primera bitácora · ${groups.reduce((n,g)=>n+g.later.length,0)} bitácora(s) posterior(es) · Mostrar: ${adminBitacoraQuickLabel()}${suffix}.`;
   }
 }
 
@@ -5688,6 +5720,12 @@ function initSimplifiedAdmin(){
   if(history)hist.appendChild(history);
 
   bitacoras.addEventListener("click",e=>{
+    const quick=e.target.closest("[data-bita-quick]");
+    if(quick){
+      adminBitacorasQuickFilter=quick.dataset.bitaQuick||"ALL";
+      renderAdminBitacoras();
+      return;
+    }
     const mode=e.target.closest("[data-bita-mode]");
     if(mode)return adminSetBitacoraMode(mode.dataset.bitaMode);
   });
