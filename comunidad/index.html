@@ -4411,8 +4411,8 @@ function renderUnifiedBitacoras(rows,permissions,state){
   if(!bool(permissions?.viewBitacoras))return '<div class="accomp-empty">No tienes permiso para consultar las bitácoras.</div>';
   if(state==="error")return '<div class="accomp-empty">No pudimos consultar el historial de bitácoras. Actualiza esta sección para reintentar; tus registros no se han borrado.</div>';
   if(state!=="ok")return '<div class="accomp-empty">El historial no está disponible para este perfil.</div>';
-  const items=(rows||[]).map(unifiedBitacoraView).sort((a,b)=>(a.number||999)-(b.number||999)||String(a.date||"").localeCompare(String(b.date||"")));
-  if(!items.length)return '<div class="bita-empty-simple"><strong>Aún no hay bitácoras registradas</strong>Cuando se complete la primera bitácora, aquí aparecerá el histórico de sesiones.</div>';
+  const items=(rows||[]).map(unifiedBitacoraView).filter(b=>b.number!==1).sort((a,b)=>(a.number||999)-(b.number||999)||String(a.date||"").localeCompare(String(b.date||"")));
+  if(!items.length)return '<div class="bita-empty-simple"><strong>Aún no hay sesiones posteriores registradas</strong>Las bitácoras de seguimiento aparecerán aquí. La evaluación inicial y la comparación de cierre están en Línea base.</div>';
   return `<div class="bita-list">${items.map((b,i)=>{
     const number=b.number||i+1;
     const fecha=excelDate(b.date);
@@ -4422,6 +4422,24 @@ function renderUnifiedBitacoras(rows,permissions,state){
     const typeLabel=b.type==="FINANCIERO"?"Financiera":b.type==="IMPACTO"?"Impacto":"";
     return `<article class="bita-card"><div class="bita-head"><strong>Bitácora ${escapeHTML(number)}${first?' · Evaluación inicial':''}${typeLabel?` · ${escapeHTML(typeLabel)}`:""}</strong><span>${escapeHTML(fecha||"Fecha no indicada")}</span></div>${b.mentor?`<p><b>Mentor:</b> ${escapeHTML(b.mentor)}</p>`:""}${answers}${!first&&b.advances?`<p><b>Avances:</b> ${escapeHTML(b.advances)}</p>`:""}${!first&&b.next?`<p><b>Próximos pasos:</b> ${escapeHTML(b.next)}</p>`:""}${financial&&b.challenges?`<p><b>Retos Identificados:</b> ${escapeHTML(b.challenges)}</p>`:""}${financial&&b.investmentObservations?`<p><b>Observaciones de Cara a Procesos de Inversión:</b> ${escapeHTML(b.investmentObservations)}</p>`:""}${!first&&b.additionalObservations?`<p><b>Observaciones Adicionales del Mentor:</b> ${escapeHTML(b.additionalObservations)}</p>`:""}</article>`;
   }).join("")}</div>`;
+}
+
+function renderBaselineInitial(rows,permissions,state,type){
+  if(!bool(permissions?.viewBitacoras))return '<div class="accomp-empty">No tienes permiso para consultar las evaluaciones iniciales.</div>';
+  if(state!=="ok")return '<div class="accomp-empty">La línea base no está disponible hasta que se cargue el historial autorizado de bitácoras.</div>';
+  const first=(rows||[]).map(unifiedBitacoraView).filter(b=>b.number===1).sort((a,b)=>String(a.type||"").localeCompare(String(b.type||"")));
+  if(!first.length){
+    const canStart=bool(permissions?.createBitacora)&&(type==="FINANCIERO"||type==="IMPACTO");
+    return '<div class="bita-empty-simple"><strong>Primera bitácora pendiente</strong>Registra la evaluación inicial para establecer el punto de partida de esta mentoría.'+
+      (canStart?'<div class="tg-baseline-action"><button class="btn btn-primary btn-sm" id="firstBitacoraFormBtn" type="button">Completar primera bitácora</button></div>':"")+"</div>";
+  }
+  return '<div class="tg-baseline-first-list">'+first.map(b=>{
+    const label=b.type==="FINANCIERO"?"Financiera":b.type==="IMPACTO"?"Impacto":"";
+    return '<article class="bita-card tg-baseline-first"><div class="bita-head"><strong>Bitácora 1 · Evaluación inicial'+(label?" · "+escapeHTML(label):"")
+      +'</strong><span>'+escapeHTML(excelDate(b.date)||"Fecha no indicada")+"</span></div>"+
+      (b.mentor?'<p><b>Mentor:</b> '+escapeHTML(b.mentor)+"</p>":"")+
+      '<div class="tg-baseline-answer"><strong>Preguntas y respuestas al ingreso</strong>'+renderFirstBitacoraAnswers(b.firstAnswers)+"</div></article>";
+  }).join("")+"</div>";
 }
 
 function todayForInput(){
@@ -4496,14 +4514,13 @@ function renderAccompaniment(data){
   const total=bitacorasReady?rows.length:0;
   const hasFirst=bitacorasReady&&rows.some(r=>Number(firstPresent(r,["NumeroBitacora","field_4"]))===1);
   const nextNumber=bitacorasReady?Math.max(2,Number(data?._siguienteNumero)||2):2;
+  const followupCount=bitacorasReady?rows.filter(r=>Number(firstPresent(r,["NumeroBitacora","field_4"]))>=2&&!/^BITÁCORA DE CIERRE/i.test(String(firstPresent(r,["Avances","field_8"])||""))&&!String(firstPresent(r,["ObservacionesAdicionales"])||"").startsWith("TANGARA_CIERRE_V1")).length:0;
   const canWrite=bitacorasReady&&bool(p.createBitacora)&&(type==="FINANCIERO"||type==="IMPACTO");
   const teamView=adminAuthorized||sessionMentorHints().includes("EQUIPO");
   const roleLabel=type==="FINANCIERO"?"Mentoría financiera":type==="IMPACTO"?"Mentoría de impacto":teamView?"Vista integral de acompañamiento":"Acompañamiento";
 
-  const primaryAction=canWrite
-    ? hasFirst
-      ? '<button class="btn btn-primary mentor-primary-action" id="newInternalBitacoraBtn" type="button">Diligenciar bitácora</button>'
-      : '<button class="btn btn-primary mentor-primary-action" id="firstBitacoraFormBtn" type="button">Primera bitácora</button>'
+  const primaryAction=canWrite&&hasFirst
+    ? '<button class="btn btn-primary mentor-primary-action" id="newInternalBitacoraBtn" type="button">Diligenciar bitácora</button>'
     : "";
 
   const shell=$("#accompShell");
@@ -4527,15 +4544,18 @@ function renderAccompaniment(data){
     </div>
     <div class="accomp-tabs">
       <button class="accomp-tab active" data-acctab="pred">Prediagnóstico</button>
-      <button class="accomp-tab" data-acctab="bita">Bitácoras (${bitacorasReady?total:"—"})</button>
+      <button class="accomp-tab" data-acctab="bita">Bitácoras (${bitacorasReady?followupCount:"—"})</button>
+      <button class="accomp-tab" data-acctab="base">Línea base</button>
     </div>
     <div class="accomp-panel active" id="accompPred">${renderPred(data?.prediagnostico,p,corrections)}</div>
-    <div class="accomp-panel" id="accompBita">${renderUnifiedBitacoras(rows,p,data?._bitacorasEstado)}</div>`;
+    <div class="accomp-panel" id="accompBita">${renderUnifiedBitacoras(rows,p,data?._bitacorasEstado)}</div>
+    <div class="accomp-panel" id="accompBase"><div class="tg-baseline-intro"><strong>Línea base y resultado del acompañamiento</strong><p>Aquí se conserva la primera bitácora y se compara, pregunta por pregunta, con la evaluación de cierre. Los puntajes que no puedan verificarse se mostrarán como no disponibles.</p></div>${renderBaselineInitial(rows,p,data?._bitacorasEstado,type)}<div id="accompLineaBaseActions"></div><div id="accompLineaBaseComparison"></div></div>`;
 
   $$(".accomp-tab").forEach(btn=>btn.addEventListener("click",()=>{
     $$(".accomp-tab").forEach(x=>x.classList.toggle("active",x===btn));
     $("#accompPred")?.classList.toggle("active",btn.dataset.acctab==="pred");
     $("#accompBita")?.classList.toggle("active",btn.dataset.acctab==="bita");
+    $("#accompBase")?.classList.toggle("active",btn.dataset.acctab==="base");
   }));
 
   $$("#accompPred [data-correct-key]").forEach(btn=>btn.addEventListener("click",()=>openCorrectionModal(btn.dataset.correctKey)));
